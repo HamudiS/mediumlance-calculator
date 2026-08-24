@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mediumlance Calculator</title>
+<style>
+  :root {
+    --bg: #f2f4f2;
+    --card-bg: #ffffff;
+    --border: #e5e7eb;
+    --text: #161c14;
+    --text-muted: #6b7280;
+    --accent: #2f6f4f;
+    --accent-2: #245c40;
+    --accent-light: #e8f3ec;
+    --gold: #c8963e;
+    --input-bg: #fffef2;
+    --input-border: #d9d2a0;
+    --danger: #b3403a;
+    --danger-light: #fbeceb;
+    --shadow: 0 1px 3px rgba(20,30,20,0.05);
+    --shadow-md: 0 6px 20px rgba(20,40,30,0.08);
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --c-basis: #3f7a8c;
+    --c-bonus: #c8963e;
+    --c-ea: #2f6f4f;
+    --c-kosten: #94a3b8;
+    --c-pensioen: #7b5ea7;
+    --c-overig: #d1d5db;
+    --c-belasting: #c0524a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px 20px 80px;
+  }
+  .app-footer {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border, rgba(255,255,255,0.08));
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted, #8a8f98);
+    letter-spacing: 0.02em;
+  }
+  header.page {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  header.page h1 {
+    font-size: 23px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 4px;
+  }
+  header.page p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .legend {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .legend .swatch {
+    width: 12px; height: 12px; border-radius: 3px;
+    background: var(--input-bg); border: 1px solid var(--input-border);
+    display: inline-block;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .summary { position: static; }
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 22px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+    transition: box-shadow .15s ease, transform .15s ease;
+  }
+  .card:hover { box-shadow: var(--shadow-md); }
+  .card h2 {
+    font-size: 14.5px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card h2 .badge {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 160px;
+    align-items: center;
+    gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid #f0f1f4;
+  }
+  .row:last-child { border-bottom: none; }
+  .row.computed {
+    background: transparent;
+  }
+  .row .label {
+    font-size: 13.5px;
+    line-height: 1.35;
+  }
+  .row .hint {
+    display: block;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
+  .row input[type="number"] {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    border-radius: 6px;
+    font-size: 13.5px;
+    text-align: right;
+    font-family: inherit;
+  }
+  .row input[type="text"] {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    border-radius: 6px;
+    font-size: 13.5px;
+    font-family: inherit;
+  }
+  .row .value {
+    text-align: right;
+    font-size: 13.5px;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+  }
+  .row.strong .value, .row.strong .label {
+    font-weight: 600;
+  }
+  .row.sub .label { color: var(--text-muted); padding-left: 10px; }
+  .toggle { position: relative; display: inline-block; width: 44px; height: 25px; margin-left: auto; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute; inset: 0; cursor: pointer;
+    background: #d1d5db; border-radius: 25px; transition: background .15s ease;
+  }
+  .toggle-slider::before {
+    content: ""; position: absolute; width: 19px; height: 19px; left: 3px; top: 3px;
+    background: #fff; border-radius: 50%; transition: transform .15s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+  }
+  .toggle input:checked + .toggle-slider { background: var(--accent); }
+  .toggle input:checked + .toggle-slider::before { transform: translateX(19px); }
+  .divider {
+    border: none;
+    border-top: 1px dashed var(--border);
+    margin: 10px 0;
+  }
+  details.subcard {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+  details.subcard summary {
+    cursor: pointer;
+    padding: 8px 12px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  details.subcard .inner { padding: 0 12px 8px; }
+
+  .summary {
+    position: sticky;
+    top: 24px;
+  }
+  .summary .card { margin-bottom: 14px; }
+  .result-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 13.5px;
+  }
+  .result-line.total {
+    border-top: 1px solid var(--border);
+    margin-top: 6px;
+    padding-top: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .result-line .v { font-variant-numeric: tabular-nums; }
+  .hero {
+    background: linear-gradient(135deg, var(--accent), #245c40);
+    color: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .hero .label { font-size: 12px; opacity: 0.85; margin-bottom: 4px;}
+  .hero .amount { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .hero .sub { font-size: 12px; opacity: 0.85; margin-top: 4px; }
+  .hero-breakdown {
+    margin: 10px 0 2px;
+    padding: 8px 0;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
+  .hb-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 12px;
+    opacity: 0.9;
+    padding: 3px 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .note {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    background: #fbf9ec;
+    border: 1px solid #ecdf9a;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-top: 10px;
+    line-height: 1.4;
+  }
+  .cost-grid {
+    display: grid;
+    grid-template-columns: 1fr 100px 100px;
+    gap: 4px 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+    padding-bottom: 4px;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 10px 16px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ============ Dashboard ============ */
+  .dash-intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .dash-intro h2 {
+    font-size: 19px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .dash-intro .dash-period {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 980px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  .kpi-tile {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-tile.hero {
+    background: linear-gradient(150deg, var(--accent) 0%, var(--accent-2) 65%, #1c4a34 100%);
+    color: #fff;
+    border-color: transparent;
+  }
+  .kpi-tile.hero::after {
+    content: "";
+    position: absolute; right: -30px; top: -30px;
+    width: 140px; height: 140px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .kpi-icon {
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent-light);
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .kpi-tile.hero .kpi-icon { background: rgba(255,255,255,0.16); color: #fff; }
+  .kpi-icon svg { width: 16px; height: 16px; }
+  .kpi-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
+  .kpi-tile.hero .kpi-label { color: rgba(255,255,255,0.82); }
+  .kpi-value { font-size: 25px; font-weight: 800; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .kpi-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 5px; }
+  .kpi-tile.hero .kpi-sub { color: rgba(255,255,255,0.75); }
+
+  .dash-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+  .dash-grid-3 {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+  @media (max-width: 980px) {
+    .dash-grid-2, .dash-grid-3 { grid-template-columns: 1fr; }
+  }
+
+  /* Donut chart */
+  .donut-row { display: flex; align-items: center; gap: 22px; }
+  .donut-wrap { position: relative; flex-shrink: 0; }
+  .donut-center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+  }
+  .donut-center .dc-value { font-size: 17px; font-weight: 800; }
+  .donut-center .dc-label { font-size: 9.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin-top: 2px; }
+  .legend-list { flex: 1; display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+  .legend-item .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .legend-item .li-label { flex: 1; color: var(--text); min-width:0; }
+  .legend-item .li-value { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .legend-item .li-pct { color: var(--text-muted); font-size: 11px; min-width: 34px; text-align: right; }
+
+  /* Bar chart */
+  .bar-chart-wrap svg text { font-family: inherit; }
+  .bar-legend { display: flex; gap: 16px; font-size: 11.5px; color: var(--text-muted); justify-content: center; margin-top: 4px; }
+  .bar-legend .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right: 5px; }
+
+  /* Gauge */
+  .gauge2-row { display: flex; align-items: center; gap: 20px; }
+  .gauge2-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+  .gauge2-center .g2-val { font-size: 22px; font-weight: 800; }
+  .gauge2-center .g2-label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .03em; }
+  .gauge2-info { flex: 1; font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+  .gauge2-info b { color: var(--text); }
+
+  /* Insights */
+  .insight-list { display: flex; flex-direction: column; gap: 12px; }
+  .insight-item { display: flex; gap: 10px; align-items: flex-start; }
+  .insight-item .ii-icon {
+    width: 24px; height: 24px; border-radius: 7px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent-light); color: var(--accent); margin-top: 1px;
+  }
+  .insight-item .ii-icon svg { width: 13px; height: 13px; }
+  .insight-item p { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--text); }
+  .insight-item b { color: var(--accent-2); }
+
+  /* Funnel */
+  .funnel-row { margin-bottom: 14px; }
+  .funnel-row:last-child { margin-bottom: 0; }
+  .funnel-label-row { display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px; }
+  .funnel-label-row .fl-name { font-weight: 600; }
+  .funnel-label-row .fl-val { font-variant-numeric: tabular-nums; font-weight: 700; }
+  .funnel-track { height: 30px; border-radius: 8px; background: #f0f1f3; overflow: hidden; }
+  .funnel-fill {
+    height: 100%; border-radius: 8px;
+    display: flex; align-items: center;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width .3s ease;
+  }
+  .funnel-fill.neg { background: linear-gradient(90deg, var(--danger), #8f3833); }
+  .funnel-arrow { text-align: center; color: var(--border); font-size: 12px; margin: -4px 0 8px; }
+
+  /* Pension mini donut card */
+  .mini-donut-row { display: flex; align-items: center; gap: 16px; }
+
+  .dash-footer-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 4px;
+  }
+  .dash-footer-note button {
+    background: none; border: none; color: var(--accent); font-weight: 700; cursor: pointer; font-size: 12px; padding: 0; font-family: inherit;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page">
+    <div>
+      <h1>Mediumlance Calculator</h1>
+      <p>Bereken je bruto resultaat, kosten en StiPP-pensioenopbouw als mediumlancer</p>
+    </div>
+    <div class="legend"><span class="swatch"></span> = zelf in te vullen</div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+    <button class="tab-btn" data-tab="invoer">Invoer</button>
+  </div>
+
+  <!-- Dashboard tab -->
+  <div id="tab-dashboard" class="tab-panel active">
+
+    <div class="dash-intro">
+      <h2 id="dash-name">—</h2>
+      <div class="dash-period">Jaarbasis</div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-tile hero">
+        <div class="kpi-icon">€</div>
+        <div class="kpi-label">Eindafrekening — bruto</div>
+        <div class="kpi-value" id="dash-ea-bruto">—</div>
+        <div class="kpi-sub" id="dash-ea-bruto-sub">—</div>
+      </div>
+      <div class="kpi-tile">
+        <div class="kpi-icon">€</div>
+        <div class="kpi-label">Eindafrekening — netto</div>
+        <div class="kpi-value" id="dash-ea-netto">—</div>
+        <div class="kpi-sub" id="dash-ea-netto-sub">—</div>
+      </div>
+      <div class="kpi-tile">
+        <div class="kpi-icon">Σ</div>
+        <div class="kpi-label">Netto per maand</div>
+        <div class="kpi-value" id="dash-netto-maand">—</div>
+        <div class="kpi-sub">basissalaris + omzetbonus + reiskosten</div>
+      </div>
+      <div class="kpi-tile">
+        <div class="kpi-icon">↗</div>
+        <div class="kpi-label">Totaal netto per jaar</div>
+        <div class="kpi-value" id="dash-totaal-netto">—</div>
+        <div class="kpi-sub" id="dash-totaal-netto-sub">—</div>
+      </div>
+    </div>
+
+    <div class="dash-grid-2">
+      <div class="card">
+        <h2>Waar gaat je jaaromzet naartoe <span class="badge">€ per jaar</span></h2>
+        <div class="donut-row">
+          <div class="donut-wrap" id="dash-donut-omzet"></div>
+          <div class="legend-list" id="dash-donut-omzet-legend"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Bruto vs. netto per inkomensstroom <span class="badge">per jaar</span></h2>
+        <div class="bar-chart-wrap" id="dash-barchart"></div>
+        <div class="bar-legend"><span><span class="dot" style="background:#d8e4de"></span>bruto</span><span><span class="dot" style="background:#2f6f4f"></span>netto</span></div>
+      </div>
+    </div>
+
+    <div class="dash-grid-3">
+      <div class="card">
+        <h2>Van omzet naar eindafrekening</h2>
+        <div id="dash-funnel"></div>
+      </div>
+      <div class="card">
+        <h2>Effectieve belastingdruk <span class="badge">totaal</span></h2>
+        <div class="gauge2-row">
+          <div class="donut-wrap" id="dash-gauge2"></div>
+          <div class="gauge2-info" id="dash-gauge2-info">—</div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Pensioen — StiPP <span class="badge">per jaar</span></h2>
+        <div class="mini-donut-row">
+          <div class="donut-wrap" id="dash-pens-donut"></div>
+          <div class="legend-list" id="dash-pens-legend"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Impact van pensioenafdracht <span class="badge">zonder vs. met</span></h2>
+      <div class="bar-chart-wrap" id="dash-pension-compare"></div>
+      <div class="bar-legend">
+        <span><span class="dot" style="background:#d8e4de"></span>zonder pensioen</span>
+        <span><span class="dot" style="background:#7b5ea7"></span>met pensioen</span>
+      </div>
+      <p class="dash-footer-note" id="dash-pension-impact-note" style="margin-top:14px; text-align:left;"></p>
+    </div>
+
+    <div class="card">
+      <h2>Belangrijkste inzichten</h2>
+      <div class="insight-list" id="dash-insights"></div>
+    </div>
+
+    <p class="dash-footer-note">Wil je cijfers aanpassen? Ga naar <button onclick="switchTab('invoer')">de tab "Invoer"</button>.</p>
+  </div>
+
+  <!-- Invoer tab -->
+  <div id="tab-invoer" class="tab-panel">
+  <div class="layout">
+    <div class="left">
+
+      <!-- Basisgegevens -->
+      <div class="card">
+        <h2>Basisgegevens</h2>
+        <div class="row">
+          <div class="label">Naam</div>
+          <input type="text" id="naam" value="Jobo de Uil">
+        </div>
+        <div class="row">
+          <div class="label">Mediumlance %<span class="hint">aandeel van de omzet dat naar de medewerker gaat</span></div>
+          <input type="number" id="mediumlancePct" value="70" step="1" min="0" max="100">
+        </div>
+      </div>
+
+      <!-- Salaris, omzet en omzetbonus -->
+      <div class="card">
+        <h2>Salaris, omzet en omzetbonus</h2>
+        <div class="row">
+          <div class="label">Uurtarief<span class="hint">excl. btw</span></div>
+          <input type="number" id="uurtarief" value="98" step="1">
+        </div>
+        <div class="row">
+          <div class="label">Aantal declarabele uren per jaar<span class="hint">op basis van norm</span></div>
+          <input type="number" id="uren" value="1936" step="10">
+        </div>
+        <div class="row">
+          <div class="label">Deeltijd %<span class="hint">nog geen functionaliteit — informatief</span></div>
+          <input type="number" id="deeltijd" value="100" step="5" min="0" max="100">
+        </div>
+        <div class="row computed">
+          <div class="label">Gem. maandomzet excl. btw<span class="hint">uur × uurtarief</span></div>
+          <div class="value" id="out-maandomzet">—</div>
+        </div>
+        <hr class="divider">
+        <div class="row">
+          <div class="label">Bruto basissalaris (incl. vakantiegeld)<span class="hint">per maand — belast via de normale loonheffingstabel</span></div>
+          <input type="number" id="basissalaris" value="2500" step="50">
+        </div>
+        <div class="row computed">
+          <div class="label">Netto basissalaris per maand<span class="hint">normale tabel + heffingskortingen — zie kaart "Heffingskortingen"</span></div>
+          <div class="value" id="out-nettoBasisMaand">—</div>
+        </div>
+        <div class="row">
+          <div class="label">Voorschot omzetbonus<span class="hint">per maand — in overleg, afhankelijk van opdracht en tarief. Belast via bijzonder tarief (zie loonstrook)</span></div>
+          <input type="number" id="omzetbonus" value="4500" step="50">
+        </div>
+        <div class="row">
+          <div class="label">Mobiliteitsbudget<span class="hint">per maand — totaal budget. Wordt verdeeld tussen belaste mobiliteitsbijdrage en onbelaste kilometervergoeding: elke gereden km hieronder gaat 1-op-1 van het belaste deel af (zo blijkt uit de loonstrook)</span></div>
+          <input type="number" id="mobiliteitsbijdrage" value="1000" step="50">
+        </div>
+        <div class="row">
+          <div class="label">Belastingtarief mobiliteitsbijdrage<span class="hint">let op: dit is NIET het bijzonder tarief — uit regressie over 15 loonstroken volgt een apart vast tarief van ~41,18% voor de belaste mobiliteitsbijdrage (de omzetbonus zelf blijft wel via het bijzonder tarief belast)</span></div>
+          <input type="number" id="mobiliteitTarief" value="41.18" step="0.1">
+        </div>
+        <hr class="divider">
+        <div class="row">
+          <div class="label">Gem. aantal km per maand<span class="hint">eigen vervoer — dit is een AANTAL KILOMETER, geen bedrag. Wordt vermenigvuldigd met de vergoeding per km hieronder, en gaat af van het mobiliteitsbudget hierboven</span></div>
+          <input type="number" id="reiskostenKm" value="300" step="10">
+        </div>
+        <div class="row">
+          <div class="label">Onbelaste vergoeding per km</div>
+          <input type="number" id="reiskostenTarief" value="0.23" step="0.01">
+        </div>
+        <div class="row computed">
+          <div class="label">Reiskostenvergoeding (onbelast) per maand</div>
+          <div class="value" id="out-reiskostenMaand">—</div>
+        </div>
+        <div class="row computed">
+          <div class="label">→ Mobiliteitsbijdrage (belast, na aftrek reiskosten)<span class="hint">mobiliteitsbudget − reiskostenvergoeding, min. 0</span></div>
+          <div class="value" id="out-mobiliteitsbijdrageBelast">—</div>
+        </div>
+        <div class="row computed">
+          <div class="label">Netto mobiliteitsbijdrage per maand<span class="hint">belast tegen het tarief hierboven (~41%), niet het bijzonder tarief</span></div>
+          <div class="value" id="out-nettoMobiliteitMaand">—</div>
+        </div>
+        <div class="row computed">
+          <div class="label">Netto voorschot omzetbonus per maand<span class="hint">belast via bijzonder tarief — zie kaart "Belasting bijzondere beloningen"</span></div>
+          <div class="value" id="out-nettoOmzetbonusMaand">—</div>
+        </div>
+        <hr class="divider">
+        <div class="row computed strong">
+          <div class="label">Bruto per maand</div>
+          <div class="value" id="out-brutomaand">—</div>
+        </div>
+        <div class="row computed strong">
+          <div class="label">Netto per maand<span class="hint">netto basissalaris + netto omzetbonus + onbelaste reiskostenvergoeding</span></div>
+          <div class="value" id="out-nettomaand">—</div>
+        </div>
+        <div class="row computed">
+          <div class="label">Subtotaal bruto per jaar<span class="hint">12 × maandsalaris</span></div>
+          <div class="value" id="out-brutojaar">—</div>
+        </div>
+        <div class="row computed">
+          <div class="label">Werkgeverslasten<span class="hint">20% van het max. dagloon op jaarbasis</span></div>
+          <div class="value" id="out-werkgeverslasten">—</div>
+        </div>
+        <div class="row computed strong">
+          <div class="label">Salariskosten subtotaal</div>
+          <div class="value" id="out-salariskosten">—</div>
+        </div>
+      </div>
+
+      <!-- Kosten -->
+      <div class="card">
+        <h2>Kosten <span class="badge">per maand → jaar</span></h2>
+        <div id="kosten-rows"></div>
+        <div class="row computed strong">
+          <div class="label">Overige personeelskosten subtotaal</div>
+          <div class="value" id="out-kostentotaal">—</div>
+        </div>
+      </div>
+
+      <!-- Pensioen -->
+      <div class="card">
+        <h2>Pensioen — StiPP Midlance (70/30) <span class="badge" id="pensionStatusBadge">2026</span></h2>
+        <div class="row">
+          <div class="label">Pensioenopbouw meenemen<span class="hint">zet uit om te zien wat je zou overhouden zónder StiPP-pensioenafdracht — handig om de impact te zien</span></div>
+          <label class="toggle"><input type="checkbox" id="pensionToggle" checked><span class="toggle-slider"></span></label>
+        </div>
+        <hr class="divider">
+        <div class="row">
+          <div class="label">Max. StiPP uurloon</div>
+          <input type="number" id="stipMaxUur" value="42.42" step="0.01">
+        </div>
+        <div class="row">
+          <div class="label">StiPP uurfranchise</div>
+          <input type="number" id="stipFranchise" value="9.24" step="0.01">
+        </div>
+        <div class="row">
+          <div class="label">Totale StiPP premie %</div>
+          <input type="number" id="stipPremiePct" value="23.4" step="0.1">
+        </div>
+        <div class="row">
+          <div class="label">Werkgeversbijdrage %<span class="hint">over het basissalaris, tot het maandmaximum hieronder</span></div>
+          <input type="number" id="stipWgPct" value="15.9" step="0.1">
+        </div>
+        <div class="row">
+          <div class="label">Max. basissalaris voor werkgeversbijdrage<span class="hint">per maand</span></div>
+          <input type="number" id="stipWgCap" value="2500" step="50">
+        </div>
+        <div class="row">
+          <div class="label">StiPP-normuren per jaar<span class="hint">je gewerkte/contractuele uren — StiPP-standaard is 1.900 uur/jaar. Dit is NIET je declarabele/factureerbare uren hierboven.</span></div>
+          <input type="number" id="stipUren" value="1900" step="10">
+        </div>
+        <hr class="divider">
+        <div class="row computed">
+          <div class="label">Pensioengrondslag per uur<span class="hint">min(uurtarief, max. StiPP uurloon) − franchise</span></div>
+          <div class="value" id="out-grondslagUur">—</div>
+        </div>
+        <div class="row computed">
+          <div class="label">Pensioengrondslag per jaar</div>
+          <div class="value" id="out-grondslagJaar">—</div>
+        </div>
+        <div class="row computed">
+          <div class="label">Totale StiPP premie per jaar</div>
+          <div class="value" id="out-premieJaar">—</div>
+        </div>
+        <div class="row computed">
+          <div class="label">Werkgeversbijdrage per jaar<span class="hint">betaald door Conspect uit hun eigen 30%-marge — komt niet uit jouw eindafrekening-pot</span></div>
+          <div class="value" id="out-wgBijdrageJaar">—</div>
+        </div>
+        <div class="row computed strong">
+          <div class="label">Werknemersinhouding (bruto) per jaar<span class="hint">gaat af van jouw bruto salaris, geen extra werkgeverskosten</span></div>
+          <div class="value" id="out-wnInhoudingJaar">—</div>
+        </div>
+        <div class="note">
+          De pensioengrondslag is gebaseerd op je uurtarief, gemaximeerd op het StiPP-maximumuurloon, min de franchise, vermenigvuldigd met de StiPP-normuren per jaar (níet je declarabele/factureerbare uren — dat is een ander getal). Ligt je uurtarief boven het StiPP-maximum (zoals gebruikelijk bij mediumlance), dan zit je automatisch op de maximale opbouw.
+        </div>
+      </div>
+
+      <!-- Dagloon gegevens -->
+      <details class="subcard">
+        <summary>Dagloon gegevens (werkgeverslasten-grondslag)</summary>
+        <div class="inner">
+          <div class="row">
+            <div class="label">Max. maanddagloon</div>
+            <input type="number" id="maxMaandDagloon" value="5579.66" step="1">
+          </div>
+          <div class="row computed">
+            <div class="label">Max. dagloon op jaarbasis</div>
+            <div class="value" id="out-maxJaarDagloon">—</div>
+          </div>
+          <div class="row computed">
+            <div class="label">Max. soc. lasten per jaar</div>
+            <div class="value" id="out-maxSocLasten">—</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Belasting bijzondere beloningen -->
+      <div class="card">
+        <h2>Belasting bijzondere beloningen <span class="badge">omzetbonus + eindafrekening</span></h2>
+        <div class="row">
+          <div class="label">Bijzonder tarief %<span class="hint">staat op je loonstrook bij "Bijzonder tarief %" — geldt voor omzetbonus, vakantiegeld en eindafrekening</span></div>
+          <input type="number" id="bijzonderTarief" value="56.01" step="0.01">
+        </div>
+        <hr class="divider">
+        <div class="row computed">
+          <div class="label">Eindafrekening — bruto (totale pot)</div>
+          <div class="value" id="out-eindafrekeningBruto">—</div>
+        </div>
+        <div class="row computed">
+          <div class="label">− Eigen StiPP-inhouding<span class="hint">gaat rechtstreeks uit deze bonus-pot naar het pensioenfonds — zie kaart "Pensioen"</span></div>
+          <div class="value" id="out-eindafrekeningPensioenAftrek">—</div>
+        </div>
+        <div class="row computed">
+          <div class="label">= Belastbaar deel eindafrekening</div>
+          <div class="value" id="out-eindafrekeningBelastbaar">—</div>
+        </div>
+        <div class="row computed">
+          <div class="label">− Belasting (bijzonder tarief)</div>
+          <div class="value" id="out-belastingEindafrekening">—</div>
+        </div>
+        <div class="row computed strong">
+          <div class="label">= Eindafrekening — netto</div>
+          <div class="value" id="out-eindafrekeningNetto">—</div>
+        </div>
+        <div class="note">
+          Omzetbonus, vakantiegeld en de eindafrekening worden in de praktijk niet via de normale progressieve schijven belast, maar via de "tabel bijzondere beloningen" — een vast percentage gebaseerd op je cumulatieve jaarloon (op je loonstrook te vinden als "Bijzonder tarief %"). Dit percentage stijgt gedurende het jaar naarmate je cumulatieve inkomen toeneemt — vul hier het percentage in dat het beste bij je situatie past, of het percentage van je meest recente loonstrook. Je eigen StiPP-inhouding wordt vóór belasting uit de eindafrekening-pot gehaald (het gaat naar het pensioenfonds, niet naar jou). De onbelaste reiskostenvergoeding staat los van deze pot — die vind je bij "Salaris, omzet en omzetbonus", want die krijg je maandelijks bij je salaris.
+        </div>
+      </div>
+
+      <!-- Heffingskortingen -->
+      <div class="card">
+        <h2>Heffingskortingen <span class="badge">basissalaris — normale tabel</span></h2>
+        <div class="row">
+          <div class="label">Algemene heffingskorting — max. bedrag<span class="hint">per jaar</span></div>
+          <input type="number" id="ahkMax" value="3115" step="10">
+        </div>
+        <div class="row">
+          <div class="label">Algemene heffingskorting — afbouwgrens<span class="hint">inkomen waarboven de korting afbouwt</span></div>
+          <input type="number" id="ahkAfbouwgrens" value="29736" step="100">
+        </div>
+        <div class="row">
+          <div class="label">Algemene heffingskorting — afbouw %</div>
+          <input type="number" id="ahkAfbouwPct" value="6.398" step="0.001">
+        </div>
+        <hr class="divider">
+        <div class="row">
+          <div class="label">Arbeidskorting — opbouw fase 1, tot<span class="hint">tarief × inkomen</span></div>
+          <input type="number" id="akGrens1" value="11965" step="100">
+        </div>
+        <div class="row">
+          <div class="label">Arbeidskorting — opbouw fase 1, tarief %</div>
+          <input type="number" id="akRate1" value="8.324" step="0.001">
+        </div>
+        <div class="row">
+          <div class="label">Arbeidskorting — opbouw fase 2, tot</div>
+          <input type="number" id="akGrens2" value="25845" step="100">
+        </div>
+        <div class="row">
+          <div class="label">Arbeidskorting — opbouw fase 2, tarief %</div>
+          <input type="number" id="akRate2" value="31.009" step="0.001">
+        </div>
+        <div class="row">
+          <div class="label">Arbeidskorting — opbouw fase 3, tot<span class="hint">max. wordt hier bereikt</span></div>
+          <input type="number" id="akGrens3" value="45592" step="100">
+        </div>
+        <div class="row">
+          <div class="label">Arbeidskorting — opbouw fase 3, tarief %</div>
+          <input type="number" id="akRate3" value="1.950" step="0.001">
+        </div>
+        <div class="row">
+          <div class="label">Arbeidskorting — afbouw %<span class="hint">boven de fase 3-grens</span></div>
+          <input type="number" id="akAfbouwPct" value="6.510" step="0.001">
+        </div>
+        <hr class="divider">
+        <div class="row computed">
+          <div class="label">Algemene heffingskorting (toegepast)</div>
+          <div class="value" id="out-ahk">—</div>
+        </div>
+        <div class="row computed">
+          <div class="label">Arbeidskorting (toegepast)</div>
+          <div class="value" id="out-ak">—</div>
+        </div>
+        <div class="row computed strong">
+          <div class="label">Totale heffingskorting per jaar</div>
+          <div class="value" id="out-heffingskortingTotaal">—</div>
+        </div>
+        <hr class="divider">
+        <div class="row computed">
+          <div class="label">Loonheffing basissalaris (jaar)<span class="hint">vóór heffingskortingen, progressieve schijven</span></div>
+          <div class="value" id="out-belastingRegulier">—</div>
+        </div>
+        <div class="row computed strong">
+          <div class="label">Netto basissalaris per jaar</div>
+          <div class="value" id="out-nettoJaarRegulier">—</div>
+        </div>
+        <div class="row computed strong">
+          <div class="label">Netto basissalaris per maand</div>
+          <div class="value" id="out-nettoMaandRegulier">—</div>
+        </div>
+        <hr class="divider">
+        <div class="row">
+          <div class="label">Schijf 1 — tarief<span class="hint">t/m onderstaande grens</span></div>
+          <input type="number" id="taxRate1" value="35.75" step="0.01">
+        </div>
+        <div class="row">
+          <div class="label">Schijf 1 — bovengrens</div>
+          <input type="number" id="taxBracket1" value="38883" step="100">
+        </div>
+        <div class="row">
+          <div class="label">Schijf 2 — tarief<span class="hint">van grens 1 t/m grens 2</span></div>
+          <input type="number" id="taxRate2" value="37.56" step="0.01">
+        </div>
+        <div class="row">
+          <div class="label">Schijf 2 — bovengrens</div>
+          <input type="number" id="taxBracket2" value="78426" step="100">
+        </div>
+        <div class="row">
+          <div class="label">Schijf 3 — tarief<span class="hint">boven grens 2</span></div>
+          <input type="number" id="taxRate3" value="49.50" step="0.01">
+        </div>
+        <div class="note">
+          Dit blok berekent alleen de netto-waarde van je <strong>bruto basissalaris</strong> (niet de omzetbonus — die loopt via het bijzonder tarief, zie de kaart hierboven). Belastingschijven en heffingskortingen zijn nu bijgewerkt naar de officiële 2026-cijfers van de Belastingdienst (onder AOW-leeftijd), inclusief de volledige opbouwformule van de arbeidskorting. De werkgeversheffing Zvw is niet apart uitgesplitst en wordt geacht onderdeel te zijn van de generieke werkgeverslasten hierboven. Let op: dit blok modelleert de reguliere maandtabel-heffing per maand op basis van een constant jaarloon — de échte loonadministratie herrekent daarnaast doorlopend cumulatief over het hele jaar (denk aan een "correctie vorige maand" op je loonstrook), wat maand-op-maand altijd voor een klein verschil met je werkelijke loonstrook kan blijven zorgen, ook met exacte tarieven.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Summary sidebar -->
+    <div class="summary">
+      <div class="hero">
+        <div class="label">Eindafrekening — bruto</div>
+        <div class="amount" id="hero-eindafrekening">—</div>
+        <div class="hero-breakdown">
+          <div class="hb-row"><span>− Eigen StiPP-inhouding (pensioen)</span><span id="hero-hb-pensioen">—</span></div>
+          <div class="hb-row"><span>− Belasting (bijzonder tarief)</span><span id="hero-hb-belasting">—</span></div>
+        </div>
+        <div class="label" style="margin-top:12px;">Eindafrekening — netto</div>
+        <div class="amount" id="hero-eindafrekening-netto">—</div>
+        <div class="sub" id="hero-name">—</div>
+      </div>
+      <div class="card">
+        <h2>Specificatie bruto uitkering</h2>
+        <div class="result-line"><span>Jaaromzet excl. btw</span><span class="v" id="s-jaaromzet">—</span></div>
+        <div class="result-line"><span id="s-mediumlance-label">Totaal (70% van jaaromzet)</span><span class="v" id="s-totaal">—</span></div>
+        <div class="result-line"><span>− Salaris, omzetbonus en kosten</span><span class="v" id="s-kosten">—</span></div>
+        <div class="result-line total"><span>Eindafrekening (bruto)</span><span class="v" id="s-eindafrekening">—</span></div>
+        <div class="result-line"><span>− Eigen StiPP-inhouding (pensioen)</span><span class="v" id="s-eaPensioen">—</span></div>
+        <div class="result-line"><span>− Belasting (bijzondere beloning)</span><span class="v" id="s-belasting">—</span></div>
+        <div class="result-line total"><span>Eindafrekening (netto)</span><span class="v" id="s-eindafrekening-netto">—</span></div>
+      </div>
+      <div class="card">
+        <h2>Pensioen samengevat</h2>
+        <div class="result-line"><span>Opbouw premie / jaar</span><span class="v" id="s-premie">—</span></div>
+        <div class="result-line"><span>Werkgeversdeel</span><span class="v" id="s-wgdeel">—</span></div>
+        <div class="result-line"><span>Eigen bijdrage (bruto)</span><span class="v" id="s-wndeel">—</span></div>
+      </div>
+      <div class="card">
+        <h2>Jaaroverzicht bruto / netto</h2>
+        <div class="result-line"><span>Basissalaris — bruto / jaar</span><span class="v" id="s-basisBruto">—</span></div>
+        <div class="result-line"><span>Basissalaris — netto / jaar</span><span class="v" id="s-basisNetto">—</span></div>
+        <div class="result-line"><span>Omzetbonus + mobiliteit — bruto / jaar</span><span class="v" id="s-bonusBruto">—</span></div>
+        <div class="result-line"><span>Omzetbonus + mobiliteit — netto / jaar</span><span class="v" id="s-bonusNetto">—</span></div>
+        <div class="result-line"><span>Eindafrekening — bruto</span><span class="v" id="s-eaBruto">—</span></div>
+        <div class="result-line"><span>Eindafrekening — netto</span><span class="v" id="s-eaNetto">—</span></div>
+        <div class="result-line"><span>Reiskostenvergoeding (onbelast) — jaar</span><span class="v" id="s-reiskosten">—</span></div>
+        <div class="result-line total"><span>Totaal netto / jaar</span><span class="v" id="s-totNetto">—</span></div>
+        <div class="result-line"><span>Effectieve belastingdruk (totaal)</span><span class="v" id="s-effTarief">—</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="app-footer">© 2026 Hamudi Salh — Conspect</div>
+
+</div>
+
+<script>
+const fmt = (n) => (isFinite(n) ? n : 0).toLocaleString('nl-NL', {style:'currency', currency:'EUR', minimumFractionDigits:2, maximumFractionDigits:2});
+const fmtPct = (n) => (isFinite(n) ? n : 0).toLocaleString('nl-NL', {minimumFractionDigits:1, maximumFractionDigits:1}) + '%';
+const fmtShort = (n) => {
+  const abs = Math.abs(n);
+  if (abs >= 1000) return (n < 0 ? '−' : '') + '€' + Math.round(abs/1000) + 'k';
+  return fmt(n);
+};
+
+const COLORS = { basis:'#3f7a8c', bonus:'#c8963e', ea:'#2f6f4f', kosten:'#94a3b8', pensioen:'#7b5ea7', overig:'#d1d5db', belasting:'#c0524a', reiskosten:'#5fb0a3', track:'#e5e7eb' };
+
+function donutSVG(segments, opts) {
+  opts = opts || {};
+  const size = opts.size || 150;
+  const thickness = opts.thickness || 24;
+  const r = (size - thickness) / 2;
+  const cx = size / 2, cy = size / 2;
+  const circumference = 2 * Math.PI * r;
+  const total = segments.reduce((a, s) => a + Math.max(0, s.value), 0);
+  let offset = 0;
+  let circles = '';
+  if (total <= 0) {
+    circles = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${COLORS.track}" stroke-width="${thickness}"/>`;
+  } else {
+    segments.forEach(s => {
+      const value = Math.max(0, s.value);
+      if (value <= 0) return;
+      const frac = value / total;
+      const dash = frac * circumference;
+      circles += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${s.color}" stroke-width="${thickness}" stroke-dasharray="${dash} ${circumference - dash}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})"/>`;
+      offset += dash;
+    });
+  }
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">${circles}</svg>`;
+}
+
+function renderDonut(wrapId, segments, centerValue, centerLabel) {
+  document.getElementById(wrapId).innerHTML = donutSVG(segments, { size: 150, thickness: 24 }) +
+    `<div class="donut-center"><div class="dc-value">${centerValue}</div><div class="dc-label">${centerLabel}</div></div>`;
+}
+
+function renderLegend(listId, segments, total) {
+  document.getElementById(listId).innerHTML = segments.filter(s => s.value > 0.5).map(s => `
+    <div class="legend-item">
+      <span class="dot" style="background:${s.color}"></span>
+      <span class="li-label">${s.label}</span>
+      <span class="li-value">${fmt(s.value)}</span>
+      <span class="li-pct">${total > 0 ? fmtPct(s.value / total * 100) : ''}</span>
+    </div>
+  `).join('');
+}
+
+function groupedBarSVG(groups, colorA, colorB) {
+  colorA = colorA || '#d8e4de';
+  colorB = colorB || '#2f6f4f';
+  const width = 460, height = 190;
+  const padTop = 26, padBottom = 26;
+  const chartH = height - padTop - padBottom;
+  const max = Math.max(...groups.map(g => g.bruto), ...groups.map(g => g.netto), 1);
+  const barW = 30, innerGap = 8, groupGap = 40;
+  const groupW = barW * 2 + innerGap;
+  const totalW = groups.length * groupW + (groups.length - 1) * groupGap;
+  const startX = (width - totalW) / 2;
+  let bars = '';
+  groups.forEach((g, i) => {
+    const gx = startX + i * (groupW + groupGap);
+    const brutoH = Math.max(0, (g.bruto / max) * chartH);
+    const nettoH = Math.max(0, (g.netto / max) * chartH);
+    const brutoY = padTop + chartH - brutoH;
+    const nettoY = padTop + chartH - nettoH;
+    bars += `
+      <rect x="${gx}" y="${brutoY}" width="${barW}" height="${brutoH}" rx="5" fill="${colorA}"/>
+      <text x="${gx + barW / 2}" y="${brutoY - 6}" font-size="10.5" text-anchor="middle" fill="#6b7280">${fmtShort(g.bruto)}</text>
+      <rect x="${gx + barW + innerGap}" y="${nettoY}" width="${barW}" height="${nettoH}" rx="5" fill="${colorB}"/>
+      <text x="${gx + barW + innerGap + barW / 2}" y="${nettoY - 6}" font-size="10.5" text-anchor="middle" fill="${colorB}" font-weight="700">${fmtShort(g.netto)}</text>
+      <text x="${gx + groupW / 2}" y="${height - 8}" font-size="11.5" text-anchor="middle" fill="#161c14" font-weight="700">${g.label}</text>
+    `;
+  });
+  return `<svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}" preserveAspectRatio="xMidYMid meet">
+    <line x1="6" y1="${padTop + chartH}" x2="${width - 6}" y2="${padTop + chartH}" stroke="#e5e7eb"/>
+    ${bars}
+  </svg>`;
+}
+
+function renderFunnel(containerId, steps) {
+  const max = Math.max(...steps.map(s => Math.abs(s.value)), 1);
+  document.getElementById(containerId).innerHTML = steps.map(s => {
+    const pct = Math.max(2, Math.min(100, Math.abs(s.value) / max * 100));
+    const neg = s.value < 0;
+    return `
+      <div class="funnel-row">
+        <div class="funnel-label-row"><span class="fl-name">${s.name}</span><span class="fl-val">${fmt(s.value)}</span></div>
+        <div class="funnel-track"><div class="funnel-fill ${neg ? 'neg' : ''}" style="width:${pct}%"></div></div>
+      </div>
+    `;
+  }).join('');
+}
+
+function insightHTML(icon, html) {
+  return `<div class="insight-item"><div class="ii-icon">${icon}</div><p>${html}</p></div>`;
+}
+
+const KOSTEN_ITEMS = [
+  { key: 'autokosten', label: 'Autokosten', default: 0 },
+  { key: 'bedrijfsfitness', label: 'Bedrijfsfitness', default: 0 },
+  { key: 'beurzen', label: 'Beurzen en congressen', default: 0 },
+  { key: 'brandstof', label: 'Brandstof', default: 0 },
+  { key: 'computeraccessoires', label: 'Computeraccessoires', default: 0 },
+  { key: 'eigenbijdrage', label: 'Eigen bijdrage activiteiten', default: 0 },
+  { key: 'hotel', label: 'Hotel', default: 0 },
+  { key: 'laptop', label: 'Laptop', default: 0 },
+  { key: 'licenties', label: 'Licenties', default: 0 },
+  { key: 'lidmaatschap', label: 'Lidmaatschap', default: 0 },
+  { key: 'opleiding', label: 'Opleiding', default: 0 },
+  { key: 'overigvervoer', label: 'Overig vervoer', default: 0 },
+  { key: 'overigekosten', label: 'Overige kosten', default: 0 },
+  { key: 'parkeerkosten', label: 'Parkeerkosten', default: 50 },
+  { key: 'telefoon', label: 'Telefoon', default: 0 },
+  { key: 'telefoonabonnement', label: 'Telefoonabonnement', default: 0 },
+  { key: 'verzekeringen', label: 'Verzekeringen', default: 0 },
+  { key: 'consumpties', label: 'Consumpties', default: 0 },
+];
+
+const kostenRowsEl = document.getElementById('kosten-rows');
+kostenRowsEl.innerHTML = `
+  <div class="cost-grid"><div></div><div style="text-align:right">Maand</div><div style="text-align:right">Jaar</div></div>
+` + KOSTEN_ITEMS.map(item => `
+  <div class="row" style="grid-template-columns: 1fr 100px 100px;">
+    <div class="label">${item.label}</div>
+    <input type="number" class="kosten-input" data-key="${item.key}" value="${item.default}" step="5">
+    <div class="value" id="kj-${item.key}">—</div>
+  </div>
+`).join('');
+
+function val(id) { return parseFloat(document.getElementById(id).value) || 0; }
+
+// Pure calculation — no DOM writes. pensionOn toggles whether StiPP premie/bijdrage/inhouding apply.
+function computeScenario(pensionOn) {
+  const mediumlancePct = val('mediumlancePct') / 100;
+
+  const uurtarief = val('uurtarief');
+  const uren = val('uren');
+  const maandomzet = uurtarief * uren / 12;
+  const basissalaris = val('basissalaris');
+  const omzetbonus = val('omzetbonus');
+
+  // Mobiliteitsbudget wordt verdeeld tussen belaste mobiliteitsbijdrage en onbelaste kilometervergoeding:
+  // elke gereden kilometer gaat één-op-één van de belaste bijdrage af (blijkt uit loonstroken).
+  const mobiliteitsbudget = val('mobiliteitsbijdrage');
+  const reiskostenMaand = val('reiskostenKm') * val('reiskostenTarief');
+  const reiskostenJaar = 12 * reiskostenMaand;
+  const mobiliteitsbijdrage = Math.max(0, mobiliteitsbudget - reiskostenMaand);
+
+  const brutoMaand = basissalaris + omzetbonus + mobiliteitsbijdrage;
+  const brutoJaar = 12 * brutoMaand;
+
+  const maxMaandDagloon = val('maxMaandDagloon');
+  const maxJaarDagloon = 12 * maxMaandDagloon;
+  const maxSocLasten = 0.2 * maxJaarDagloon;
+  const werkgeverslasten = (0.2 * brutoJaar) + (0.2 * (maxJaarDagloon - brutoJaar));
+  const salariskosten = brutoJaar + werkgeverslasten;
+
+  let kostenTotaalJaar = 0;
+  document.querySelectorAll('.kosten-input').forEach(inp => {
+    kostenTotaalJaar += (parseFloat(inp.value) || 0) * 12;
+  });
+
+  // Reiskostenvergoeding is onbelast en telt daarom niet mee in brutoJaar/werkgeverslasten,
+  // maar is wel een echte kostenpost — anders "verdwijnt" het mobiliteitsbudget uit de pot-berekening
+  // zodra het van belaste mobiliteitsbijdrage naar onbelaste km-vergoeding verschuift.
+  const totalePersoneelskosten = salariskosten + kostenTotaalJaar + reiskostenJaar;
+  const jaaromzet = 12 * maandomzet;
+
+  const stipMaxUur = val('stipMaxUur');
+  const stipFranchise = val('stipFranchise');
+  const stipPremiePct = val('stipPremiePct') / 100;
+  const stipWgPct = val('stipWgPct') / 100;
+  const stipWgCap = val('stipWgCap');
+  const stipUren = val('stipUren');
+
+  let grondslagUur = 0, grondslagJaar = 0, premieJaar = 0, wgBijdrageJaar = 0, wnInhoudingJaar = 0;
+  if (pensionOn) {
+    grondslagUur = Math.max(0, Math.min(uurtarief, stipMaxUur) - stipFranchise);
+    grondslagJaar = grondslagUur * stipUren;
+    premieJaar = grondslagJaar * stipPremiePct;
+    const wgGrondslagMaand = Math.min(basissalaris, stipWgCap);
+    wgBijdrageJaar = wgGrondslagMaand * stipWgPct * 12;
+    wnInhoudingJaar = Math.max(0, premieJaar - wgBijdrageJaar);
+  }
+
+  const totaalMediumlance = mediumlancePct * jaaromzet;
+  // De werkgeversbijdrage pensioen komt uit Conspect's eigen 30%-marge, niet uit jouw 70%-pot —
+  // in tegenstelling tot de generieke werkgeverslasten (sociale premies), die al in totalePersoneelskosten zitten.
+  const eindafrekening = totaalMediumlance - totalePersoneelskosten;
+
+  const bijzonderTarief = val('bijzonderTarief') / 100;
+  const nettoOmzetbonusMaand = omzetbonus * (1 - bijzonderTarief);
+  const nettoOmzetbonusJaar = 12 * nettoOmzetbonusMaand;
+
+  // De belaste mobiliteitsbijdrage loopt NIET via het bijzonder tarief, maar via een eigen vast
+  // tarief — uit regressie over 15 loonstroken volgt ~41,18%, duidelijk lager dan het bijzonder
+  // tarief (56,01%). Dit verklaarde vrijwel het volledige eerder geconstateerde nettoverschil.
+  const mobiliteitTarief = val('mobiliteitTarief') / 100;
+  const nettoMobiliteitMaand = mobiliteitsbijdrage * (1 - mobiliteitTarief);
+  const nettoMobiliteitJaar = 12 * nettoMobiliteitMaand;
+
+  // De eindafrekening (bonus-pot) draagt eerst je eigen StiPP-inhouding af — dat geld gaat naar het
+  // pensioenfonds, niet naar jou — en pas het restant is belastbaar via het bijzonder tarief.
+  const eindafrekeningPotBruto = Math.max(0, eindafrekening);
+  const eindafrekeningPensioenAftrek = Math.min(eindafrekeningPotBruto, wnInhoudingJaar);
+  const eindafrekeningBelastbaar = eindafrekeningPotBruto - eindafrekeningPensioenAftrek;
+  const belastingEindafrekening = eindafrekeningBelastbaar * bijzonderTarief;
+  const eindafrekeningNetto = eindafrekeningBelastbaar - belastingEindafrekening;
+
+  const brackets = [
+    { upTo: val('taxBracket1'), rate: val('taxRate1') / 100 },
+    { upTo: val('taxBracket2'), rate: val('taxRate2') / 100 },
+    { upTo: Infinity, rate: val('taxRate3') / 100 },
+  ];
+  function belastingOverInkomen(inkomen) {
+    let rest = Math.max(0, inkomen), vorigeGrens = 0, belasting = 0;
+    for (const b of brackets) {
+      const breedte = b.upTo - vorigeGrens;
+      const inDezeSchijf = Math.min(rest, breedte);
+      if (inDezeSchijf > 0) belasting += inDezeSchijf * b.rate;
+      rest -= inDezeSchijf;
+      vorigeGrens = b.upTo;
+      if (rest <= 0) break;
+    }
+    return belasting;
+  }
+  const brutoBasisJaar = 12 * basissalaris;
+  const belastingBasis = belastingOverInkomen(brutoBasisJaar);
+
+  function algemeneHeffingskorting(inkomen, max, afbouwgrens, afbouwPct) {
+    if (inkomen <= afbouwgrens) return max;
+    return Math.max(0, max - (inkomen - afbouwgrens) * afbouwPct);
+  }
+  function arbeidskorting(inkomen, g1, r1, g2, r2, g3, r3, afbouwPct) {
+    const inkomenC = Math.max(0, inkomen);
+    const maxBedrag = g1 * r1 + (g2 - g1) * r2 + (g3 - g2) * r3;
+    let opgebouwd;
+    if (inkomenC <= g1) opgebouwd = inkomenC * r1;
+    else if (inkomenC <= g2) opgebouwd = g1 * r1 + (inkomenC - g1) * r2;
+    else if (inkomenC <= g3) opgebouwd = g1 * r1 + (g2 - g1) * r2 + (inkomenC - g2) * r3;
+    else opgebouwd = maxBedrag;
+    if (inkomenC <= g3) return opgebouwd;
+    return Math.max(0, maxBedrag - (inkomenC - g3) * afbouwPct);
+  }
+  const ahk = algemeneHeffingskorting(brutoBasisJaar, val('ahkMax'), val('ahkAfbouwgrens'), val('ahkAfbouwPct') / 100);
+  const ak = arbeidskorting(
+    brutoBasisJaar,
+    val('akGrens1'), val('akRate1') / 100,
+    val('akGrens2'), val('akRate2') / 100,
+    val('akGrens3'), val('akRate3') / 100,
+    val('akAfbouwPct') / 100
+  );
+  const heffingskortingTotaal = ahk + ak;
+  const heffingskortingToegepast = Math.min(heffingskortingTotaal, belastingBasis);
+  const nettoBasisJaar = brutoBasisJaar - belastingBasis + heffingskortingToegepast;
+  const nettoBasisMaand = nettoBasisJaar / 12;
+
+  const nettoMaandTotaal = nettoBasisMaand + nettoOmzetbonusMaand + nettoMobiliteitMaand + reiskostenMaand;
+  const totaalBrutoJaar = brutoJaar + Math.max(0, eindafrekening);
+  const totaalNettoJaar = nettoBasisJaar + nettoOmzetbonusJaar + nettoMobiliteitJaar + reiskostenJaar + eindafrekeningNetto;
+  const effectieveBelastingdruk = totaalBrutoJaar > 0 ? 1 - (totaalNettoJaar / totaalBrutoJaar) : 0;
+
+  return {
+    pensionOn, mediumlancePct, uurtarief, uren, maandomzet, basissalaris, omzetbonus, mobiliteitsbudget, mobiliteitsbijdrage, brutoMaand, brutoJaar,
+    maxJaarDagloon, maxSocLasten, werkgeverslasten, salariskosten, kostenTotaalJaar, totalePersoneelskosten, jaaromzet,
+    grondslagUur, grondslagJaar, premieJaar, wgBijdrageJaar, wnInhoudingJaar,
+    totaalMediumlance, eindafrekening, reiskostenMaand, reiskostenJaar, bijzonderTarief,
+    eindafrekeningPensioenAftrek, nettoOmzetbonusMaand, nettoOmzetbonusJaar,
+    mobiliteitTarief, nettoMobiliteitMaand, nettoMobiliteitJaar,
+    eindafrekeningBelastbaar, belastingEindafrekening, eindafrekeningNetto,
+    brutoBasisJaar, belastingBasis, ahk, ak, heffingskortingTotaal, nettoBasisJaar, nettoBasisMaand,
+    nettoMaandTotaal, totaalBrutoJaar, totaalNettoJaar, effectieveBelastingdruk,
+  };
+}
+
+function renderAll(v) {
+  document.getElementById('out-maandomzet').textContent = fmt(v.maandomzet);
+  document.getElementById('out-brutomaand').textContent = fmt(v.brutoMaand);
+  document.getElementById('out-brutojaar').textContent = fmt(v.brutoJaar);
+  document.getElementById('out-werkgeverslasten').textContent = fmt(v.werkgeverslasten);
+  document.getElementById('out-salariskosten').textContent = fmt(v.salariskosten);
+  document.getElementById('out-kostentotaal').textContent = fmt(v.kostenTotaalJaar);
+
+  document.getElementById('out-maxJaarDagloon').textContent = fmt(v.maxJaarDagloon);
+  document.getElementById('out-maxSocLasten').textContent = fmt(v.maxSocLasten);
+
+  document.getElementById('out-grondslagUur').textContent = fmt(v.grondslagUur);
+  document.getElementById('out-grondslagJaar').textContent = fmt(v.grondslagJaar);
+  document.getElementById('out-premieJaar').textContent = fmt(v.premieJaar);
+  document.getElementById('out-wgBijdrageJaar').textContent = fmt(v.wgBijdrageJaar);
+  document.getElementById('out-wnInhoudingJaar').textContent = fmt(v.wnInhoudingJaar);
+  document.getElementById('pensionStatusBadge').textContent = v.pensionOn ? '2026 · actief' : '2026 · uitgeschakeld';
+
+  document.getElementById('out-nettoBasisMaand').textContent = fmt(v.nettoBasisMaand);
+  document.getElementById('out-nettoOmzetbonusMaand').textContent = fmt(v.nettoOmzetbonusMaand);
+  document.getElementById('out-eindafrekeningPensioenAftrek').textContent = '− ' + fmt(v.eindafrekeningPensioenAftrek);
+  document.getElementById('out-nettomaand').textContent = fmt(v.nettoMaandTotaal);
+
+  document.getElementById('out-reiskostenMaand').textContent = fmt(v.reiskostenMaand);
+  document.getElementById('out-mobiliteitsbijdrageBelast').textContent = fmt(v.mobiliteitsbijdrage);
+  document.getElementById('out-nettoMobiliteitMaand').textContent = fmt(v.nettoMobiliteitMaand);
+  document.getElementById('out-eindafrekeningBruto').textContent = fmt(Math.max(0, v.eindafrekening));
+  document.getElementById('out-eindafrekeningBelastbaar').textContent = fmt(v.eindafrekeningBelastbaar);
+  document.getElementById('out-belastingEindafrekening').textContent = '− ' + fmt(v.belastingEindafrekening);
+  document.getElementById('out-eindafrekeningNetto').textContent = fmt(v.eindafrekeningNetto);
+
+  document.getElementById('out-ahk').textContent = fmt(v.ahk);
+  document.getElementById('out-ak').textContent = fmt(v.ak);
+  document.getElementById('out-heffingskortingTotaal').textContent = fmt(v.heffingskortingTotaal);
+  document.getElementById('out-belastingRegulier').textContent = fmt(v.belastingBasis);
+  document.getElementById('out-nettoJaarRegulier').textContent = fmt(v.nettoBasisJaar);
+  document.getElementById('out-nettoMaandRegulier').textContent = fmt(v.nettoBasisMaand);
+
+  document.getElementById('hero-eindafrekening').textContent = fmt(v.eindafrekening);
+  document.getElementById('hero-hb-pensioen').textContent = '− ' + fmt(v.eindafrekeningPensioenAftrek);
+  document.getElementById('hero-hb-belasting').textContent = '− ' + fmt(v.belastingEindafrekening);
+  document.getElementById('hero-eindafrekening-netto').textContent = fmt(v.eindafrekeningNetto);
+  document.getElementById('hero-name').textContent = (document.getElementById('naam').value || 'Naam') + ' — jaarresultaat';
+
+  document.getElementById('s-jaaromzet').textContent = fmt(v.jaaromzet);
+  document.getElementById('s-mediumlance-label').textContent = `Totaal (${fmtPct(v.mediumlancePct * 100)} van jaaromzet)`;
+  document.getElementById('s-totaal').textContent = fmt(v.totaalMediumlance);
+  document.getElementById('s-kosten').textContent = '− ' + fmt(v.totalePersoneelskosten);
+  document.getElementById('s-eindafrekening').textContent = fmt(v.eindafrekening);
+  document.getElementById('s-eaPensioen').textContent = '− ' + fmt(v.eindafrekeningPensioenAftrek);
+  document.getElementById('s-belasting').textContent = '− ' + fmt(v.belastingEindafrekening);
+  document.getElementById('s-eindafrekening-netto').textContent = fmt(v.eindafrekeningNetto);
+
+  document.getElementById('s-premie').textContent = fmt(v.premieJaar);
+  document.getElementById('s-wgdeel').textContent = fmt(v.wgBijdrageJaar);
+  document.getElementById('s-wndeel').textContent = fmt(v.wnInhoudingJaar);
+
+  document.getElementById('s-basisBruto').textContent = fmt(v.brutoBasisJaar);
+  document.getElementById('s-basisNetto').textContent = fmt(v.nettoBasisJaar);
+  document.getElementById('s-bonusBruto').textContent = fmt(12 * (v.omzetbonus + v.mobiliteitsbijdrage));
+  document.getElementById('s-bonusNetto').textContent = fmt(v.nettoOmzetbonusJaar + v.nettoMobiliteitJaar);
+  document.getElementById('s-eaBruto').textContent = fmt(v.eindafrekening);
+  document.getElementById('s-eaNetto').textContent = fmt(v.eindafrekeningNetto);
+  document.getElementById('s-reiskosten').textContent = fmt(v.reiskostenJaar);
+  document.getElementById('s-totNetto').textContent = fmt(v.totaalNettoJaar);
+  document.getElementById('s-effTarief').textContent = fmtPct(v.effectieveBelastingdruk * 100);
+
+  // --- Dashboard ---
+  const naam = document.getElementById('naam').value || 'Naam';
+  document.getElementById('dash-name').textContent = naam + ' — jaaroverzicht';
+  document.getElementById('dash-ea-bruto').textContent = fmt(v.eindafrekening);
+  document.getElementById('dash-ea-bruto-sub').textContent = `${fmtPct(v.mediumlancePct * 100)} van jaaromzet, na kosten`;
+  document.getElementById('dash-ea-netto').textContent = fmt(v.eindafrekeningNetto);
+  document.getElementById('dash-ea-netto-sub').textContent = v.eindafrekening > 0
+    ? `${fmtPct(v.eindafrekeningNetto / v.eindafrekening * 100)} van de bruto pot`
+    : 'pot is momenteel negatief';
+  document.getElementById('dash-netto-maand').textContent = fmt(v.nettoMaandTotaal);
+  document.getElementById('dash-totaal-netto').textContent = fmt(v.totaalNettoJaar);
+  document.getElementById('dash-totaal-netto-sub').textContent = 'basissalaris + omzetbonus + reiskosten + eindafrekening';
+
+  const nietMediumlance = Math.max(0, v.jaaromzet - v.totaalMediumlance);
+  const omzetSegments = [
+    { label: 'Niet-mediumlance deel', value: nietMediumlance, color: COLORS.overig },
+    { label: 'Salariskosten (incl. werkgeverslasten)', value: v.salariskosten, color: COLORS.basis },
+    { label: 'Reiskostenvergoeding (onbelast)', value: v.reiskostenJaar, color: COLORS.reiskosten },
+    { label: 'Overige kosten', value: v.kostenTotaalJaar, color: COLORS.kosten },
+    { label: 'Pensioen (eigen bijdrage, uit bonus-pot)', value: v.eindafrekeningPensioenAftrek, color: '#a78bc9' },
+    { label: 'Eindafrekening — netto (voor jou)', value: Math.max(0, v.eindafrekeningNetto), color: COLORS.ea },
+    { label: 'Belasting over eindafrekening', value: Math.max(0, v.belastingEindafrekening), color: COLORS.belasting },
+  ];
+  const omzetSegTotal = omzetSegments.reduce((a, s) => a + s.value, 0);
+  renderDonut('dash-donut-omzet', omzetSegments, fmtShort(v.jaaromzet), 'jaaromzet');
+  renderLegend('dash-donut-omzet-legend', omzetSegments, omzetSegTotal);
+
+  document.getElementById('dash-barchart').innerHTML = groupedBarSVG([
+    { label: 'Basissalaris', bruto: v.brutoBasisJaar, netto: v.nettoBasisJaar },
+    { label: 'Omzetbonus+mob.', bruto: 12 * (v.omzetbonus + v.mobiliteitsbijdrage), netto: v.nettoOmzetbonusJaar + v.nettoMobiliteitJaar },
+    { label: 'Eindafrekening', bruto: Math.max(0, v.eindafrekening), netto: Math.max(0, v.eindafrekeningNetto) },
+  ], '#d8e4de', '#2f6f4f');
+
+  renderFunnel('dash-funnel', [
+    { name: 'Jaaromzet excl. btw', value: v.jaaromzet },
+    { name: `Mediumlance-aandeel (${fmtPct(v.mediumlancePct * 100)})`, value: v.totaalMediumlance },
+    { name: 'Eindafrekening (bruto)', value: v.eindafrekening },
+    { name: 'Eindafrekening (netto)', value: v.eindafrekeningNetto },
+  ]);
+
+  renderDonut('dash-gauge2', [
+    { value: v.effectieveBelastingdruk, color: COLORS.belasting },
+    { value: 1 - v.effectieveBelastingdruk, color: COLORS.track },
+  ], fmtPct(v.effectieveBelastingdruk * 100), 'belasting');
+  document.getElementById('dash-gauge2-info').innerHTML =
+    `<b>${fmtPct(v.effectieveBelastingdruk * 100)}</b> van je totale bruto inkomen (${fmt(v.totaalBrutoJaar)}) gaat naar belasting. Je houdt <b>${fmt(v.totaalNettoJaar)}</b> netto over.`;
+
+  const pensSegments = [
+    { label: 'Werkgeversdeel', value: v.wgBijdrageJaar, color: COLORS.pensioen },
+    { label: 'Eigen bijdrage (bruto)', value: v.wnInhoudingJaar, color: COLORS.bonus },
+  ];
+  renderDonut('dash-pens-donut', pensSegments, fmtShort(v.premieJaar), 'premie/jr');
+  renderLegend('dash-pens-legend', pensSegments, v.premieJaar);
+
+  const nettoPctOmzet = v.jaaromzet > 0 ? v.totaalNettoJaar / v.jaaromzet : 0;
+  let topKostenLabel = null, topKostenVal = 0;
+  document.querySelectorAll('.kosten-input').forEach(inp => {
+    const jaarBedrag = (parseFloat(inp.value) || 0) * 12;
+    if (jaarBedrag > topKostenVal) {
+      topKostenVal = jaarBedrag;
+      const item = KOSTEN_ITEMS.find(k => k.key === inp.dataset.key);
+      topKostenLabel = item ? item.label : inp.dataset.key;
+    }
+  });
+  const pensPct = v.premieJaar > 0 ? v.wgBijdrageJaar / v.premieJaar : 0;
+
+  const insights = [
+    insightHTML('€', `Van elke euro omzet (<b>${fmt(v.jaaromzet)}</b> per jaar) houd je uiteindelijk <b>${fmtPct(nettoPctOmzet * 100)}</b> netto over — dat is <b>${fmt(v.totaalNettoJaar)}</b> per jaar.`),
+    insightHTML('↗', `Je onbelaste reiskostenvergoeding van <b>${fmt(v.reiskostenMaand)}</b> per maand (<b>${fmt(v.reiskostenJaar)}</b> per jaar) is vrijgesteld van loonheffing en komt volledig bovenop je netto salaris.`),
+    topKostenVal > 0
+      ? insightHTML('Σ', `Je grootste vrije kostenpost is <b>${topKostenLabel}</b>, met <b>${fmt(topKostenVal)}</b> per jaar.`)
+      : insightHTML('Σ', `Je hebt nu geen kostenposten ingevuld bij "Kosten" op de Invoer-tab — vul ze in voor een vollediger beeld.`),
+    v.pensionOn
+      ? insightHTML('%', `Je bouwt dit jaar <b>${fmt(v.premieJaar)}</b> pensioen op, waarvan je werkgever <b>${fmt(v.wgBijdrageJaar)}</b> (${fmtPct(pensPct * 100)}) bijdraagt.`)
+      : insightHTML('%', `Pensioenopbouw staat nu uit — zie de kaart "Impact van pensioenafdracht" hieronder voor het verschil.`),
+  ];
+  document.getElementById('dash-insights').innerHTML = insights.join('');
+}
+
+function renderPensionCompare(zonder, met) {
+  document.getElementById('dash-pension-compare').innerHTML = groupedBarSVG([
+    { label: 'Eindafr. (netto)', bruto: zonder.eindafrekeningNetto, netto: met.eindafrekeningNetto },
+    { label: 'Netto / maand', bruto: zonder.nettoMaandTotaal, netto: met.nettoMaandTotaal },
+    { label: 'Totaal netto / jr', bruto: zonder.totaalNettoJaar, netto: met.totaalNettoJaar },
+  ], '#d8e4de', '#7b5ea7');
+
+  const deltaTotaal = met.totaalNettoJaar - zonder.totaalNettoJaar;
+  const richting = deltaTotaal < 0 ? 'minder' : 'meer';
+  document.getElementById('dash-pension-impact-note').innerHTML =
+    `Met pensioenopbouw houd je dit jaar <b>${fmt(Math.abs(deltaTotaal))} ${richting}</b> netto over dan zonder — maar bouw je <b>${fmt(met.premieJaar)}</b> pensioen op (waarvan je werkgever <b>${fmt(met.wgBijdrageJaar)}</b> bijdraagt) voor later.`;
+}
+
+// Grid "stretch" alignment doesn't reliably equalize row heights across browsers
+// when tiles have differently-wrapping sub-text, so equalize explicitly per visual row.
+function equalizeTileHeights(selector) {
+  const tiles = [...document.querySelectorAll(selector)].filter(t => t.offsetParent !== null);
+  if (!tiles.length) return;
+  tiles.forEach(t => { t.style.height = 'auto'; });
+  const groups = {};
+  tiles.forEach(t => {
+    const top = Math.round(t.getBoundingClientRect().top);
+    (groups[top] = groups[top] || []).push(t);
+  });
+  Object.values(groups).forEach(group => {
+    const max = Math.max(...group.map(t => t.offsetHeight));
+    group.forEach(t => { t.style.height = max + 'px'; });
+  });
+}
+
+function recalc() {
+  const pensionOn = document.getElementById('pensionToggle').checked;
+
+  // Zorg dat de kj-<key> jaarbedragen in de Kosten-kaart altijd bijgewerkt zijn.
+  document.querySelectorAll('.kosten-input').forEach(inp => {
+    document.getElementById('kj-' + inp.dataset.key).textContent = fmt((parseFloat(inp.value) || 0) * 12);
+  });
+
+  const main = computeScenario(pensionOn);
+  renderAll(main);
+
+  const zonder = pensionOn ? computeScenario(false) : main;
+  const met = pensionOn ? main : computeScenario(true);
+  renderPensionCompare(zonder, met);
+
+  equalizeTileHeights('.kpi-tile');
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
+  equalizeTileHeights('.kpi-tile');
+}
+document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+window.addEventListener('resize', () => equalizeTileHeights('.kpi-tile'));
+
+const STORAGE_KEY = 'mediumlance-calculator-v1';
+
+function inputStorageKey(inp) {
+  return inp.id ? 'id:' + inp.id : (inp.dataset.key ? 'kosten:' + inp.dataset.key : null);
+}
+
+function saveInputs() {
+  const data = {};
+  document.querySelectorAll('input').forEach(inp => {
+    const key = inputStorageKey(inp);
+    if (!key) return;
+    data[key] = inp.type === 'checkbox' ? inp.checked : inp.value;
+  });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
+}
+
+function loadInputs() {
+  let data;
+  try { data = JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch (e) { data = null; }
+  if (!data) return;
+  document.querySelectorAll('input').forEach(inp => {
+    const key = inputStorageKey(inp);
+    if (!key || !(key in data)) return;
+    if (inp.type === 'checkbox') inp.checked = data[key];
+    else inp.value = data[key];
+  });
+}
+
+loadInputs();
+document.querySelectorAll('input').forEach(inp => inp.addEventListener('input', () => { saveInputs(); recalc(); }));
+document.getElementById('pensionToggle').addEventListener('change', () => { saveInputs(); recalc(); });
+recalc();
+</script>
+</body>
+</html>
