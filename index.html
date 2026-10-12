@@ -421,6 +421,8 @@
   .insight-item b { color: var(--accent-2); }
 
   /* Funnel */
+  .btn-inline { font: inherit; font-weight: 600; font-size: 13px; padding: 7px 16px; border-radius: 8px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; justify-self: end; }
+  .btn-inline:hover { filter: brightness(1.08); }
   .funnel-row { margin-bottom: 14px; }
   .funnel-row:last-child { margin-bottom: 0; }
   .funnel-label-row { display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px; }
@@ -582,7 +584,7 @@
         </div>
         <div class="row">
           <div class="label">Aantal declarabele uren per jaar<span class="hint">op basis van norm</span></div>
-          <input type="number" id="uren" value="1936" step="10">
+          <input type="number" id="uren" value="1800" step="10">
         </div>
         <div class="row">
           <div class="label">Deeltijd %<span class="hint">nog geen functionaliteit — informatief</span></div>
@@ -603,11 +605,11 @@
         </div>
         <div class="row">
           <div class="label">Voorschot omzetbonus<span class="hint">per maand — in overleg, afhankelijk van opdracht en tarief. Belast via bijzonder tarief (zie loonstrook)</span></div>
-          <input type="number" id="omzetbonus" value="4500" step="50">
+          <input type="number" id="omzetbonus" value="4250" step="50">
         </div>
         <div class="row">
           <div class="label">Mobiliteitsbudget<span class="hint">per maand — totaal budget. Wordt verdeeld tussen belaste mobiliteitsbijdrage en onbelaste kilometervergoeding: elke gereden km hieronder gaat 1-op-1 van het belaste deel af (zo blijkt uit de loonstrook)</span></div>
-          <input type="number" id="mobiliteitsbijdrage" value="1000" step="50">
+          <input type="number" id="mobiliteitsbijdrage" value="0" step="50">
         </div>
         <div class="row">
           <div class="label">Belastingtarief mobiliteitsbijdrage<span class="hint">let op: dit is NIET het bijzonder tarief — uit regressie over 15 loonstroken volgt een apart vast tarief van ~41,18% voor de belaste mobiliteitsbijdrage (de omzetbonus zelf blijft wel via het bijzonder tarief belast)</span></div>
@@ -616,7 +618,7 @@
         <hr class="divider">
         <div class="row">
           <div class="label">Gem. aantal km per maand<span class="hint">eigen vervoer — dit is een AANTAL KILOMETER, geen bedrag. Wordt vermenigvuldigd met de vergoeding per km hieronder, en gaat af van het mobiliteitsbudget hierboven</span></div>
-          <input type="number" id="reiskostenKm" value="300" step="10">
+          <input type="number" id="reiskostenKm" value="0" step="10">
         </div>
         <div class="row">
           <div class="label">Onbelaste vergoeding per km</div>
@@ -652,7 +654,7 @@
           <div class="value" id="out-brutojaar">—</div>
         </div>
         <div class="row computed">
-          <div class="label">Werkgeverslasten<span class="hint">20% van het max. dagloon op jaarbasis</span></div>
+          <div class="label">Werkgeverslasten<span class="hint">premies (excl. pensioen) over het bruto jaarloon, tot de premiegrens — zie "Premiegrenzen en werkgeverspremies 2026"</span></div>
           <div class="value" id="out-werkgeverslasten">—</div>
         </div>
         <div class="row computed strong">
@@ -660,6 +662,37 @@
           <div class="value" id="out-salariskosten">—</div>
         </div>
       </div>
+
+      <!-- Hulp: declarabele uren -->
+      <details class="subcard">
+        <summary>Hulp: declarabele uren berekenen (netto werkbare dagen)</summary>
+        <div class="inner">
+          <div class="row">
+            <div class="label">Jaar</div>
+            <input type="number" id="werkJaar" value="2026" step="1">
+          </div>
+          <div class="row">
+            <div class="label">Vakantiedagen</div>
+            <input type="number" id="werkVakantie" value="20" step="1">
+          </div>
+          <div class="row">
+            <div class="label">FTE / declarabiliteit %<span class="hint">aandeel van je werkbare uren dat declarabel is</span></div>
+            <input type="number" id="werkFte" value="90" step="1">
+          </div>
+          <div class="row computed">
+            <div class="label">Werkbare dagen in het jaar<span class="hint">ma–vr, excl. nieuwjaarsdag, 1e/2e paasdag, hemelvaart, 1e/2e pinksterdag en 1e/2e kerstdag</span></div>
+            <div class="value" id="out-werkDagen">—</div>
+          </div>
+          <div class="row computed strong">
+            <div class="label">Declarabele uren<span class="hint">(werkbare dagen − vakantiedagen) × FTE% × 8 uur</span></div>
+            <div class="value" id="out-werkUren">—</div>
+          </div>
+          <div class="row">
+            <div class="label">Overnemen als aantal declarabele uren</div>
+            <button type="button" id="useWerkUren" class="btn-inline">Gebruik</button>
+          </div>
+        </div>
+      </details>
 
       <!-- Kosten -->
       <div class="card">
@@ -680,66 +713,91 @@
         </div>
         <hr class="divider">
         <div class="row">
-          <div class="label">Max. StiPP uurloon</div>
+          <div class="label">Pensioengevende uren<span class="hint">per maand (verloonde uren)</span></div>
+          <input type="number" id="stipUren" value="173" step="1">
+        </div>
+        <div class="row">
+          <div class="label">Max. pensioengevend uurloon</div>
           <input type="number" id="stipMaxUur" value="42.42" step="0.01">
         </div>
         <div class="row">
-          <div class="label">StiPP uurfranchise</div>
+          <div class="label">Franchise uurloon</div>
           <input type="number" id="stipFranchise" value="9.24" step="0.01">
         </div>
         <div class="row">
-          <div class="label">Totale StiPP premie %</div>
-          <input type="number" id="stipPremiePct" value="23.4" step="0.1">
-        </div>
-        <div class="row">
-          <div class="label">Werkgeversbijdrage %<span class="hint">over het basissalaris, tot het maandmaximum hieronder</span></div>
+          <div class="label">Percentage werkgever<span class="hint">deel van de premie dat formeel door Conspect wordt gestort</span></div>
           <input type="number" id="stipWgPct" value="15.9" step="0.1">
         </div>
         <div class="row">
-          <div class="label">Max. basissalaris voor werkgeversbijdrage<span class="hint">per maand</span></div>
-          <input type="number" id="stipWgCap" value="2500" step="50">
-        </div>
-        <div class="row">
-          <div class="label">StiPP-normuren per jaar<span class="hint">je gewerkte/contractuele uren — StiPP-standaard is 1.900 uur/jaar. Dit is NIET je declarabele/factureerbare uren hierboven.</span></div>
-          <input type="number" id="stipUren" value="1900" step="10">
+          <div class="label">Percentage werknemer<span class="hint">deel van de premie dat formeel voor jouw rekening komt</span></div>
+          <input type="number" id="stipWnPct" value="7.5" step="0.1">
         </div>
         <hr class="divider">
         <div class="row computed">
-          <div class="label">Pensioengrondslag per uur<span class="hint">min(uurtarief, max. StiPP uurloon) − franchise</span></div>
-          <div class="value" id="out-grondslagUur">—</div>
+          <div class="label">Totale pensioenpremie</div>
+          <div class="value" id="out-premiePct">—</div>
         </div>
         <div class="row computed">
-          <div class="label">Pensioengrondslag per jaar</div>
+          <div class="label">Max. pensioengevende aanwas per jaar<span class="hint">(max. uurloon − franchise) × uren × 12</span></div>
           <div class="value" id="out-grondslagJaar">—</div>
         </div>
-        <div class="row computed">
-          <div class="label">Totale StiPP premie per jaar</div>
+        <div class="row computed strong">
+          <div class="label">Max. storting pensioen per jaar<span class="hint">totale premie over de aanwas — of over de salariskosten als die lager zijn</span></div>
           <div class="value" id="out-premieJaar">—</div>
         </div>
         <div class="row computed">
-          <div class="label">Werkgeversbijdrage per jaar<span class="hint">betaald door Conspect uit hun eigen 30%-marge — komt niet uit jouw eindafrekening-pot</span></div>
+          <div class="label">→ Storting Conspect (werkgeversdeel)<span class="hint">totale storting − werknemersdeel</span></div>
           <div class="value" id="out-wgBijdrageJaar">—</div>
         </div>
-        <div class="row computed strong">
-          <div class="label">Werknemersinhouding (bruto) per jaar<span class="hint">gaat af van jouw bruto salaris, geen extra werkgeverskosten</span></div>
+        <div class="row computed">
+          <div class="label">→ Pensioen werknemer (werknemersdeel)<span class="hint">aanwas × percentage werknemer</span></div>
           <div class="value" id="out-wnInhoudingJaar">—</div>
         </div>
+        <hr class="divider">
+        <div class="row computed">
+          <div class="label">Verrekening 70/30 — jouw aandeel<span class="hint">de pensioenreservering gaat vóór de 70/30-verdeling van de omzet af: jij draagt 70% daarvan via je eindafrekening</span></div>
+          <div class="value" id="out-aandeelPot">—</div>
+        </div>
+        <div class="row computed strong">
+          <div class="label">Verrekening 70/30 — aandeel Conspect<span class="hint">de overige 30% komt voor rekening van Conspect (uit hun marge)</span></div>
+          <div class="value" id="out-aandeelConspect">—</div>
+        </div>
         <div class="note">
-          De pensioengrondslag is gebaseerd op je uurtarief, gemaximeerd op het StiPP-maximumuurloon, min de franchise, vermenigvuldigd met de StiPP-normuren per jaar (níet je declarabele/factureerbare uren — dat is een ander getal). Ligt je uurtarief boven het StiPP-maximum (zoals gebruikelijk bij mediumlance), dan zit je automatisch op de maximale opbouw.
+          Nieuwe regeling: de pensioenreservering (totale storting in de StiPP-pensioenpot) wordt eerst van de bruto jaaromzet afgehaald. Over de overgebleven "omzet na pensioen" geldt daarna de gewone 70/30-verdeling. Het verschil met de regeling t/m 2025 (waarbij hier geen pensioen in zat) is dus 30% van de premie voor Conspect en 70% voor jouw eindafrekening.
         </div>
       </div>
 
-      <!-- Dagloon gegevens -->
+      <!-- Premiegrenzen en werkgeverspremies -->
       <details class="subcard">
-        <summary>Dagloon gegevens (werkgeverslasten-grondslag)</summary>
+        <summary>Premiegrenzen en werkgeverspremies 2026 (werkgeverslasten)</summary>
         <div class="inner">
           <div class="row">
-            <div class="label">Max. maanddagloon</div>
-            <input type="number" id="maxMaandDagloon" value="5579.66" step="1">
+            <div class="label">Max. premieloon per jaar 2026<span class="hint">werkgeverspremies worden berekend over het bruto jaarloon tot deze grens</span></div>
+            <input type="number" id="maxPremieloonJaar" value="79409" step="1">
+          </div>
+          <div class="row">
+            <div class="label">AWf (%)</div>
+            <input type="number" id="premAwf" value="2.74" step="0.01">
+          </div>
+          <div class="row">
+            <div class="label">Aof (%)</div>
+            <input type="number" id="premAof" value="6.27" step="0.01">
+          </div>
+          <div class="row">
+            <div class="label">Whk (%)</div>
+            <input type="number" id="premWhk" value="0.94" step="0.01">
+          </div>
+          <div class="row">
+            <div class="label">Zvw (%)</div>
+            <input type="number" id="premZvw" value="6.1" step="0.01">
+          </div>
+          <div class="row">
+            <div class="label">Opslag kinderopvang (%)</div>
+            <input type="number" id="premKinderopvang" value="0.5" step="0.01">
           </div>
           <div class="row computed">
-            <div class="label">Max. dagloon op jaarbasis</div>
-            <div class="value" id="out-maxJaarDagloon">—</div>
+            <div class="label">Totaal werkgeverspremies (excl. pensioen)</div>
+            <div class="value" id="out-werkgeversPremiePct">—</div>
           </div>
           <div class="row computed">
             <div class="label">Max. soc. lasten per jaar</div>
@@ -761,14 +819,6 @@
           <div class="value" id="out-eindafrekeningBruto">—</div>
         </div>
         <div class="row computed">
-          <div class="label">− Eigen StiPP-inhouding<span class="hint">gaat rechtstreeks uit deze bonus-pot naar het pensioenfonds — zie kaart "Pensioen"</span></div>
-          <div class="value" id="out-eindafrekeningPensioenAftrek">—</div>
-        </div>
-        <div class="row computed">
-          <div class="label">= Belastbaar deel eindafrekening</div>
-          <div class="value" id="out-eindafrekeningBelastbaar">—</div>
-        </div>
-        <div class="row computed">
           <div class="label">− Belasting (bijzonder tarief)</div>
           <div class="value" id="out-belastingEindafrekening">—</div>
         </div>
@@ -777,7 +827,7 @@
           <div class="value" id="out-eindafrekeningNetto">—</div>
         </div>
         <div class="note">
-          Omzetbonus, vakantiegeld en de eindafrekening worden in de praktijk niet via de normale progressieve schijven belast, maar via de "tabel bijzondere beloningen" — een vast percentage gebaseerd op je cumulatieve jaarloon (op je loonstrook te vinden als "Bijzonder tarief %"). Dit percentage stijgt gedurende het jaar naarmate je cumulatieve inkomen toeneemt — vul hier het percentage in dat het beste bij je situatie past, of het percentage van je meest recente loonstrook. Je eigen StiPP-inhouding wordt vóór belasting uit de eindafrekening-pot gehaald (het gaat naar het pensioenfonds, niet naar jou). De onbelaste reiskostenvergoeding staat los van deze pot — die vind je bij "Salaris, omzet en omzetbonus", want die krijg je maandelijks bij je salaris.
+          Omzetbonus, vakantiegeld en de eindafrekening worden in de praktijk niet via de normale progressieve schijven belast, maar via de "tabel bijzondere beloningen" — een vast percentage gebaseerd op je cumulatieve jaarloon (op je loonstrook te vinden als "Bijzonder tarief %"). Dit percentage stijgt gedurende het jaar naarmate je cumulatieve inkomen toeneemt — vul hier het percentage in dat het beste bij je situatie past, of het percentage van je meest recente loonstrook. De pensioenreservering is al vóór de 70/30-verdeling van de omzet afgehaald, dus de pot hierboven is al "na pensioen". De onbelaste reiskostenvergoeding staat los van deze pot — die vind je bij "Salaris, omzet en omzetbonus", want die krijg je maandelijks bij je salaris.
         </div>
       </div>
 
@@ -885,7 +935,7 @@
         <div class="label">Eindafrekening — bruto</div>
         <div class="amount" id="hero-eindafrekening">—</div>
         <div class="hero-breakdown">
-          <div class="hb-row"><span>− Eigen StiPP-inhouding (pensioen)</span><span id="hero-hb-pensioen">—</span></div>
+          <div class="hb-row"><span>Waarvan pensioen jouw 70%-aandeel (al in de pot verrekend)</span><span id="hero-hb-pensioen">—</span></div>
           <div class="hb-row"><span>− Belasting (bijzonder tarief)</span><span id="hero-hb-belasting">—</span></div>
         </div>
         <div class="label" style="margin-top:12px;">Eindafrekening — netto</div>
@@ -894,19 +944,22 @@
       </div>
       <div class="card">
         <h2>Specificatie bruto uitkering</h2>
-        <div class="result-line"><span>Jaaromzet excl. btw</span><span class="v" id="s-jaaromzet">—</span></div>
-        <div class="result-line"><span id="s-mediumlance-label">Totaal (70% van jaaromzet)</span><span class="v" id="s-totaal">—</span></div>
+        <div class="result-line"><span>Bruto jaaromzet excl. btw</span><span class="v" id="s-jaaromzet">—</span></div>
+        <div class="result-line"><span>− Pensioenreservering (StiPP)</span><span class="v" id="s-reservering">—</span></div>
+        <div class="result-line"><span>= Omzet na pensioen</span><span class="v" id="s-omzetNaPensioen">—</span></div>
+        <div class="result-line"><span id="s-mediumlance-label">Totaal (70% van omzet na pensioen)</span><span class="v" id="s-totaal">—</span></div>
         <div class="result-line"><span>− Salaris, omzetbonus en kosten</span><span class="v" id="s-kosten">—</span></div>
         <div class="result-line total"><span>Eindafrekening (bruto)</span><span class="v" id="s-eindafrekening">—</span></div>
-        <div class="result-line"><span>− Eigen StiPP-inhouding (pensioen)</span><span class="v" id="s-eaPensioen">—</span></div>
         <div class="result-line"><span>− Belasting (bijzondere beloning)</span><span class="v" id="s-belasting">—</span></div>
         <div class="result-line total"><span>Eindafrekening (netto)</span><span class="v" id="s-eindafrekening-netto">—</span></div>
       </div>
       <div class="card">
         <h2>Pensioen samengevat</h2>
-        <div class="result-line"><span>Opbouw premie / jaar</span><span class="v" id="s-premie">—</span></div>
-        <div class="result-line"><span>Werkgeversdeel</span><span class="v" id="s-wgdeel">—</span></div>
-        <div class="result-line"><span>Eigen bijdrage (bruto)</span><span class="v" id="s-wndeel">—</span></div>
+        <div class="result-line"><span>Totale storting in StiPP / jaar</span><span class="v" id="s-premie">—</span></div>
+        <div class="result-line"><span>Storting Conspect (werkgeversdeel)</span><span class="v" id="s-wgdeel">—</span></div>
+        <div class="result-line"><span>Pensioen werknemer (werknemersdeel)</span><span class="v" id="s-wndeel">—</span></div>
+        <div class="result-line"><span>Jouw aandeel via eindafrekening (70%)</span><span class="v" id="s-potdeel">—</span></div>
+        <div class="result-line"><span>Aandeel Conspect (30%)</span><span class="v" id="s-conspectdeel">—</span></div>
       </div>
       <div class="card">
         <h2>Jaaroverzicht bruto / netto</h2>
@@ -1034,7 +1087,7 @@ const KOSTEN_ITEMS = [
   { key: 'autokosten', label: 'Autokosten', default: 0 },
   { key: 'bedrijfsfitness', label: 'Bedrijfsfitness', default: 0 },
   { key: 'beurzen', label: 'Beurzen en congressen', default: 0 },
-  { key: 'brandstof', label: 'Brandstof', default: 0 },
+  { key: 'brandstof', label: 'Brandstof', default: 600 },
   { key: 'computeraccessoires', label: 'Computeraccessoires', default: 0 },
   { key: 'eigenbijdrage', label: 'Eigen bijdrage activiteiten', default: 0 },
   { key: 'hotel', label: 'Hotel', default: 0 },
@@ -1044,7 +1097,7 @@ const KOSTEN_ITEMS = [
   { key: 'opleiding', label: 'Opleiding', default: 0 },
   { key: 'overigvervoer', label: 'Overig vervoer', default: 0 },
   { key: 'overigekosten', label: 'Overige kosten', default: 0 },
-  { key: 'parkeerkosten', label: 'Parkeerkosten', default: 50 },
+  { key: 'parkeerkosten', label: 'Parkeerkosten', default: 0 },
   { key: 'telefoon', label: 'Telefoon', default: 0 },
   { key: 'telefoonabonnement', label: 'Telefoonabonnement', default: 0 },
   { key: 'verzekeringen', label: 'Verzekeringen', default: 0 },
@@ -1084,10 +1137,11 @@ function computeScenario(pensionOn) {
   const brutoMaand = basissalaris + omzetbonus + mobiliteitsbijdrage;
   const brutoJaar = 12 * brutoMaand;
 
-  const maxMaandDagloon = val('maxMaandDagloon');
-  const maxJaarDagloon = 12 * maxMaandDagloon;
-  const maxSocLasten = 0.2 * maxJaarDagloon;
-  const werkgeverslasten = (0.2 * brutoJaar) + (0.2 * (maxJaarDagloon - brutoJaar));
+  // Werkgeverslasten 2026: premies (excl. pensioen) over het bruto jaarloon, tot de premiegrens.
+  const maxPremieloonJaar = val('maxPremieloonJaar');
+  const werkgeversPremiePct = (val('premAwf') + val('premAof') + val('premWhk') + val('premZvw') + val('premKinderopvang')) / 100;
+  const maxSocLasten = maxPremieloonJaar * werkgeversPremiePct;
+  const werkgeverslasten = Math.min(brutoJaar, maxPremieloonJaar) * werkgeversPremiePct;
   const salariskosten = brutoJaar + werkgeverslasten;
 
   let kostenTotaalJaar = 0;
@@ -1103,24 +1157,27 @@ function computeScenario(pensionOn) {
 
   const stipMaxUur = val('stipMaxUur');
   const stipFranchise = val('stipFranchise');
-  const stipPremiePct = val('stipPremiePct') / 100;
   const stipWgPct = val('stipWgPct') / 100;
-  const stipWgCap = val('stipWgCap');
+  const stipWnPct = val('stipWnPct') / 100;
+  const stipPremiePct = stipWgPct + stipWnPct;
   const stipUren = val('stipUren');
 
+  // Pensioen (nieuwe regeling): de totale storting wordt als reservering van de bruto jaaromzet
+  // afgehaald, vóór de 70/30-verdeling. Max. storting = totale premie over de max. aanwas,
+  // of over de salariskosten als die lager zijn (zoals in de Excel-berekening).
   let grondslagUur = 0, grondslagJaar = 0, premieJaar = 0, wgBijdrageJaar = 0, wnInhoudingJaar = 0;
   if (pensionOn) {
-    grondslagUur = Math.max(0, Math.min(uurtarief, stipMaxUur) - stipFranchise);
-    grondslagJaar = grondslagUur * stipUren;
-    premieJaar = grondslagJaar * stipPremiePct;
-    const wgGrondslagMaand = Math.min(basissalaris, stipWgCap);
-    wgBijdrageJaar = wgGrondslagMaand * stipWgPct * 12;
-    wnInhoudingJaar = Math.max(0, premieJaar - wgBijdrageJaar);
+    grondslagUur = Math.max(0, stipMaxUur - stipFranchise);
+    grondslagJaar = grondslagUur * stipUren * 12;
+    premieJaar = Math.min(salariskosten, grondslagJaar) * stipPremiePct;
+    wnInhoudingJaar = Math.min(premieJaar, grondslagJaar * stipWnPct);
+    wgBijdrageJaar = premieJaar - wnInhoudingJaar;
   }
+  const aandeelPotJaar = mediumlancePct * premieJaar;
+  const aandeelConspectJaar = premieJaar - aandeelPotJaar;
 
-  const totaalMediumlance = mediumlancePct * jaaromzet;
-  // De werkgeversbijdrage pensioen komt uit Conspect's eigen 30%-marge, niet uit jouw 70%-pot —
-  // in tegenstelling tot de generieke werkgeverslasten (sociale premies), die al in totalePersoneelskosten zitten.
+  const omzetNaPensioen = jaaromzet - premieJaar;
+  const totaalMediumlance = mediumlancePct * omzetNaPensioen;
   const eindafrekening = totaalMediumlance - totalePersoneelskosten;
 
   const bijzonderTarief = val('bijzonderTarief') / 100;
@@ -1134,13 +1191,10 @@ function computeScenario(pensionOn) {
   const nettoMobiliteitMaand = mobiliteitsbijdrage * (1 - mobiliteitTarief);
   const nettoMobiliteitJaar = 12 * nettoMobiliteitMaand;
 
-  // De eindafrekening (bonus-pot) draagt eerst je eigen StiPP-inhouding af — dat geld gaat naar het
-  // pensioenfonds, niet naar jou — en pas het restant is belastbaar via het bijzonder tarief.
+  // De pensioenreservering is al vóór de 70/30-verdeling afgehaald; de pot is dus volledig belastbaar.
   const eindafrekeningPotBruto = Math.max(0, eindafrekening);
-  const eindafrekeningPensioenAftrek = Math.min(eindafrekeningPotBruto, wnInhoudingJaar);
-  const eindafrekeningBelastbaar = eindafrekeningPotBruto - eindafrekeningPensioenAftrek;
-  const belastingEindafrekening = eindafrekeningBelastbaar * bijzonderTarief;
-  const eindafrekeningNetto = eindafrekeningBelastbaar - belastingEindafrekening;
+  const belastingEindafrekening = eindafrekeningPotBruto * bijzonderTarief;
+  const eindafrekeningNetto = eindafrekeningPotBruto - belastingEindafrekening;
 
   const brackets = [
     { upTo: val('taxBracket1'), rate: val('taxRate1') / 100 },
@@ -1197,12 +1251,12 @@ function computeScenario(pensionOn) {
 
   return {
     pensionOn, mediumlancePct, uurtarief, uren, maandomzet, basissalaris, omzetbonus, mobiliteitsbudget, mobiliteitsbijdrage, brutoMaand, brutoJaar,
-    maxJaarDagloon, maxSocLasten, werkgeverslasten, salariskosten, kostenTotaalJaar, totalePersoneelskosten, jaaromzet,
-    grondslagUur, grondslagJaar, premieJaar, wgBijdrageJaar, wnInhoudingJaar,
+    maxPremieloonJaar, werkgeversPremiePct, maxSocLasten, werkgeverslasten, salariskosten, kostenTotaalJaar, totalePersoneelskosten, jaaromzet,
+    grondslagUur, grondslagJaar, premieJaar, wgBijdrageJaar, wnInhoudingJaar, stipPremiePct, aandeelPotJaar, aandeelConspectJaar, omzetNaPensioen,
     totaalMediumlance, eindafrekening, reiskostenMaand, reiskostenJaar, bijzonderTarief,
-    eindafrekeningPensioenAftrek, nettoOmzetbonusMaand, nettoOmzetbonusJaar,
+    nettoOmzetbonusMaand, nettoOmzetbonusJaar,
     mobiliteitTarief, nettoMobiliteitMaand, nettoMobiliteitJaar,
-    eindafrekeningBelastbaar, belastingEindafrekening, eindafrekeningNetto,
+    belastingEindafrekening, eindafrekeningNetto,
     brutoBasisJaar, belastingBasis, ahk, ak, heffingskortingTotaal, nettoBasisJaar, nettoBasisMaand,
     nettoMaandTotaal, totaalBrutoJaar, totaalNettoJaar, effectieveBelastingdruk,
   };
@@ -1216,10 +1270,12 @@ function renderAll(v) {
   document.getElementById('out-salariskosten').textContent = fmt(v.salariskosten);
   document.getElementById('out-kostentotaal').textContent = fmt(v.kostenTotaalJaar);
 
-  document.getElementById('out-maxJaarDagloon').textContent = fmt(v.maxJaarDagloon);
+  document.getElementById('out-werkgeversPremiePct').textContent = fmtPct(v.werkgeversPremiePct * 100);
   document.getElementById('out-maxSocLasten').textContent = fmt(v.maxSocLasten);
 
-  document.getElementById('out-grondslagUur').textContent = fmt(v.grondslagUur);
+  document.getElementById('out-premiePct').textContent = fmtPct(v.stipPremiePct * 100);
+  document.getElementById('out-aandeelPot').textContent = fmt(v.aandeelPotJaar);
+  document.getElementById('out-aandeelConspect').textContent = fmt(v.aandeelConspectJaar);
   document.getElementById('out-grondslagJaar').textContent = fmt(v.grondslagJaar);
   document.getElementById('out-premieJaar').textContent = fmt(v.premieJaar);
   document.getElementById('out-wgBijdrageJaar').textContent = fmt(v.wgBijdrageJaar);
@@ -1228,14 +1284,12 @@ function renderAll(v) {
 
   document.getElementById('out-nettoBasisMaand').textContent = fmt(v.nettoBasisMaand);
   document.getElementById('out-nettoOmzetbonusMaand').textContent = fmt(v.nettoOmzetbonusMaand);
-  document.getElementById('out-eindafrekeningPensioenAftrek').textContent = '− ' + fmt(v.eindafrekeningPensioenAftrek);
   document.getElementById('out-nettomaand').textContent = fmt(v.nettoMaandTotaal);
 
   document.getElementById('out-reiskostenMaand').textContent = fmt(v.reiskostenMaand);
   document.getElementById('out-mobiliteitsbijdrageBelast').textContent = fmt(v.mobiliteitsbijdrage);
   document.getElementById('out-nettoMobiliteitMaand').textContent = fmt(v.nettoMobiliteitMaand);
   document.getElementById('out-eindafrekeningBruto').textContent = fmt(Math.max(0, v.eindafrekening));
-  document.getElementById('out-eindafrekeningBelastbaar').textContent = fmt(v.eindafrekeningBelastbaar);
   document.getElementById('out-belastingEindafrekening').textContent = '− ' + fmt(v.belastingEindafrekening);
   document.getElementById('out-eindafrekeningNetto').textContent = fmt(v.eindafrekeningNetto);
 
@@ -1247,23 +1301,26 @@ function renderAll(v) {
   document.getElementById('out-nettoMaandRegulier').textContent = fmt(v.nettoBasisMaand);
 
   document.getElementById('hero-eindafrekening').textContent = fmt(v.eindafrekening);
-  document.getElementById('hero-hb-pensioen').textContent = '− ' + fmt(v.eindafrekeningPensioenAftrek);
+  document.getElementById('hero-hb-pensioen').textContent = fmt(v.aandeelPotJaar);
   document.getElementById('hero-hb-belasting').textContent = '− ' + fmt(v.belastingEindafrekening);
   document.getElementById('hero-eindafrekening-netto').textContent = fmt(v.eindafrekeningNetto);
   document.getElementById('hero-name').textContent = (document.getElementById('naam').value || 'Naam') + ' — jaarresultaat';
 
   document.getElementById('s-jaaromzet').textContent = fmt(v.jaaromzet);
-  document.getElementById('s-mediumlance-label').textContent = `Totaal (${fmtPct(v.mediumlancePct * 100)} van jaaromzet)`;
+  document.getElementById('s-reservering').textContent = '− ' + fmt(v.premieJaar);
+  document.getElementById('s-omzetNaPensioen').textContent = fmt(v.omzetNaPensioen);
+  document.getElementById('s-mediumlance-label').textContent = `Totaal (${fmtPct(v.mediumlancePct * 100)} van omzet na pensioen)`;
   document.getElementById('s-totaal').textContent = fmt(v.totaalMediumlance);
   document.getElementById('s-kosten').textContent = '− ' + fmt(v.totalePersoneelskosten);
   document.getElementById('s-eindafrekening').textContent = fmt(v.eindafrekening);
-  document.getElementById('s-eaPensioen').textContent = '− ' + fmt(v.eindafrekeningPensioenAftrek);
   document.getElementById('s-belasting').textContent = '− ' + fmt(v.belastingEindafrekening);
   document.getElementById('s-eindafrekening-netto').textContent = fmt(v.eindafrekeningNetto);
 
   document.getElementById('s-premie').textContent = fmt(v.premieJaar);
   document.getElementById('s-wgdeel').textContent = fmt(v.wgBijdrageJaar);
   document.getElementById('s-wndeel').textContent = fmt(v.wnInhoudingJaar);
+  document.getElementById('s-potdeel').textContent = fmt(v.aandeelPotJaar);
+  document.getElementById('s-conspectdeel').textContent = fmt(v.aandeelConspectJaar);
 
   document.getElementById('s-basisBruto').textContent = fmt(v.brutoBasisJaar);
   document.getElementById('s-basisNetto').textContent = fmt(v.nettoBasisJaar);
@@ -1279,7 +1336,7 @@ function renderAll(v) {
   const naam = document.getElementById('naam').value || 'Naam';
   document.getElementById('dash-name').textContent = naam + ' — jaaroverzicht';
   document.getElementById('dash-ea-bruto').textContent = fmt(v.eindafrekening);
-  document.getElementById('dash-ea-bruto-sub').textContent = `${fmtPct(v.mediumlancePct * 100)} van jaaromzet, na kosten`;
+  document.getElementById('dash-ea-bruto-sub').textContent = `${fmtPct(v.mediumlancePct * 100)} van omzet na pensioen, na kosten`;
   document.getElementById('dash-ea-netto').textContent = fmt(v.eindafrekeningNetto);
   document.getElementById('dash-ea-netto-sub').textContent = v.eindafrekening > 0
     ? `${fmtPct(v.eindafrekeningNetto / v.eindafrekening * 100)} van de bruto pot`
@@ -1288,13 +1345,13 @@ function renderAll(v) {
   document.getElementById('dash-totaal-netto').textContent = fmt(v.totaalNettoJaar);
   document.getElementById('dash-totaal-netto-sub').textContent = 'basissalaris + omzetbonus + reiskosten + eindafrekening';
 
-  const nietMediumlance = Math.max(0, v.jaaromzet - v.totaalMediumlance);
+  const nietMediumlance = Math.max(0, v.omzetNaPensioen - v.totaalMediumlance);
   const omzetSegments = [
-    { label: 'Niet-mediumlance deel', value: nietMediumlance, color: COLORS.overig },
+    { label: 'Conspect-aandeel (marge)', value: nietMediumlance, color: COLORS.overig },
+    { label: 'Pensioenreservering (StiPP)', value: v.premieJaar, color: COLORS.pensioen },
     { label: 'Salariskosten (incl. werkgeverslasten)', value: v.salariskosten, color: COLORS.basis },
     { label: 'Reiskostenvergoeding (onbelast)', value: v.reiskostenJaar, color: COLORS.reiskosten },
     { label: 'Overige kosten', value: v.kostenTotaalJaar, color: COLORS.kosten },
-    { label: 'Pensioen (eigen bijdrage, uit bonus-pot)', value: v.eindafrekeningPensioenAftrek, color: '#a78bc9' },
     { label: 'Eindafrekening — netto (voor jou)', value: Math.max(0, v.eindafrekeningNetto), color: COLORS.ea },
     { label: 'Belasting over eindafrekening', value: Math.max(0, v.belastingEindafrekening), color: COLORS.belasting },
   ];
@@ -1310,6 +1367,7 @@ function renderAll(v) {
 
   renderFunnel('dash-funnel', [
     { name: 'Jaaromzet excl. btw', value: v.jaaromzet },
+    { name: 'Omzet na pensioen', value: v.omzetNaPensioen },
     { name: `Mediumlance-aandeel (${fmtPct(v.mediumlancePct * 100)})`, value: v.totaalMediumlance },
     { name: 'Eindafrekening (bruto)', value: v.eindafrekening },
     { name: 'Eindafrekening (netto)', value: v.eindafrekeningNetto },
@@ -1323,8 +1381,8 @@ function renderAll(v) {
     `<b>${fmtPct(v.effectieveBelastingdruk * 100)}</b> van je totale bruto inkomen (${fmt(v.totaalBrutoJaar)}) gaat naar belasting. Je houdt <b>${fmt(v.totaalNettoJaar)}</b> netto over.`;
 
   const pensSegments = [
-    { label: 'Werkgeversdeel', value: v.wgBijdrageJaar, color: COLORS.pensioen },
-    { label: 'Eigen bijdrage (bruto)', value: v.wnInhoudingJaar, color: COLORS.bonus },
+    { label: 'Conspect (30%-marge)', value: v.aandeelConspectJaar, color: COLORS.pensioen },
+    { label: 'Jij (70%, via eindafrekening)', value: v.aandeelPotJaar, color: COLORS.bonus },
   ];
   renderDonut('dash-pens-donut', pensSegments, fmtShort(v.premieJaar), 'premie/jr');
   renderLegend('dash-pens-legend', pensSegments, v.premieJaar);
@@ -1339,16 +1397,18 @@ function renderAll(v) {
       topKostenLabel = item ? item.label : inp.dataset.key;
     }
   });
-  const pensPct = v.premieJaar > 0 ? v.wgBijdrageJaar / v.premieJaar : 0;
+  const pensPct = v.premieJaar > 0 ? v.aandeelConspectJaar / v.premieJaar : 0;
 
   const insights = [
     insightHTML('€', `Van elke euro omzet (<b>${fmt(v.jaaromzet)}</b> per jaar) houd je uiteindelijk <b>${fmtPct(nettoPctOmzet * 100)}</b> netto over — dat is <b>${fmt(v.totaalNettoJaar)}</b> per jaar.`),
-    insightHTML('↗', `Je onbelaste reiskostenvergoeding van <b>${fmt(v.reiskostenMaand)}</b> per maand (<b>${fmt(v.reiskostenJaar)}</b> per jaar) is vrijgesteld van loonheffing en komt volledig bovenop je netto salaris.`),
+    v.reiskostenMaand > 0
+      ? insightHTML('↗', `Je onbelaste reiskostenvergoeding van <b>${fmt(v.reiskostenMaand)}</b> per maand (<b>${fmt(v.reiskostenJaar)}</b> per jaar) is vrijgesteld van loonheffing en komt volledig bovenop je netto salaris.`)
+      : insightHTML('↗', `Heb je een mobiliteitsbudget of declareer je kilometers? Vul dat in bij "Salaris, omzet en omzetbonus" — de onbelaste vergoeding wordt dan apart meegerekend.`),
     topKostenVal > 0
       ? insightHTML('Σ', `Je grootste vrije kostenpost is <b>${topKostenLabel}</b>, met <b>${fmt(topKostenVal)}</b> per jaar.`)
       : insightHTML('Σ', `Je hebt nu geen kostenposten ingevuld bij "Kosten" op de Invoer-tab — vul ze in voor een vollediger beeld.`),
     v.pensionOn
-      ? insightHTML('%', `Je bouwt dit jaar <b>${fmt(v.premieJaar)}</b> pensioen op, waarvan je werkgever <b>${fmt(v.wgBijdrageJaar)}</b> (${fmtPct(pensPct * 100)}) bijdraagt.`)
+      ? insightHTML('%', `Je bouwt dit jaar <b>${fmt(v.premieJaar)}</b> pensioen op, waarvan Conspect <b>${fmt(v.aandeelConspectJaar)}</b> (${fmtPct(pensPct * 100)}) voor zijn rekening neemt en jij <b>${fmt(v.aandeelPotJaar)}</b> via je eindafrekening.`)
       : insightHTML('%', `Pensioenopbouw staat nu uit — zie de kaart "Impact van pensioenafdracht" hieronder voor het verschil.`),
   ];
   document.getElementById('dash-insights').innerHTML = insights.join('');
@@ -1364,7 +1424,7 @@ function renderPensionCompare(zonder, met) {
   const deltaTotaal = met.totaalNettoJaar - zonder.totaalNettoJaar;
   const richting = deltaTotaal < 0 ? 'minder' : 'meer';
   document.getElementById('dash-pension-impact-note').innerHTML =
-    `Met pensioenopbouw houd je dit jaar <b>${fmt(Math.abs(deltaTotaal))} ${richting}</b> netto over dan zonder — maar bouw je <b>${fmt(met.premieJaar)}</b> pensioen op (waarvan je werkgever <b>${fmt(met.wgBijdrageJaar)}</b> bijdraagt) voor later.`;
+    `Met pensioenopbouw houd je dit jaar <b>${fmt(Math.abs(deltaTotaal))} ${richting}</b> netto over dan zonder — maar bouw je <b>${fmt(met.premieJaar)}</b> pensioen op (waarvan Conspect <b>${fmt(met.aandeelConspectJaar)}</b> bijdraagt) voor later.`;
 }
 
 // Grid "stretch" alignment doesn't reliably equalize row heights across browsers
@@ -1384,7 +1444,40 @@ function equalizeTileHeights(selector) {
   });
 }
 
+function easterSunday(y) {
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4;
+  const f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const mon = Math.floor((h + l - 7 * m + 114) / 31), day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(y, mon - 1, day);
+}
+
+function werkbareDagen(y) {
+  const easter = easterSunday(y);
+  const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+  const feestdagen = [
+    new Date(y, 0, 1), easter, addDays(easter, 1), addDays(easter, 39),
+    addDays(easter, 49), addDays(easter, 50), new Date(y, 11, 25), new Date(y, 11, 26),
+  ].map(d => d.getTime());
+  let dagen = 0;
+  for (let d = new Date(y, 0, 1); d.getFullYear() === y; d = addDays(d, 1)) {
+    const dow = d.getDay();
+    if (dow !== 0 && dow !== 6 && !feestdagen.includes(d.getTime())) dagen++;
+  }
+  return dagen;
+}
+
+function updateWerkUren() {
+  const dagen = werkbareDagen(Math.round(val('werkJaar')) || 2026);
+  const uren = Math.max(0, dagen - val('werkVakantie')) * (val('werkFte') / 100) * 8;
+  document.getElementById('out-werkDagen').textContent = dagen.toLocaleString('nl-NL');
+  document.getElementById('out-werkUren').textContent = Math.round(uren * 10) / 10 + ' uur';
+  return uren;
+}
+
 function recalc() {
+  updateWerkUren();
   const pensionOn = document.getElementById('pensionToggle').checked;
 
   // Zorg dat de kj-<key> jaarbedragen in de Kosten-kaart altijd bijgewerkt zijn.
@@ -1408,9 +1501,14 @@ function switchTab(name) {
   equalizeTileHeights('.kpi-tile');
 }
 document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+document.getElementById('useWerkUren').addEventListener('click', () => {
+  const el = document.getElementById('uren');
+  el.value = Math.round(updateWerkUren());
+  el.dispatchEvent(new Event('input', { bubbles: true }));
+});
 window.addEventListener('resize', () => equalizeTileHeights('.kpi-tile'));
 
-const STORAGE_KEY = 'mediumlance-calculator-v1';
+const STORAGE_KEY = 'mediumlance-calculator-v2';
 
 function inputStorageKey(inp) {
   return inp.id ? 'id:' + inp.id : (inp.dataset.key ? 'kosten:' + inp.dataset.key : null);
