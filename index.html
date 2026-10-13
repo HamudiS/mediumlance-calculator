@@ -1418,6 +1418,82 @@
   @keyframes fxRingPing { 0% { filter: drop-shadow(0 4px 10px rgba(var(--acc-rgb), .35)); } 40% { filter: drop-shadow(0 0 20px rgba(var(--acc-rgb), .8)); } 100% { filter: drop-shadow(0 4px 10px rgba(var(--acc-rgb), .35)); } }
   #goal-launch { display: inline-flex; align-items: center; gap: 8px; }
   #goal-launch svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  /* ===== iconen (Lucide-stijl, geen emoji) ===== */
+  .ic { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; vertical-align: -.2em; flex: none; }
+  .btn-ghost .ic, .btn-inline .ic { margin-right: 7px; width: 1.1em; height: 1.1em; }
+  #card-shop .shop-pill .sp-i .ic { width: 26px; height: 26px; stroke-width: 1.6; color: var(--text); }
+  .sh-ico .ic { width: 46px; height: 46px; stroke-width: 1.4; color: var(--accent); }
+  #card-shop .shop-ico .ic { width: 26px; height: 26px; stroke-width: 1.6; color: var(--text-muted); }
+  .bdg .bi .ic { width: 28px; height: 28px; stroke-width: 1.6; }
+  .bdg.on .bi .ic { color: var(--accent); }
+  .gs-big .ic { width: 40px; height: 40px; color: var(--accent); }
+  .cmdk-item .ci .ic { width: 17px; height: 17px; color: var(--accent); }
+  .page-head .fx-greet .wave { animation: none; display: inline-grid; place-items: center; }
+  .fx-greet .wave .ic { width: 19px; height: 19px; color: var(--accent); }
+  .dbar-title .ic, .chip-add .ic { width: 1em; height: 1em; margin-right: 3px; opacity: .8; }
+  .fx-toast .ic { width: 1.1em; height: 1.1em; margin-right: 4px; color: var(--accent); }
+  .tc-head .btn-ghost { padding: 6px 9px; } .tc-head .btn-ghost .ic { margin: 0; }
+  .nav-btn.active svg { fill: currentColor; fill-opacity: .16; }
+  .kpi-icon .ic { width: 16px; height: 16px; }
+  /* ===== iOS-componenten ===== */
+  html:not([data-theme="2050"]) { --text: #1d1d1f; --text-muted: rgba(60,60,67,.74); --solid: #ffffff; }
+  html[data-theme="2050"] { --text: #f5f5f7; --text-muted: rgba(235,235,245,.7); --solid: #1c1c1e; }
+  html:not([data-theme="2050"]) #page-title { background-image: linear-gradient(100deg, #1d1d1f 0%, #1d1d1f 38%, #6e6e73 50%, #1d1d1f 62%, #1d1d1f 100%); }
+  /* titelschaal: Large Title 34 */
+  #page-title { font-size: clamp(34px, 3.6vw, 44px); font-weight: 700; letter-spacing: -.028em; }
+  .card h2 { font-size: 17px; font-weight: 600; letter-spacing: -.02em; }
+  .page-sub { font-size: 17px; }
+  /* iOS-schakelaars */
+  .tc-sw input[type=checkbox] { -webkit-appearance: none; appearance: none; width: 46px; height: 28px; border-radius: 999px; background: rgba(120,120,128,.32); position: relative; flex: none; cursor: pointer; margin: 0; transition: background .3s ease; }
+  .tc-sw input[type=checkbox]::after { content: ""; position: absolute; top: 2px; left: 2px; width: 24px; height: 24px; border-radius: 50%; background: #fff; box-shadow: 0 3px 8px rgba(0,0,0,.16), 0 1px 1px rgba(0,0,0,.16); transition: transform .4s var(--spring), width .25s ease; }
+  .tc-sw input[type=checkbox]:checked { background: var(--accent); }
+  .tc-sw input[type=checkbox]:checked::after { transform: translateX(18px); }
+  .tc-sw input[type=checkbox]:active::after { width: 30px; }
+  .tc-sw input[type=checkbox]:checked:active::after { transform: translateX(12px); }
+  .tc-sw input[type=checkbox]:disabled { opacity: .4; cursor: not-allowed; }
+  .tc-sw { gap: 12px; } .tc-sw > span { flex: 1; }
+  /* iOS-schuifregelaars */
+  input[type=range] { -webkit-appearance: none; appearance: none; background: transparent; height: 28px; cursor: pointer; accent-color: unset; }
+  input[type=range]::-webkit-slider-runnable-track { height: 5px; border-radius: 999px; background: linear-gradient(to right, var(--accent) var(--fill, 50%), rgba(120,120,128,.28) var(--fill, 50%)); }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; border-radius: 50%; margin-top: -10.5px; background: #fff; border: 0; box-shadow: 0 3px 10px rgba(0,0,0,.22), 0 0 0 .5px rgba(0,0,0,.06); transition: transform .25s var(--spring); }
+  input[type=range]:active::-webkit-slider-thumb { transform: scale(1.12); }
+  input[type=range]::-moz-range-track { height: 5px; border-radius: 999px; background: rgba(120,120,128,.28); }
+  input[type=range]::-moz-range-progress { height: 5px; border-radius: 999px; background: var(--accent); }
+  input[type=range]::-moz-range-thumb { width: 26px; height: 26px; border-radius: 50%; background: #fff; border: 0; box-shadow: 0 3px 10px rgba(0,0,0,.22); }
+  /* gesegmenteerde knop met glijdende pil */
+  .tc-seg { position: relative; gap: 0; padding: 3px; border-radius: 13px; background: rgba(120,120,128,.14); }
+  .tc-seg::before { content: ""; position: absolute; left: var(--sx, 3px); top: var(--sy, 3px); width: var(--sw, 0px); height: var(--sh, 0px); border-radius: 10px; opacity: var(--so, 0);
+    background: #fff; box-shadow: 0 3px 8px rgba(0,0,0,.12), 0 0 0 .5px rgba(0,0,0,.05); transition: left .45s var(--spring), top .45s var(--spring), width .45s var(--spring), height .45s var(--spring), opacity .2s; }
+  .tc-seg button, .tc-seg button.on { position: relative; z-index: 1; border: none; background: transparent; border-radius: 10px; padding: 8px 10px; color: var(--text-muted); font-weight: 600; box-shadow: none; transition: color .25s ease; }
+  .tc-seg button.on { color: #1d1d1f; }
+  html[data-theme="2050"] .tc-seg { background: rgba(255,255,255,.08); }
+  html[data-theme="2050"] .tc-seg::before { background: rgba(255,255,255,.2); box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+  html[data-theme="2050"] .tc-seg button.on { color: #fff; }
+  /* focus, uitgeschakeld, ingedrukt */
+  :where(button, a, input, select, textarea, [tabindex]):focus-visible { outline: 2.5px solid var(--accent); outline-offset: 2px; }
+  .wi-field input:focus-visible, .cmdk-in:focus-visible { outline: none; }
+  button:disabled, input:disabled, select:disabled { opacity: .45; cursor: not-allowed; }
+  .nav-btn:active svg { transform: scale(.9); }
+  .btn-ghost:active, .btn-inline:active, .shop-pill:active, .cmdk-item:active, .sug:active { transform: scale(.97); }
+  /* lege toestand */
+  .empty-state { display: grid; justify-items: center; gap: 10px; padding: 36px 16px; text-align: center; color: var(--text-muted); font-size: 14.5px; }
+  .empty-state .ic { width: 38px; height: 38px; stroke-width: 1.4; color: var(--accent); }
+  .empty-state button { margin-top: 4px; }
+  /* afgeronde hoeken: continue (squircle) waar ondersteund */
+  @supports (corner-shape: squircle) { .dblock > .card, .dblock > .kpi-tile, .cmdk-box, .scen-banner { corner-shape: squircle; } }
+  /* toegankelijkheid: minder transparantie / meer contrast */
+  @media (prefers-reduced-transparency: reduce) {
+    .nav-glass, .nav-pill, .card, .kpi-tile, .top-pill, .cmdk-box, .tc-panel, .scen-banner, .fx-toast, .eyebrow, .page-head .fx-greet, .wi-field, .nav-btn::after, .fx-tip, .nav-ind, .nav-hov {
+      -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background-image: none !important; }
+    .card, .kpi-tile:not(.hero), .top-pill, .cmdk-box, .tc-panel, .scen-banner, .fx-toast, .eyebrow, .page-head .fx-greet, .nav-pill { background-color: var(--solid) !important; }
+    .cmdk.open { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  }
+  @media (prefers-contrast: more) {
+    html:not([data-theme="2050"]) { --text-muted: rgba(0,0,0,.82); }
+    html[data-theme="2050"] { --text-muted: rgba(255,255,255,.9); }
+    .card, .kpi-tile, .nav-pill, .cmdk-box, .tc-panel { border: 1.5px solid var(--text) !important; }
+    .wi-field, .goal-form input, input[type=text], input[type=number], input[type=date] { border: 1.5px solid var(--text) !important; }
+  }
 </style>
 </head>
 <body>
@@ -1468,7 +1544,7 @@
       <p class="edit-help">Sleep blokken naar een andere plek (of gebruik <b>◀ ▶</b>), wissel het formaat met <b>⇔</b> en haal een blok weg met <b>✕</b>. Je indeling wordt op dit apparaat onthouden.</p>
       <div class="edit-sub">Weggehaalde blokken — klik om terug te zetten</div>
       <div class="edit-hidden" id="edit-hidden"></div>
-      <div class="edit-actions"><button type="button" class="btn-ghost" id="editReset">↺ Standaard indeling</button><button type="button" class="btn-inline" id="editDone">Klaar</button></div>
+      <div class="edit-actions"><button type="button" class="btn-ghost" id="editReset"><svg class="ic" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4 4.5v4h4"/></svg>Standaard indeling</button><button type="button" class="btn-inline" id="editDone">Klaar</button></div>
     </div>
 
     <div class="fx-ticker" id="fx-ticker" aria-hidden="true"><div class="fx-ticker-track" id="fx-ticker-track"></div></div>
@@ -1485,7 +1561,7 @@
         <div class="wi-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
         <div class="wi-mid"><div class="wi-ph" id="wi-ph" aria-hidden="true"></div><input type="text" id="whatifInput" placeholder=" " autocomplete="off" enterkeyhint="go" aria-label="Wat als…? Typ een scenario"></div>
         <button type="button" class="btn-inline" id="whatifGo">Toon</button></div>
-        <button type="button" class="btn-ghost" id="whatifShare" hidden>🔗 Deel scenario</button>
+        <button type="button" class="btn-ghost" id="whatifShare" hidden><svg class="ic" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>Deel scenario</button>
         <button type="button" class="btn-ghost" id="whatifReset" hidden>Terug naar mijn cijfers</button>
       </div>
       <div class="whatif-peil">
@@ -1519,7 +1595,7 @@
         <div class="kpi-delta" id="dash-netto-maand-delta"></div>
       </div>
       <div class="kpi-tile">
-        <div class="kpi-icon">↗</div>
+        <div class="kpi-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></div>
         <div class="kpi-label">Totaal netto per jaar</div>
         <div class="kpi-value" id="dash-totaal-netto">—</div>
         <div class="kpi-sub" id="dash-totaal-netto-sub">—</div>
@@ -1535,10 +1611,10 @@
       <div class="peil-chart" id="peil-chart"></div>
       <details class="peil-details"><summary>Maandoverzicht (zoals in de Excel)</summary><div id="peil-table"></div></details>
       <div class="peil-actions">
-        <button type="button" class="btn-ghost" id="peilCopy">📋 Kopieer samenvatting</button>
-        <button type="button" class="btn-ghost" id="peilCsv">⬇ Download CSV</button>
-        <button type="button" class="btn-ghost" id="peilPrint">🖨 Print / PDF</button>
-        <button type="button" class="btn-ghost" id="peilClose">✕ Peildatum wissen</button>
+        <button type="button" class="btn-ghost" id="peilCopy"><svg class="ic" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg>Kopieer samenvatting</button>
+        <button type="button" class="btn-ghost" id="peilCsv"><svg class="ic" viewBox="0 0 24 24"><path d="M12 4v10M8 10.5l4 4 4-4M5 19h14"/></svg>Download CSV</button>
+        <button type="button" class="btn-ghost" id="peilPrint"><svg class="ic" viewBox="0 0 24 24"><path d="M7 9V3h10v6M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="7" rx="1"/></svg>Print / PDF</button>
+        <button type="button" class="btn-ghost" id="peilClose"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>Peildatum wissen</button>
       </div>
       <div class="flow-note" id="peil-note"></div>
     </div>
@@ -1669,7 +1745,7 @@
           <div class="printer-body"><span class="printer-led"></span><div class="printer-slot"></div></div>
           <div class="paper-wrap"><div class="paper" id="payslip-paper"><div class="paper-empty">Druk op “Print” om een gemiddelde maand-loonstrook van je cijfers te laten uitprinten.</div></div></div>
         </div>
-        <button type="button" class="btn-inline" id="printPayslip">🖨 Print loonstrook</button>
+        <button type="button" class="btn-inline" id="printPayslip"><svg class="ic" viewBox="0 0 24 24"><path d="M7 9V3h10v6M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="7" rx="1"/></svg>Print loonstrook</button>
       </div>
       <div class="card" id="card-badges">
         <h2>Prestaties <span class="badge" id="xp-level">Level 1</span></h2>
@@ -2102,18 +2178,18 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b28</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b30</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
-  <div class="tc-head"><b>🎨 Thema-studio</b><button type="button" class="btn-ghost" id="tc-close">✕</button></div>
+  <div class="tc-head"><b>Thema-studio</b><button type="button" class="btn-ghost" id="tc-close"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div class="tc-body">
-    <section><h4>Weergave</h4><div class="tc-seg" id="tc-mode"><button type="button" data-v="2050">🌙 Donker · 2050</button><button type="button" data-v="classic">☀️ Licht · klassiek</button></div></section>
+    <section><h4>Weergave</h4><div class="tc-seg" id="tc-mode"><button type="button" data-v="2050">Donker · 2050</button><button type="button" data-v="classic">Licht · klassiek</button></div></section>
     <section><h4>Accentkleur</h4><div class="tc-swatches" id="tc-swatches"></div><label class="tc-line">Eigen kleur <input type="color" id="tc-color" value="#2fe0a2"></label></section>
     <section><h4>Achtergrond</h4>
-      <div class="tc-seg" id="tc-bgmode"><button type="button" data-v="wave">🤍 Golf</button><button type="button" data-v="sand">🏜 Zand</button><button type="button" data-v="aurora">✨ Aurora</button><button type="button" data-v="plain">▫️ Effen</button><button type="button" data-v="gradient">🌅 Verloop</button><button type="button" data-v="photo">🖼 Foto</button></div>
+      <div class="tc-seg" id="tc-bgmode"><button type="button" data-v="wave">Golf</button><button type="button" data-v="sand">Zand</button><button type="button" data-v="aurora">Aurora</button><button type="button" data-v="plain">Effen</button><button type="button" data-v="gradient">Verloop</button><button type="button" data-v="photo">Foto</button></div>
       <div class="tc-note" id="tc-aurora-hint" hidden>De aurora-gloed werkt in het donkere thema.</div>
       <div class="tc-sub" id="tc-grads" hidden></div>
-      <div class="tc-sub" id="tc-photo" hidden><label class="btn-ghost tc-upload">📤 Foto kiezen…<input type="file" id="tc-file" accept="image/*" hidden></label><button type="button" class="btn-ghost" id="tc-photo-rm">🗑 Verwijderen</button></div>
+      <div class="tc-sub" id="tc-photo" hidden><label class="btn-ghost tc-upload">Foto kiezen…<input type="file" id="tc-file" accept="image/*" hidden></label><button type="button" class="btn-ghost" id="tc-photo-rm">Verwijderen</button></div>
       <div id="tc-imgopts" hidden><label class="tc-line">Donkerte <input type="range" id="tc-dim" min="0" max="85" value="45"></label><label class="tc-line">Vervaging <input type="range" id="tc-blur" min="0" max="24" value="0"></label></div>
     </section>
     <section><h4>Glas</h4>
@@ -2129,7 +2205,7 @@
       <label class="tc-sw"><input type="checkbox" id="tc-parts"><span>Zwevende deeltjes · regendruppels (licht)</span></label>
       <label class="tc-sw"><input type="checkbox" id="tc-tilt"><span>3D-kantelen van blokken</span></label>
     </section>
-    <section><button type="button" class="btn-ghost" id="tc-reset">↺ Standaard thema</button><p class="tc-note">Je thema en foto blijven op dit apparaat — er wordt niets online opgeslagen.</p></section>
+    <section><button type="button" class="btn-ghost" id="tc-reset"><svg class="ic" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4 4.5v4h4"/></svg>Standaard thema</button><p class="tc-note">Je thema en foto blijven op dit apparaat — er wordt niets online opgeslagen.</p></section>
   </div>
 </aside>
 <div class="cmdk" id="cmdk" aria-hidden="true"><div class="cmdk-box" role="dialog" aria-label="Zoeken"><input class="cmdk-in" id="cmdk-in" type="text" placeholder="Ga naar… of zoek een actie" autocomplete="off" spellcheck="false"><div class="cmdk-list" id="cmdk-list"></div><div class="cmdk-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> kiezen</span><span><kbd>↵</kbd> openen</span><span><kbd>esc</kbd> sluiten</span></div></div></div>
@@ -2716,7 +2792,7 @@ function renderWhatif(msg) {
   document.getElementById('whatifReset').hidden = !(SCEN || PEIL);
   document.getElementById('whatifShare').hidden = !(SCEN || PEIL);
   chips.innerHTML = '';
-  if (PEIL) { const c = document.createElement('span'); c.className = 'whatif-chip'; c.textContent = '📍 Peildatum: ' + peilDatumTxt(PEIL); chips.appendChild(c); }
+  if (PEIL) { const c = document.createElement('span'); c.className = 'whatif-chip'; c.textContent = 'Peildatum: ' + peilDatumTxt(PEIL); chips.appendChild(c); }
   if (SCEN) {
     const o = buildOverrides();
     const add = t => { const c = document.createElement('span'); c.className = 'whatif-chip'; c.textContent = t; chips.appendChild(c); };
@@ -3264,7 +3340,7 @@ function fxGreeting() {
   const text = `${g}${naam ? ', ' + naam : ''} — zo staat je jaar ervoor.`;
   if (el._t === text && !FX_ANIM) return;
   el._t = text; clearInterval(el._iv);
-  el.innerHTML = '<span class="wave">👋</span><span class="gt"></span>';
+  el.innerHTML = '<span class="wave">' + ic(h >= 6 && h < 18 ? 'sun' : 'moon') + '</span><span class="gt"></span>';
   const gt = el.querySelector('.gt');
   if (REDUCED || !FX_ANIM) { gt.textContent = text; return; }
   let i = 0;
@@ -3303,7 +3379,7 @@ function fxFlow(v) {
   }
   const first = wide ? mid : sinks;
   const sumFirst = first.reduce((a, n) => a + n.value, 0);
-  if (J <= 0 || sumFirst <= 0) { el.innerHTML = '<div class="flow-note">Vul een uurtarief en uren in om de geldstroom te zien.</div>'; return; }
+  if (J <= 0 || sumFirst <= 0) { el.innerHTML = `<div class="empty-state">${ic('waves')}<div>Vul een uurtarief en uren in om je geldstroom te zien.</div><button type="button" class="btn-inline" onclick="goPage('invoer')">Naar invoer</button></div>`; return; }
   const H = wide ? 340 : 280, top = 28, gap = wide ? 12 : 14, minH = 4, nw = 12;
   const k = (H - gap * (first.length - 1)) / sumFirst * 0.97;
   const place = (items) => {
@@ -3461,7 +3537,7 @@ function fxGoal(v) {
   byId('goal-name-out').textContent = name;
   let msg;
   if (goal <= 0) msg = '<div class="gs-cap">Vul een bedrag in om je spaardoel te berekenen.</div>';
-  else if (have >= goal) msg = `<div class="gs-big">🎉</div><div class="gs-cap"><b>${esc(name)}</b> is al gehaald!</div>`;
+  else if (have >= goal) msg = `<div class="gs-big">${ic('check')}</div><div class="gs-cap"><b>${esc(name)}</b> is al gehaald!</div>`;
   else if (perMonth <= 0) msg = '<div class="gs-cap">Stel een spaarpercentage in om te zien wanneer je je doel bereikt.</div>';
   else {
     const months = Math.ceil((goal - have) / perMonth), d = new Date(); d.setMonth(d.getMonth() + months);
@@ -3473,17 +3549,20 @@ function fxGoal(v) {
   byId('goal-out').innerHTML = msg;
 }
 
+const ICONS = {"coffee": "<path d=\"M10 2v2M14 2v2M6 2v2M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1\"/>", "pizza": "<path d=\"M4 7.5C9 4 15 4 20 7.5L12 21z\"/><circle cx=\"10.5\" cy=\"10.5\" r=\"1\"/><circle cx=\"14\" cy=\"12.5\" r=\"1\"/><circle cx=\"12\" cy=\"16\" r=\".9\"/>", "film": "<rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"3\"/><path d=\"M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4\"/>", "plane": "<path d=\"M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z\"/>", "luggage": "<rect x=\"5\" y=\"7\" width=\"14\" height=\"13\" rx=\"3\"/><path d=\"M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M9 11v5M15 11v5\"/>", "home": "<path d=\"M3 11l9-8 9 8\"/><path d=\"M5 10v10h14V10\"/><path d=\"M10 20v-6h4v6\"/>", "phone": "<rect x=\"6\" y=\"2\" width=\"12\" height=\"20\" rx=\"3\"/><path d=\"M11 18h2\"/>", "car": "<path d=\"M5 17H4a1 1 0 0 1-1-1v-4l2-5a2 2 0 0 1 2-1.5h8a2 2 0 0 1 2 1.5l2 5v4a1 1 0 0 1-1 1h-1\"/><circle cx=\"7.5\" cy=\"17\" r=\"2\"/><circle cx=\"16.5\" cy=\"17\" r=\"2\"/><path d=\"M5 11h14\"/>", "globe": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18\"/>", "award": "<circle cx=\"12\" cy=\"9\" r=\"6\"/><path d=\"M8.5 14.5L7 22l5-3 5 3-1.5-7.5\"/>", "trophy": "<path d=\"M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z\"/><path d=\"M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3\"/>", "banknote": "<rect x=\"2.5\" y=\"6\" width=\"19\" height=\"12\" rx=\"2.5\"/><circle cx=\"12\" cy=\"12\" r=\"2.8\"/><path d=\"M6 9.5v.01M18 14.5v.01\"/>", "shield": "<path d=\"M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z\"/><path d=\"M9 12l2 2 4-4\"/>", "umbrella": "<path d=\"M3 12a9 9 0 0 1 18 0z\"/><path d=\"M12 12v6a2 2 0 0 0 4 0\"/>", "bike": "<circle cx=\"6\" cy=\"16\" r=\"3.5\"/><circle cx=\"18\" cy=\"16\" r=\"3.5\"/><path d=\"M6 16l4-8h5l3 8M10 8l3 8M9 5h3\"/>", "sparkles": "<path d=\"M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z\"/><path d=\"M19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z\"/>", "trend": "<path d=\"M3 17l6-6 4 4 8-8\"/><path d=\"M15 7h6v6\"/>", "clock": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3 2\"/>", "target": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><circle cx=\"12\" cy=\"12\" r=\"5\"/><circle cx=\"12\" cy=\"12\" r=\"1.2\"/>", "bag": "<path d=\"M5 8h14l-1 12H6z\"/><path d=\"M9 8V6a3 3 0 0 1 6 0v2\"/>", "receipt": "<path d=\"M6 3h12v18l-3-2-3 2-3-2-3 2z\"/><path d=\"M9 8h6M9 12h6\"/>", "link": "<path d=\"M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1\"/><path d=\"M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1\"/>", "flame": "<path d=\"M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 .5 2 1.5 2.5 2 2 0-3-1-5 1-8z\"/>", "palette": "<path d=\"M12 3.5a8.5 8.5 0 1 0 0 17c1.5 0 2.1-1.1 1.6-2.2-.6-1.3.2-2.4 1.6-2.4H17a3.5 3.5 0 0 0 3.5-3.5C20.5 7 16.8 3.5 12 3.5z\"/><circle cx=\"7.8\" cy=\"11\" r=\"1\"/><circle cx=\"10.6\" cy=\"7.6\" r=\"1\"/><circle cx=\"15\" cy=\"7.9\" r=\"1\"/>", "pin": "<path d=\"M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.5\"/>", "grid": "<rect x=\"4\" y=\"4\" width=\"7\" height=\"7\" rx=\"2\"/><rect x=\"13\" y=\"4\" width=\"7\" height=\"7\" rx=\"2\"/><rect x=\"4\" y=\"13\" width=\"7\" height=\"7\" rx=\"2\"/><rect x=\"13\" y=\"13\" width=\"7\" height=\"7\" rx=\"2\"/>", "gamepad": "<rect x=\"3\" y=\"8\" width=\"18\" height=\"10\" rx=\"5\"/><path d=\"M8 11v4M6 13h4M16 12v.01M18 14v.01\"/>", "calendar": "<rect x=\"4\" y=\"5.5\" width=\"16\" height=\"14\" rx=\"3.5\"/><path d=\"M8 3.5v4M16 3.5v4M4 10h16\"/>", "pie": "<path d=\"M12 3v9h9a9 9 0 1 1-9-9z\"/><path d=\"M15 3.5A9 9 0 0 1 20.5 9H15z\"/>", "bulb": "<path d=\"M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z\"/>", "waves": "<path d=\"M3 8c3 0 3 2 6 2s3-2 6-2 3 2 6 2M3 14c3 0 3 2 6 2s3-2 6-2 3 2 6 2\"/>", "bars": "<path d=\"M5 20V10M12 20V4M19 20v-7\"/>", "filter": "<path d=\"M4 5h16l-6 7v6l-4 2v-8z\"/>", "scale": "<path d=\"M12 4v16M6 20h12M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z\"/>", "gauge": "<path d=\"M4 17a8 8 0 1 1 16 0\"/><path d=\"M12 17l4-5\"/>", "timer": "<circle cx=\"12\" cy=\"13\" r=\"8\"/><path d=\"M12 9v4l2 2M9 2h6\"/>", "activity": "<path d=\"M3 12h4l3-8 4 16 3-8h4\"/>", "dot": "<circle cx=\"12\" cy=\"12\" r=\"5\" fill=\"currentColor\"/>", "euro": "<path d=\"M18 7a7 7 0 1 0 0 10M4 10h9M4 14h9\"/>", "sigma": "<path d=\"M18 5H6l7 7-7 7h12\"/>", "search": "<circle cx=\"11\" cy=\"11\" r=\"6.5\"/><path d=\"M16 16l4 4\"/>", "moon": "<path d=\"M20 14.4A8 8 0 0 1 9.6 4 8 8 0 1 0 20 14.4z\"/>", "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6L7 7M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4\"/>", "sliders": "<path d=\"M4 7h10M18 7h2M4 17h2M10 17h10\"/><circle cx=\"16\" cy=\"7\" r=\"2\"/><circle cx=\"8\" cy=\"17\" r=\"2\"/>", "percent": "<path d=\"M19 5L5 19\"/><circle cx=\"7\" cy=\"7\" r=\"2.2\"/><circle cx=\"17\" cy=\"17\" r=\"2.2\"/>", "copy": "<rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2.5\"/><path d=\"M5 15V6a2 2 0 0 1 2-2h8\"/>", "download": "<path d=\"M12 4v10M8 10.5l4 4 4-4M5 19h14\"/>", "printer": "<path d=\"M7 9V3h10v6M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2\"/><rect x=\"7\" y=\"14\" width=\"10\" height=\"7\" rx=\"1\"/>", "x": "<path d=\"M6 6l12 12M18 6L6 18\"/>", "reset": "<path d=\"M4.5 12a7.5 7.5 0 1 0 2.4-5.5\"/><path d=\"M4 4.5v4h4\"/>", "upload": "<path d=\"M12 15V5M8 8.5l4-4 4 4M5 19h14\"/>", "trash": "<path d=\"M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3\"/>", "check": "<path d=\"M5 12.5l4.5 4.5L19 7.5\"/>", "image": "<rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"3\"/><circle cx=\"9\" cy=\"10\" r=\"1.6\"/><path d=\"M4 18l5-5 4 4 3-3 4 4\"/>", "bell": "<path d=\"M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20a2 2 0 0 0 4 0\"/>", "wave": "<path d=\"M12 4c0 5-8 5-8 10a8 8 0 0 0 16 0c0-5-8-5-8-10z\"/>"};
+const ic = (n, c) => ICONS[n] ? `<svg class="ic${c ? ' ' + c : ''}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg>` : esc(n);
+
 // ---- wat koop je ervan ----
 const SHOP = [
-  { i: '☕', s: 'Koffie', n: 'koppen koffie', p: 3.5 }, { i: '🍕', s: 'Pizza', n: "pizza's", p: 14 },
-  { i: '🎬', s: 'Bioscoop', n: 'bioscoopavonden', p: 13 }, { i: '✈️', s: 'Vliegticket', n: 'retourtjes Europa', p: 180 },
-  { i: '🏖️', s: 'Weekendje weg', n: 'weekendjes weg', p: 450 }, { i: '🏠', s: 'Huur', n: 'maanden huur', p: 1450 },
-  { i: '📱', s: 'iPhone', n: 'nieuwe iPhones', p: 1100 }, { i: '🚗', s: 'Auto', n: "nieuwe auto's", p: 32000 },
-  { i: '🌍', s: 'Wereldreis', n: 'wereldreizen', p: 12000 },
+  { i: 'coffee', u: 'kop koffie', s: 'Koffie', n: 'koppen koffie', p: 3.5 }, { i: 'pizza', u: 'pizza', s: 'Pizza', n: "pizza's", p: 14 },
+  { i: 'film', u: 'bioscoopavond', s: 'Bioscoop', n: 'bioscoopavonden', p: 13 }, { i: 'plane', u: 'retourtje Europa', s: 'Vliegticket', n: 'retourtjes Europa', p: 180 },
+  { i: 'luggage', u: 'weekendje weg', s: 'Weekendje weg', n: 'weekendjes weg', p: 450 }, { i: 'home', u: 'maand huur', s: 'Huur', n: 'maanden huur', p: 1450 },
+  { i: 'phone', u: 'iPhone', s: 'iPhone', n: 'nieuwe iPhones', p: 1100 }, { i: 'car', u: 'auto', s: 'Auto', n: "nieuwe auto's", p: 32000 },
+  { i: 'globe', u: 'wereldreis', s: 'Wereldreis', n: 'wereldreizen', p: 12000 },
 ];
 let SHOP_I = 0;
 function fxShopInit() {
-  byId('shop-pills').innerHTML = SHOP.map((it, i) => `<button type="button" class="shop-pill${i === SHOP_I ? ' on' : ''}" data-i="${i}"><span class="sp-i">${it.i}</span><span class="sp-l">${it.s}</span></button>`).join('');
+  byId('shop-pills').innerHTML = SHOP.map((it, i) => `<button type="button" class="shop-pill${i === SHOP_I ? ' on' : ''}" data-i="${i}"><span class="sp-i">${ic(it.i)}</span><span class="sp-l">${it.s}</span></button>`).join('');
   byId('shop-pills').addEventListener('click', e => {
     const b = e.target.closest('.shop-pill'); if (!b) return;
     SHOP_I = +b.dataset.i; byId('shop-pills').querySelectorAll('.shop-pill').forEach((x, i) => x.classList.toggle('on', i === SHOP_I));
@@ -3494,8 +3573,8 @@ function fxShop(v, force) {
   const it = SHOP[SHOP_I], n = Math.max(0, Math.floor(v.totaalNettoJaar / it.p));
   const head = byId('shop-head');
   if (!head.querySelector('b')) head.innerHTML = '<div class="sh-ico" id="sh-ico"></div><div class="sh-txt"><div class="sh-num"><b id="shop-count">0</b></div><div class="sh-cap" id="shop-post"></div><div class="sh-sub" id="shop-pre"></div></div>';
-  byId('sh-ico').textContent = it.i; byId('sh-ico').classList.remove('pop'); void byId('sh-ico').offsetWidth; byId('sh-ico').classList.add('pop');
-  byId('shop-pre').textContent = 'Met je netto van ' + fmt(v.totaalNettoJaar) + ' per jaar · 1 ' + it.i + ' = ' + fmt(it.p);
+  byId('sh-ico').innerHTML = ic(it.i); byId('sh-ico').classList.remove('pop'); void byId('sh-ico').offsetWidth; byId('sh-ico').classList.add('pop');
+  byId('shop-pre').textContent = 'Met je netto van ' + fmt(v.totaalNettoJaar) + ' per jaar · 1 ' + it.u + ' = ' + fmt(it.p);
   byId('shop-post').textContent = it.n;
   fxTween(byId('shop-count'), n, numNl, 900);
   const grid = byId('shop-grid'), sig = SHOP_I + '|' + n;
@@ -3503,7 +3582,7 @@ function fxShop(v, force) {
   grid._sig = sig;
   const show = Math.min(n, 14), big = false;
   grid.className = 'shop-grid';
-  grid.innerHTML = Array.from({ length: show }, (_, i) => `<span class="shop-ico" style="--i:${i}; --o:${(1 - i / (show + 3)).toFixed(2)}">${it.i}</span>`).join('') + (n > show ? `<span class="shop-more">+ ${numNl(n - show)}</span>` : '');
+  grid.innerHTML = Array.from({ length: show }, (_, i) => `<span class="shop-ico" style="--i:${i}; --o:${(1 - i / (show + 3)).toFixed(2)}">${ic(it.i)}</span>`).join('') + (n > show ? `<span class="shop-more">+ ${numNl(n - show)}</span>` : '');
 }
 
 // ---- loonstrook-printer ----
@@ -3529,24 +3608,24 @@ function fxPrint() {
 
 // ---- prestaties (badges + punten) ----
 const BADGES = [
-  { id: 'omzet100', i: '💯', n: 'Honderdduizend-club', d: 'Jaaromzet vanaf €100k', c: v => v.jaaromzet >= 100000 },
-  { id: 'omzet200', i: '🏆', n: 'Tweehonderd-club', d: 'Jaaromzet vanaf €200k', c: v => v.jaaromzet >= 200000 },
-  { id: 'netto5k', i: '💸', n: 'Vijfduizend per maand', d: 'Netto per maand vanaf €5.000', c: v => v.nettoMaandTotaal >= 5000 },
-  { id: 'belasting40', i: '🛡️', n: 'Belastingtemmer', d: 'Belastingdruk onder 40%', c: v => v.effectieveBelastingdruk > 0 && v.effectieveBelastingdruk < 0.40 },
-  { id: 'pensioen', i: '🧓', n: 'Pensioen-pionier', d: 'Pensioenopbouw staat aan', c: v => v.pensionOn && v.premieJaar > 0 },
-  { id: 'mobiel', i: '🚲', n: 'Mobiliteit-meester', d: 'Kilometers binnen je mobiliteitsbudget', c: v => v.reiskostenMaand > 0 && v.reiskostenMaand <= v.mobiliteitsbudget },
-  { id: 'scenario', i: '🔮', n: 'Scenario-denker', d: 'Draai een “wat als”' },
-  { id: 'positief', i: '😎', n: 'Positief denker', d: 'Vind een scenario dat je netto verhoogt' },
-  { id: 'tijd', i: '⏳', n: 'Tijdreiziger', d: 'Gebruik de pensioen-tijdmachine' },
-  { id: 'doel', i: '🎯', n: 'Doelgericht', d: 'Stel een spaardoel in' },
-  { id: 'koper', i: '🛍️', n: 'Shopaholic', d: 'Bekijk wat je netto koopt' },
-  { id: 'printer', i: '🧾', n: 'Loonstrook-lezer', d: 'Print een loonstrook' },
-  { id: 'deler', i: '🔗', n: 'Deel de blijdschap', d: 'Deel een scenario-link' },
-  { id: 'streak3', i: '🔥', n: 'Vaste klant', d: 'Kom op 3 verschillende dagen terug' },
-  { id: 'stylist', i: '🎨', n: 'Stylist', d: 'Pas het thema aan' },
-  { id: 'peil', i: '📍', n: 'Peildatum-pro', d: 'Bekijk de stand per peildatum' },
-  { id: 'layout', i: '🧩', n: 'Interieurarchitect', d: 'Pas je dashboard-indeling aan' },
-  { id: 'konami', i: '🕹️', n: 'Cheat code', d: '???' },
+  { id: 'omzet100', i: 'award', n: 'Honderdduizend-club', d: 'Jaaromzet vanaf €100k', c: v => v.jaaromzet >= 100000 },
+  { id: 'omzet200', i: 'trophy', n: 'Tweehonderd-club', d: 'Jaaromzet vanaf €200k', c: v => v.jaaromzet >= 200000 },
+  { id: 'netto5k', i: 'banknote', n: 'Vijfduizend per maand', d: 'Netto per maand vanaf €5.000', c: v => v.nettoMaandTotaal >= 5000 },
+  { id: 'belasting40', i: 'shield', n: 'Belastingtemmer', d: 'Belastingdruk onder 40%', c: v => v.effectieveBelastingdruk > 0 && v.effectieveBelastingdruk < 0.40 },
+  { id: 'pensioen', i: 'umbrella', n: 'Pensioen-pionier', d: 'Pensioenopbouw staat aan', c: v => v.pensionOn && v.premieJaar > 0 },
+  { id: 'mobiel', i: 'bike', n: 'Mobiliteit-meester', d: 'Kilometers binnen je mobiliteitsbudget', c: v => v.reiskostenMaand > 0 && v.reiskostenMaand <= v.mobiliteitsbudget },
+  { id: 'scenario', i: 'sparkles', n: 'Scenario-denker', d: 'Draai een “wat als”' },
+  { id: 'positief', i: 'trend', n: 'Positief denker', d: 'Vind een scenario dat je netto verhoogt' },
+  { id: 'tijd', i: 'clock', n: 'Tijdreiziger', d: 'Gebruik de pensioen-tijdmachine' },
+  { id: 'doel', i: 'target', n: 'Doelgericht', d: 'Stel een spaardoel in' },
+  { id: 'koper', i: 'bag', n: 'Shopaholic', d: 'Bekijk wat je netto koopt' },
+  { id: 'printer', i: 'receipt', n: 'Loonstrook-lezer', d: 'Print een loonstrook' },
+  { id: 'deler', i: 'link', n: 'Deel de blijdschap', d: 'Deel een scenario-link' },
+  { id: 'streak3', i: 'flame', n: 'Vaste klant', d: 'Kom op 3 verschillende dagen terug' },
+  { id: 'stylist', i: 'palette', n: 'Stylist', d: 'Pas het thema aan' },
+  { id: 'peil', i: 'pin', n: 'Peildatum-pro', d: 'Bekijk de stand per peildatum' },
+  { id: 'layout', i: 'grid', n: 'Interieurarchitect', d: 'Pas je dashboard-indeling aan' },
+  { id: 'konami', i: 'gamepad', n: 'Cheat code', d: '???' },
 ];
 const LEVELS = ['Stagiair', 'Junior consultant', 'Consultant', 'Senior consultant', 'Principal', 'Partner', 'Legende'];
 let BSTATE = { u: {}, days: [] }, BFRESH = null, LAST_BCONF = 0;
@@ -3557,7 +3636,7 @@ function fxUnlock(id) {
   if (BSTATE.u[id]) return;
   const b = BADGES.find(x => x.id === id); if (!b) return;
   BSTATE.u[id] = Date.now(); fxSaveBadges(); BFRESH = id;
-  fxToast(`🏅 Prestatie: <b>${b.i} ${esc(b.n)}</b> &nbsp;+100`);
+  fxToast(`${ic('award')} Prestatie: <b>${esc(b.n)}</b> &nbsp;+100`);
   fxCash(); fxVibrate([25, 40, 25]);
   const now = Date.now(); if (now - LAST_BCONF > 4000) { LAST_BCONF = now; fxConfetti(byId('card-badges')); }
   fxRenderBadges();
@@ -3575,7 +3654,7 @@ function fxRenderBadges() {
   const sig = Object.keys(BSTATE.u).sort().join(',') + '|' + BFRESH;
   if (grid._sig !== sig) {
     grid._sig = sig;
-    grid.innerHTML = BADGES.map(b => { const on = !!BSTATE.u[b.id]; return `<div class="bdg${on ? ' on' : ''}${on && b.id === BFRESH ? ' fresh' : ''}" data-tip="${esc(b.d)}"><span class="bi">${b.i}</span><span class="bn">${on || b.id !== 'konami' ? esc(b.n) : '???'}</span><span class="bd">${on ? '✓ behaald' : esc(b.d)}</span></div>`; }).join('');
+    grid.innerHTML = BADGES.map(b => { const on = !!BSTATE.u[b.id]; return `<div class="bdg${on ? ' on' : ''}${on && b.id === BFRESH ? ' fresh' : ''}" data-tip="${esc(b.d)}"><span class="bi">${ic(b.i)}</span><span class="bn">${on || b.id !== 'konami' ? esc(b.n) : '???'}</span><span class="bd">${on ? '✓ behaald' : esc(b.d)}</span></div>`; }).join('');
   }
   byId('xp-level').textContent = `Level ${lvl} · ${LEVELS[lvl - 1]}`;
   const next = lvl >= LEVELS.length ? pts : lvl * 300, prev = (lvl - 1) * 300;
@@ -3587,7 +3666,7 @@ function fxRenderBadges() {
 function fxKonami() {
   fxUnlock('konami');
   document.body.classList.add('fx-rainbow'); setTimeout(() => document.body.classList.remove('fx-rainbow'), 6500);
-  fxToast('🕹️ Cheat code geactiveerd — vuurwerk!');
+  fxToast('Cheat code geactiveerd — vuurwerk!');
   for (let i = 0; i < 7; i++) setTimeout(() => { fxConfetti(null, { x: 60 + Math.random() * (window.innerWidth - 120), y: 120 + Math.random() * window.innerHeight * 0.45 }); fxBeep(500 + Math.random() * 900, 0.15, 'triangle', 0.04); }, i * 380);
 }
 (function () {
@@ -3610,7 +3689,7 @@ function fxShare() {
   if (PEIL) txt += (txt ? ', ' : '') + `stand per ${PEIL.getDate()}-${PEIL.getMonth() + 1}-${PEIL.getFullYear()}`;
   const SCEN_TEXT_ = txt;
   const url = location.href.split('#')[0] + '#wat-als=' + encodeURIComponent(SCEN_TEXT_);
-  const ok = () => { fxToast('🔗 Link gekopieerd — je collega ziet dit scenario op <i>zijn eigen</i> cijfers'); fxUnlock('deler'); };
+  const ok = () => { fxToast('Link gekopieerd — je collega ziet dit scenario op <i>zijn eigen</i> cijfers'); fxUnlock('deler'); };
   if (navigator.share && !FINE_POINTER) { navigator.share({ title: 'Mediumlance-scenario', text: 'Wat als: ' + SCEN_TEXT_, url }).then(() => fxUnlock('deler')).catch(() => {}); return; }
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(ok).catch(() => { window.prompt('Kopieer deze link:', url); fxUnlock('deler'); });
   else { window.prompt('Kopieer deze link:', url); fxUnlock('deler'); }
@@ -3618,7 +3697,7 @@ function fxShare() {
 let DEFERRED_INSTALL = null;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); DEFERRED_INSTALL = e; byId('installBtn').hidden = false; });
 byId('installBtn').addEventListener('click', async () => { if (!DEFERRED_INSTALL) return; DEFERRED_INSTALL.prompt(); try { await DEFERRED_INSTALL.userChoice; } catch (e) {} DEFERRED_INSTALL = null; byId('installBtn').hidden = true; });
-window.addEventListener('appinstalled', () => fxToast('📲 App geïnstalleerd — veel plezier!'));
+window.addEventListener('appinstalled', () => fxToast('App geïnstalleerd — veel plezier!'));
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
 
 // ---- alles tekenen ----
@@ -3639,29 +3718,29 @@ const PAGES = [
   { id: 'doelen', t: 'Doelen & extra’s', d: 'Sparen, prestaties en meer' },
 ];
 const DBLOCKS = [
-  { id: 'whatif', page: 'home', t: 'Wat als…?', i: '🔮', sel: '#whatif', span: 12, sizes: [12] },
-  { id: 'peil', page: 'home', t: 'Stand per peildatum', i: '📍', sel: '#card-peil', span: 12, sizes: [6, 12] },
-  { id: 'k1', page: 'home', t: 'Eindafrekening bruto', i: '€', sel: '#dash-ea-bruto', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
-  { id: 'k2', page: 'home', t: 'Eindafrekening netto', i: '€', sel: '#dash-ea-netto', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
-  { id: 'k3', page: 'home', t: 'Netto per maand', i: 'Σ', sel: '#dash-netto-maand', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
-  { id: 'k4', page: 'home', t: 'Totaal netto per jaar', i: '↗', sel: '#dash-totaal-netto', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
-  { id: 'year', page: 'home', t: 'Jaarverloop', i: '📅', sel: '#card-year', span: 6, sizes: [4, 6, 12] },
-  { id: 'donut', page: 'home', t: 'Waar gaat je omzet naartoe', i: '🍩', sel: '#dash-donut-omzet', closest: '.card', span: 6, sizes: [4, 6, 12] },
-  { id: 'insights', page: 'home', t: 'Belangrijkste inzichten', i: '💡', sel: '#dash-insights', closest: '.card', span: 12, sizes: [6, 12] },
-  { id: 'flow', page: 'inkomen', t: 'Geldstroom', i: '🌊', sel: '#card-flow', span: 12, sizes: [6, 12] },
-  { id: 'bars', page: 'inkomen', t: 'Bruto vs. netto', i: '📊', sel: '#dash-barchart', closest: '.card', span: 6, sizes: [4, 6, 12] },
-  { id: 'funnel', page: 'inkomen', t: 'Van omzet naar eindafrekening', i: '🔻', sel: '#dash-funnel', closest: '.card', span: 6, sizes: [4, 6, 12] },
-  { id: 'print', page: 'inkomen', t: 'Loonstrook-printer', i: '🧾', sel: '#card-print', span: 6, sizes: [4, 6, 12] },
-  { id: 'pens', page: 'pensioen', t: 'Pensioen — StiPP', i: '🧓', sel: '#dash-pens-donut', closest: '.card', span: 6, sizes: [4, 6, 12] },
-  { id: 'impact', page: 'pensioen', t: 'Impact van pensioenafdracht', i: '⚖️', sel: '#dash-pension-compare', closest: '.card', span: 6, sizes: [6, 12] },
-  { id: 'time', page: 'pensioen', t: 'Pensioen-tijdmachine', i: '⏳', sel: '#card-time', span: 12, sizes: [6, 12] },
-  { id: 'gauge', page: 'belasting', t: 'Effectieve belastingdruk', i: '🎚️', sel: '#dash-gauge2', closest: '.card', span: 6, sizes: [4, 6, 12] },
-  { id: 'meter', page: 'belasting', t: 'Belasting-snelheidsmeter', i: '⏱️', sel: '#card-meter', span: 6, sizes: [4, 6, 12] },
-  { id: 'goal', page: 'doelen', t: 'Spaardoel', i: '🎯', sel: '#card-goal', span: 6, sizes: [6, 12] },
-  { id: 'shop', page: 'doelen', t: 'Wat koop je ervan?', i: '🛍️', sel: '#card-shop', span: 6, sizes: [6, 12] },
-  { id: 'badges', page: 'doelen', t: 'Prestaties', i: '🏅', sel: '#card-badges', span: 12, sizes: [6, 12] },
-  { id: 'ticker', page: 'doelen', t: 'Lopende band', i: '📈', sel: '#fx-ticker', span: 12, sizes: [12] },
-  { id: 'live', page: 'doelen', t: 'Live verdienmeter', i: '🔴', sel: '#fx-live', span: 12, sizes: [12] },
+  { id: 'whatif', page: 'home', t: 'Wat als…?', i: 'sparkles', sel: '#whatif', span: 12, sizes: [12] },
+  { id: 'peil', page: 'home', t: 'Stand per peildatum', i: 'pin', sel: '#card-peil', span: 12, sizes: [6, 12] },
+  { id: 'k1', page: 'home', t: 'Eindafrekening bruto', i: 'euro', sel: '#dash-ea-bruto', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
+  { id: 'k2', page: 'home', t: 'Eindafrekening netto', i: 'euro', sel: '#dash-ea-netto', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
+  { id: 'k3', page: 'home', t: 'Netto per maand', i: 'sigma', sel: '#dash-netto-maand', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
+  { id: 'k4', page: 'home', t: 'Totaal netto per jaar', i: 'trend', sel: '#dash-totaal-netto', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
+  { id: 'year', page: 'home', t: 'Jaarverloop', i: 'calendar', sel: '#card-year', span: 6, sizes: [4, 6, 12] },
+  { id: 'donut', page: 'home', t: 'Waar gaat je omzet naartoe', i: 'pie', sel: '#dash-donut-omzet', closest: '.card', span: 6, sizes: [4, 6, 12] },
+  { id: 'insights', page: 'home', t: 'Belangrijkste inzichten', i: 'bulb', sel: '#dash-insights', closest: '.card', span: 12, sizes: [6, 12] },
+  { id: 'flow', page: 'inkomen', t: 'Geldstroom', i: 'waves', sel: '#card-flow', span: 12, sizes: [6, 12] },
+  { id: 'bars', page: 'inkomen', t: 'Bruto vs. netto', i: 'bars', sel: '#dash-barchart', closest: '.card', span: 6, sizes: [4, 6, 12] },
+  { id: 'funnel', page: 'inkomen', t: 'Van omzet naar eindafrekening', i: 'filter', sel: '#dash-funnel', closest: '.card', span: 6, sizes: [4, 6, 12] },
+  { id: 'print', page: 'inkomen', t: 'Loonstrook-printer', i: 'receipt', sel: '#card-print', span: 6, sizes: [4, 6, 12] },
+  { id: 'pens', page: 'pensioen', t: 'Pensioen — StiPP', i: 'umbrella', sel: '#dash-pens-donut', closest: '.card', span: 6, sizes: [4, 6, 12] },
+  { id: 'impact', page: 'pensioen', t: 'Impact van pensioenafdracht', i: 'scale', sel: '#dash-pension-compare', closest: '.card', span: 6, sizes: [6, 12] },
+  { id: 'time', page: 'pensioen', t: 'Pensioen-tijdmachine', i: 'clock', sel: '#card-time', span: 12, sizes: [6, 12] },
+  { id: 'gauge', page: 'belasting', t: 'Effectieve belastingdruk', i: 'gauge', sel: '#dash-gauge2', closest: '.card', span: 6, sizes: [4, 6, 12] },
+  { id: 'meter', page: 'belasting', t: 'Belasting-snelheidsmeter', i: 'timer', sel: '#card-meter', span: 6, sizes: [4, 6, 12] },
+  { id: 'goal', page: 'doelen', t: 'Spaardoel', i: 'target', sel: '#card-goal', span: 6, sizes: [6, 12] },
+  { id: 'shop', page: 'doelen', t: 'Wat koop je ervan?', i: 'bag', sel: '#card-shop', span: 6, sizes: [6, 12] },
+  { id: 'badges', page: 'doelen', t: 'Prestaties', i: 'award', sel: '#card-badges', span: 12, sizes: [6, 12] },
+  { id: 'ticker', page: 'doelen', t: 'Lopende band', i: 'activity', sel: '#fx-ticker', span: 12, sizes: [12] },
+  { id: 'live', page: 'doelen', t: 'Live verdienmeter', i: 'dot', sel: '#fx-live', span: 12, sizes: [12] },
 ];
 let LAYOUT = null, DEDIT = false, CUR_PAGE = 'home';
 const defaultLayout = () => ({ order: DBLOCKS.map(b => b.id), hidden: ['ticker', 'live'], span: {}, page: {} });
@@ -3712,7 +3791,7 @@ function fxSyncOrder() { LAYOUT.order = PAGES.flatMap(p => [...pageCont(p.id).ch
 function fxRenderHiddenChips() {
   const box = byId('edit-hidden'); if (!box) return;
   box.innerHTML = LAYOUT.hidden.length
-    ? LAYOUT.hidden.map(id => { const d = blockDef(id); return `<button type="button" class="chip-add" data-id="${id}">＋ ${d.i} ${esc(d.t)} <small>${esc(pageTitle(pageOf(id)))}</small></button>`; }).join('')
+    ? LAYOUT.hidden.map(id => { const d = blockDef(id); return `<button type="button" class="chip-add" data-id="${id}">＋ ${ic(d.i)} ${esc(d.t)} <small>${esc(pageTitle(pageOf(id)))}</small></button>`; }).join('')
     : '<span class="edit-none">Alle blokken staan op je dashboard. Haal een blok weg met ✕ — je kunt het hier weer terugzetten.</span>';
 }
 function fxLayoutChanged() { fxLayoutSave(); fxRenderHiddenChips(); fxRelayout(); fxUnlock('layout'); }
@@ -3758,7 +3837,7 @@ function fxSetEditing(on) {
   byId('edit-panel').hidden = !on;
   const b = byId('editToggle'); b.classList.toggle('on', on); b.dataset.label = on ? 'Klaar met aanpassen' : 'Dashboard aanpassen';
   document.querySelectorAll('#tab-dashboard .dblock').forEach(el => { el.draggable = on; });
-  if (on) { fxRenderHiddenChips(); fxToast('✎ Sleep blokken, of gebruik ◀ ▶ ⇔ ⇄ ✕ op elk blok'); }
+  if (on) { fxRenderHiddenChips(); fxToast('Sleep blokken, of gebruik ◀ ▶ ⇔ ⇄ ✕ op elk blok'); }
   fxRelayout();
 }
 
@@ -3830,7 +3909,7 @@ function fxLayoutInit() {
     const w = document.createElement('div'); w.className = 'dblock'; w.dataset.block = d.id; w.dataset.span = d.span;
     el.parentNode.insertBefore(w, el); w.appendChild(el);
     const bar = document.createElement('div'); bar.className = 'dblock-bar';
-    bar.innerHTML = `<span class="dbar-title">⠿ ${d.i} ${esc(d.t)}</span><span class="dbar-btns"><button type="button" data-act="left" title="Eerder">◀</button><button type="button" data-act="right" title="Later">▶</button><button type="button" data-act="size" title="Formaat wisselen">⇔</button><button type="button" data-act="page" title="Naar een andere pagina">⇄</button><button type="button" data-act="hide" title="Blok weghalen">✕</button></span>`;
+    bar.innerHTML = `<span class="dbar-title">⠿ ${ic(d.i)} ${esc(d.t)}</span><span class="dbar-btns"><button type="button" data-act="left" title="Eerder">◀</button><button type="button" data-act="right" title="Later">▶</button><button type="button" data-act="size" title="Formaat wisselen">⇔</button><button type="button" data-act="page" title="Naar een andere pagina">⇄</button><button type="button" data-act="hide" title="Blok weghalen">✕</button></span>`;
     w.appendChild(bar);
     pageCont(d.page).appendChild(w);
   });
@@ -3848,7 +3927,7 @@ function fxLayoutInit() {
   byId('editReset').addEventListener('click', () => {
     LAYOUT = defaultLayout(); fxApplyLayout(); fxSyncOrder();
     try { localStorage.removeItem('mlc-layout'); } catch (e) {}
-    fxRelayout(); fxToast('↺ Standaard indeling hersteld');
+    fxRelayout(); fxToast('Standaard indeling hersteld');
   });
 
   // slepen (desktop), alleen binnen dezelfde pagina; op een telefoon gebruik je ◀ ▶
@@ -3958,7 +4037,7 @@ function peilEnableUI() {
 function setPeil(date, scroll) {
   PEIL = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   peilEnableUI();
-  if (typeof LAYOUT !== 'undefined' && LAYOUT && LAYOUT.hidden.includes('peil')) { LAYOUT.hidden = LAYOUT.hidden.filter(x => x !== 'peil'); fxApplyLayout(); fxLayoutSave(); fxToast('📍 Het blok “Stand per peildatum” is weer zichtbaar gemaakt'); }
+  if (typeof LAYOUT !== 'undefined' && LAYOUT && LAYOUT.hidden.includes('peil')) { LAYOUT.hidden = LAYOUT.hidden.filter(x => x !== 'peil'); fxApplyLayout(); fxLayoutSave(); fxToast('Het blok “Stand per peildatum” is weer zichtbaar gemaakt'); }
   FX_ANIM = true; recalc(); renderWhatif();
   fxUnlock('peil');
   if (scroll) { const w = byId('card-peil').closest('.dblock'); if (w) setTimeout(() => w.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' }), 120); }
@@ -3973,7 +4052,7 @@ function peilInit() {
   byId('peilClose').addEventListener('click', clearPeil);
   byId('peilCopy').addEventListener('click', () => {
     if (!PEIL || !FX_LAST) return; const txt = peilSummaryText(FX_LAST.v);
-    const ok = () => { fxToast('📋 Samenvatting gekopieerd — plak hem in je mail of chat'); fxUnlock('deler'); };
+    const ok = () => { fxToast('Samenvatting gekopieerd — plak hem in je mail of chat'); fxUnlock('deler'); };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(ok).catch(() => window.prompt('Kopieer de samenvatting:', txt)); else window.prompt('Kopieer de samenvatting:', txt);
   });
   byId('peilCsv').addEventListener('click', () => {
@@ -3981,7 +4060,7 @@ function peilInit() {
     const blob = new Blob([peilCsv(FX_LAST.v)], { type: 'text/csv;charset=utf-8' }), a = document.createElement('a');
     a.href = URL.createObjectURL(blob); a.download = `stand-per-${PEIL.getFullYear()}-${String(PEIL.getMonth() + 1).padStart(2, '0')}-${String(PEIL.getDate()).padStart(2, '0')}.csv`;
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-    fxToast('⬇ CSV gedownload (opent in Excel)'); fxUnlock('deler');
+    fxToast('CSV gedownload (opent in Excel)'); fxUnlock('deler');
   });
   byId('peilPrint').addEventListener('click', () => {
     if (!PEIL) return; document.body.classList.add('print-peil');
@@ -4129,7 +4208,7 @@ function tcLoadImage(file) {
         try { localStorage.setItem('mlc-bg-img', data); TC_IMG = data; return true; } catch (e) { return false; }
       };
       if (!(store(1600, .78) || store(1100, .65) || store(720, .55))) { fxToast('Deze afbeelding is te groot om op te slaan'); return; }
-      TP.bg = 'photo'; tcChanged(false); fxToast('🖼 Achtergrond ingesteld — blijft alleen op dit apparaat');
+      TP.bg = 'photo'; tcChanged(false); fxToast('Achtergrond ingesteld — blijft alleen op dit apparaat');
     };
     img.onerror = () => fxToast('Deze afbeelding kan niet worden gelezen');
     img.src = fr.result;
@@ -4162,7 +4241,7 @@ function tcInit() {
   byId('tc-anim').addEventListener('change', e => { TP.anim = e.target.checked; tcChanged(false); });
   byId('tc-parts').addEventListener('change', e => { TP.parts = e.target.checked; tcChanged(false); });
   byId('tc-tilt').addEventListener('change', e => { TP.tilt = e.target.checked; tcChanged(false); });
-  byId('tc-reset').addEventListener('click', () => { TP = { ...DEF_TP }; TC_IMG = null; try { localStorage.removeItem('mlc-bg-img'); localStorage.removeItem('mlc-theme-prefs2'); } catch (e) {} tcApplyAll(); tcRenderPanel(); FX_ANIM = false; recalc(); fxToast('↺ Standaard thema hersteld'); });
+  byId('tc-reset').addEventListener('click', () => { TP = { ...DEF_TP }; TC_IMG = null; try { localStorage.removeItem('mlc-bg-img'); localStorage.removeItem('mlc-theme-prefs2'); } catch (e) {} tcApplyAll(); tcRenderPanel(); FX_ANIM = false; recalc(); fxToast('Standaard thema hersteld'); });
 }
 
 // ================= ECHT GLAS: niveaus, lichtbreking, dispersie en glanslicht (Chrome/Edge) =================
@@ -4397,20 +4476,20 @@ function fxTopPillText() {
 const CMDK = { sel: 0, items: [] };
 function cmdkItems() {
   const a = [];
-  PAGES.forEach(p => a.push({ i: { home: '🏠', inkomen: '💶', pensioen: '☂️', belasting: '％', doelen: '🎯' }[p.id] || '•', t: p.t, s: 'Pagina', k: 'pagina ' + p.d, run: () => goPage(p.id) }));
-  a.push({ i: '⚙️', t: 'Invoer', s: 'Pagina', k: 'invoer cijfers uurtarief uren kosten', run: () => goPage('invoer') });
-  a.push({ i: '🔮', t: 'Wat-als scenario', s: 'Actie', k: 'wat als scenario vakantiedagen peildatum', run: () => { goPage('home'); setTimeout(() => { const i = byId('whatifInput'); i.scrollIntoView({ block: 'center' }); i.focus(); }, 300); } });
-  a.push({ i: '🎨', t: 'Thema & achtergrond', s: 'Actie', k: 'thema kleur achtergrond glas animaties studio', run: () => tcOpen(true) });
-  a.push({ i: '🌓', t: 'Donker / licht thema', s: 'Actie', k: 'donker licht dark mode thema', run: () => byId('themeToggle').click() });
-  a.push({ i: '🧩', t: 'Dashboard aanpassen', s: 'Actie', k: 'bewerken layout blokken verplaatsen', run: () => byId('editToggle').click() });
-  a.push({ i: '🖨️', t: 'Loonstrook printen', s: 'Actie', k: 'print loonstrook printer', run: () => { goPage('inkomen'); setTimeout(() => byId('printPayslip').click(), 400); } });
+  PAGES.forEach(p => a.push({ i: { home: 'home', inkomen: 'euro', pensioen: 'umbrella', belasting: 'percent', doelen: 'target' }[p.id] || 'dot', t: p.t, s: 'Pagina', k: 'pagina ' + p.d, run: () => goPage(p.id) }));
+  a.push({ i: 'sliders', t: 'Invoer', s: 'Pagina', k: 'invoer cijfers uurtarief uren kosten', run: () => goPage('invoer') });
+  a.push({ i: 'sparkles', t: 'Wat-als scenario', s: 'Actie', k: 'wat als scenario vakantiedagen peildatum', run: () => { goPage('home'); setTimeout(() => { const i = byId('whatifInput'); i.scrollIntoView({ block: 'center' }); i.focus(); }, 300); } });
+  a.push({ i: 'palette', t: 'Thema & achtergrond', s: 'Actie', k: 'thema kleur achtergrond glas animaties studio', run: () => tcOpen(true) });
+  a.push({ i: 'moon', t: 'Donker / licht thema', s: 'Actie', k: 'donker licht dark mode thema', run: () => byId('themeToggle').click() });
+  a.push({ i: 'grid', t: 'Dashboard aanpassen', s: 'Actie', k: 'bewerken layout blokken verplaatsen', run: () => byId('editToggle').click() });
+  a.push({ i: 'printer', t: 'Loonstrook printen', s: 'Actie', k: 'print loonstrook printer', run: () => { goPage('inkomen'); setTimeout(() => byId('printPayslip').click(), 400); } });
   return a;
 }
 function cmdkRender() {
   const q = byId('cmdk-in').value.trim().toLowerCase();
   CMDK.items = cmdkItems().filter(it => !q || (it.t + ' ' + it.k).toLowerCase().includes(q));
   CMDK.sel = Math.min(CMDK.sel, Math.max(0, CMDK.items.length - 1));
-  byId('cmdk-list').innerHTML = CMDK.items.length ? CMDK.items.map((it, n) => `<button type="button" class="cmdk-item${n === CMDK.sel ? ' sel' : ''}" data-n="${n}"><span class="ci">${it.i}</span>${esc(it.t)}<small>${it.s}</small></button>`).join('') : '<div class="cmdk-empty">Niets gevonden — probeer “pensioen” of “thema”.</div>';
+  byId('cmdk-list').innerHTML = CMDK.items.length ? CMDK.items.map((it, n) => `<button type="button" class="cmdk-item${n === CMDK.sel ? ' sel' : ''}" data-n="${n}"><span class="ci">${ic(it.i)}</span>${esc(it.t)}<small>${it.s}</small></button>`).join('') : '<div class="cmdk-empty">Niets gevonden — probeer “pensioen” of “thema”.</div>';
 }
 function cmdkOpen(on) {
   const el = byId('cmdk'); if (!el) return;
@@ -4455,6 +4534,20 @@ function fxThemeReveal(next) {
     document.documentElement.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] }, { duration: 900, easing: 'cubic-bezier(.5,0,.15,1)', pseudoElement: '::view-transition-new(root)' });
   }).catch(() => {});
 }
+
+
+// ---- iOS-componenten: schuifregelaar-vulling + glijdende pil ----
+function fxRangeFill(r) { const mn = +r.min || 0, mx = +r.max || 100; r.style.setProperty('--fill', ((+r.value - mn) / (mx - mn || 1) * 100).toFixed(1) + '%'); }
+function fxSegSync(seg) {
+  const b = seg.querySelector('button.on'); if (!b || !b.offsetWidth) { seg.style.setProperty('--so', 0); return; }
+  seg.style.setProperty('--sx', b.offsetLeft + 'px'); seg.style.setProperty('--sy', b.offsetTop + 'px'); seg.style.setProperty('--sw', b.offsetWidth + 'px'); seg.style.setProperty('--sh', b.offsetHeight + 'px'); seg.style.setProperty('--so', 1);
+}
+function fxIosSync() { document.querySelectorAll('input[type=range]').forEach(fxRangeFill); document.querySelectorAll('.tc-seg').forEach(fxSegSync); }
+document.addEventListener('input', e => { if (e.target.type === 'range') fxRangeFill(e.target); });
+document.addEventListener('click', e => { if (e.target.closest('.tc-seg')) setTimeout(fxIosSync, 30); });
+new MutationObserver(() => requestAnimationFrame(fxIosSync)).observe(byId('tc-panel'), { attributes: true, subtree: true, attributeFilter: ['class', 'hidden'] });
+window.addEventListener('resize', fxIosSync);
+setTimeout(fxIosSync, 400);
 
 tcLoad();
 let savedTheme = null;
