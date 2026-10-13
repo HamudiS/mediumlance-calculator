@@ -913,6 +913,157 @@
     .tc-panel { top: auto; left: 0; right: 0; bottom: 0; width: 100%; height: 72vh; border-left: none; border-top: 1px solid var(--border); border-radius: 18px 18px 0 0; transform: translateY(105%); }
     .tc-panel.open { transform: none; }
   }
+
+  /* ================= APPLE · LIQUID GLASS ================= */
+  :root {
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --spring: cubic-bezier(.3, 1.3, .5, 1);
+    --smooth: cubic-bezier(.2, .9, .25, 1);
+    --bg: #f2f2f7; --card-bg: rgba(255,255,255,var(--card-alpha,.9));
+    --border: rgba(60,60,67,.12); --text: #1c1c1e; --text-muted: #6e6e73;
+    --row-border: rgba(60,60,67,.09); --track: rgba(120,120,128,.14);
+    --shadow: 0 1px 2px rgba(0,0,0,.04), 0 10px 30px rgba(20,30,60,.07);
+    --radius-lg: 24px;
+  }
+  html { scroll-behavior: auto; }
+  body { font-family: var(--font); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; letter-spacing: -.011em; transition: background-color .6s ease, color .4s ease; }
+  html:not([data-theme="2050"]) body { background: radial-gradient(1100px 700px at 8% -5%, #e3ecff 0%, transparent 60%), radial-gradient(900px 600px at 100% 8%, #f3e6ff 0%, transparent 55%), #f2f2f7; background-attachment: fixed; }
+  ::selection { background: rgba(var(--acc-rgb), .35); }
+  ::-webkit-scrollbar { width: 11px; height: 11px; } ::-webkit-scrollbar-thumb { background: rgba(128,128,140,.35); border-radius: 8px; border: 3px solid transparent; background-clip: content-box; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* schil */
+  .wrap { max-width: 1280px; padding: 34px 36px 100px 118px; }
+  .page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin: 4px 0 26px; }
+  .eyebrow { font-size: 13px; font-weight: 600; color: var(--text-muted); letter-spacing: .01em; }
+  #page-title { font-size: 40px; line-height: 1.08; font-weight: 750; letter-spacing: -.038em; margin: 4px 0 4px; color: var(--text); }
+  .page-sub { font-size: 15px; color: var(--text-muted); }
+  .page-head .fx-greet { font-size: 14px; margin-top: 8px; }
+  .page-head-right { display: flex; align-items: center; gap: 10px; }
+  .dash-period { font-size: 12.5px; font-weight: 600; color: var(--text-muted); padding: 7px 14px; border-radius: 999px; background: var(--card-bg); border: 1px solid var(--border); }
+  .dpage { display: none; } .dpage.on { display: block; }
+  .dash-blocks { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; align-items: start; }
+  #dash-blocks { display: block; }
+  .tab-panel { display: none; } .tab-panel.active { display: block; }
+  .scen-banner { display: flex; align-items: center; gap: 12px; margin: -6px 0 18px; padding: 10px 14px 10px 16px; border-radius: 999px; font-size: 13px;
+    background: rgba(var(--acc-rgb), .14); border: 1px solid rgba(var(--acc-rgb), .35); color: var(--text); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+    animation: bannerIn .6s var(--spring) both; }
+  .scen-banner .sb-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(var(--acc-rgb), .22); flex-shrink: 0; animation: fxPulse 2s ease-in-out infinite; }
+  .scen-banner .sb-text { flex: 1; min-width: 0; }
+  .scen-banner button { font: inherit; font-size: 12px; font-weight: 600; padding: 6px 13px; border-radius: 999px; border: none; background: var(--accent); color: var(--on-accent, #04140e); cursor: pointer; white-space: nowrap; transition: transform .25s var(--spring); }
+  .scen-banner button:active { transform: scale(.94); }
+  .on-invoer .scen-banner { display: none; }
+  @keyframes bannerIn { from { opacity: 0; transform: translateY(-10px) scale(.96); } }
+
+  /* zijmenu — liquid glass pil */
+  .side-nav { position: fixed; left: 24px; top: 50%; transform: translateY(-50%); z-index: 50; display: flex; flex-direction: column; gap: 16px; }
+  .nav-pill { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 10px 8px; border-radius: 36px;
+    background: linear-gradient(160deg, rgba(255,255,255,.34), rgba(255,255,255,.1)), var(--card-bg);
+    border: 1px solid rgba(255,255,255,.3);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(255,255,255,.08), 0 18px 50px rgba(10,20,50,.2);
+    -webkit-backdrop-filter: blur(40px) saturate(200%); backdrop-filter: blur(40px) saturate(200%); }
+  html[data-theme="2050"] .nav-pill { background: linear-gradient(160deg, rgba(255,255,255,.18), rgba(255,255,255,.04)), rgba(24,32,52,.45); border-color: rgba(255,255,255,.18); box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 20px 56px rgba(0,0,0,.4); }
+  .nav-tools { padding: 8px; }
+  .nav-ind { position: absolute; left: 0; top: 0; width: 44px; height: 44px; border-radius: 50%; margin: 0; z-index: 0; opacity: 0;
+    background: linear-gradient(160deg, rgba(255,255,255,.55), rgba(255,255,255,.18)); box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 8px 20px rgba(0,0,0,.18);
+    transition: transform .6s var(--spring), opacity .3s ease; }
+  html[data-theme="2050"] .nav-ind { background: linear-gradient(160deg, rgba(255,255,255,.3), rgba(255,255,255,.1)); box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 8px 22px rgba(0,0,0,.35); }
+  .nav-btn { position: relative; z-index: 1; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; border: none; background: transparent; color: var(--text-muted); cursor: pointer; padding: 0;
+    transform: scale(var(--s, 1)); transition: color .25s ease, transform .45s var(--spring), background .25s ease; -webkit-tap-highlight-color: transparent; }
+  .nav-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; transition: transform .45s var(--spring); }
+  .nav-btn:hover { color: var(--text); } .nav-btn.active { color: var(--accent); }
+  .nav-btn:hover svg { transform: scale(1.06); } .nav-btn:active { transform: scale(.9); }
+  .nav-tools .nav-btn.on { color: var(--accent); background: rgba(var(--acc-rgb), .16); }
+  .nav-btn::after { content: attr(data-label); position: absolute; left: calc(100% + 16px); top: 50%; transform: translate(-10px, -50%) scale(.9); transform-origin: left center; opacity: 0; pointer-events: none; white-space: nowrap;
+    font-size: 13px; font-weight: 600; letter-spacing: -.01em; padding: 8px 14px; border-radius: 999px; color: #fff; background: rgba(28,32,46,.78);
+    -webkit-backdrop-filter: blur(24px) saturate(180%); backdrop-filter: blur(24px) saturate(180%); border: 1px solid rgba(255,255,255,.14); box-shadow: 0 10px 28px rgba(0,0,0,.35);
+    transition: opacity .2s ease, transform .45s var(--spring); }
+  .nav-btn:hover::after { opacity: 1; transform: translate(0, -50%) scale(1); transition-delay: .12s; }
+
+  /* kaarten — liquid glass */
+  .card, .kpi-tile { border-radius: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); padding: 24px 26px; }
+  html:not([data-theme="2050"]) .card, html:not([data-theme="2050"]) .kpi-tile { -webkit-backdrop-filter: blur(28px) saturate(180%); backdrop-filter: blur(28px) saturate(180%); border-color: rgba(255,255,255,.7); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 1px 2px rgba(0,0,0,.03), 0 14px 40px rgba(30,40,80,.08); }
+  html[data-theme="2050"] {
+    --bg: #080d19; --card-bg: rgba(34,46,70,var(--card-alpha,.5)); --border: rgba(255,255,255,.13);
+    --text: #f5f7fb; --text-muted: rgba(226,232,246,.6); --row-border: rgba(255,255,255,.07); --track: rgba(255,255,255,.1);
+    --input-bg: rgba(255,255,255,.07); --input-border: rgba(255,255,255,.16); --panel-bg: rgba(16,22,38,.88);
+    --shadow: 0 1px 2px rgba(0,0,0,.2), 0 20px 50px rgba(0,0,0,.3);
+  }
+  html[data-theme="2050"] .card, html[data-theme="2050"] .kpi-tile {
+    background: linear-gradient(150deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.035) 42%, rgba(255,255,255,.07) 100%), var(--card-bg);
+    border: 1px solid rgba(255,255,255,.1);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.26), inset 0 -1px 0 rgba(255,255,255,.04), 0 1px 2px rgba(0,0,0,.2), 0 22px 56px rgba(0,0,0,.3);
+    -webkit-backdrop-filter: blur(36px) saturate(190%) brightness(1.05); backdrop-filter: blur(36px) saturate(190%) brightness(1.05);
+  }
+  html[data-theme="2050"] .card:hover, html[data-theme="2050"] .kpi-tile:hover { border-color: rgba(255,255,255,.18); box-shadow: inset 0 1px 0 rgba(255,255,255,.32), 0 2px 4px rgba(0,0,0,.2), 0 30px 70px rgba(0,0,0,.36); }
+  /* spiegelende lichtrand */
+  .dblock > .card::after, .dblock > .kpi-tile::after { content: ""; display: block; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none; opacity: .85;
+    background: linear-gradient(140deg, rgba(255,255,255,.6), rgba(255,255,255,.06) 32%, rgba(255,255,255,0) 58%, rgba(255,255,255,.2));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
+  html:not([data-theme="2050"]) .dblock > .card::after, html:not([data-theme="2050"]) .dblock > .kpi-tile::after { opacity: .5; background: linear-gradient(140deg, rgba(255,255,255,1), rgba(255,255,255,.2) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,.7)); }
+  .fx-glare { background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.2), transparent 42%); mix-blend-mode: soft-light; }
+  .card h2 { font-size: 17px; font-weight: 650; letter-spacing: -.022em; margin: 0 0 18px; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; }
+  .card h2 .badge { background: none; padding: 0; border: none; color: var(--text-muted); font-weight: 500; font-size: 12.5px; letter-spacing: 0; text-transform: none; }
+
+  /* KPI-widgets */
+  .kpi-icon { display: none; }
+  .kpi-tile { padding: 22px 24px 20px; }
+  .kpi-label { font-size: 13px; font-weight: 600; color: var(--text-muted); margin: 0 0 10px; letter-spacing: -.005em; }
+  .kpi-tile { container-type: inline-size; }
+  .kpi-value { font-size: clamp(21px, 10.5cqw, 32px); font-weight: 720; letter-spacing: -.035em; line-height: 1.05; text-shadow: none !important; white-space: nowrap; }
+  .kpi-sub { font-size: 12.5px; margin-top: 8px; }
+  html[data-theme="2050"] .kpi-tile.hero, .kpi-tile.hero { background: linear-gradient(150deg, var(--hero-1, #1a9c7a) 0%, var(--hero-2, #0f6f66) 58%, var(--hero-3, #0a4350) 100%); border-color: rgba(255,255,255,.22); box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 18px 48px rgba(0,0,0,.32); }
+  html:not([data-theme="2050"]) .kpi-tile.hero { background: linear-gradient(150deg, var(--accent) 0%, var(--accent-2) 60%, var(--accent-3, #1c4a34) 100%); }
+  .kpi-tile.hero::before { content: ""; display: block; position: absolute; inset: -60%; padding: 0; pointer-events: none; -webkit-mask: none; mask: none; border-radius: 0;
+    background: linear-gradient(115deg, transparent 42%, rgba(255,255,255,.2) 50%, transparent 58%); transform: translateX(-70%); animation: heroSheen 9s var(--smooth) 2s infinite; }
+  @keyframes heroSheen { 0% { transform: translateX(-70%); } 22%, 100% { transform: translateX(70%); } }
+  html[data-theme="2050"] .whatif.active::before { display: none; }
+  html[data-theme="2050"] .donut-wrap::before, html[data-theme="2050"] .donut-wrap svg { display: none; }
+  html[data-theme="2050"] .donut-wrap svg { display: block; filter: none; }
+  html[data-theme="2050"] .donut-center .dc-value, html[data-theme="2050"] .gauge2-center .g2-val, html[data-theme="2050"] .tab-btn.active, html[data-theme="2050"] .hero .amount { text-shadow: none; animation: none; }
+  html[data-theme="2050"] header.page h1, html[data-theme="2050"] .dash-intro h2 { animation: none; }
+  html[data-theme="2050"] .btn-inline { box-shadow: 0 6px 18px rgba(var(--acc-rgb), .28); }
+  #fx-grid { display: none !important; }
+  #fx-bg .blob { opacity: .34; filter: blur(90px); }
+  #fx-bg .b1 { translate: calc(var(--px, 0) * -28px) calc(var(--py, 0) * -22px); }
+  #fx-bg .b2 { translate: calc(var(--px, 0) * 34px) calc(var(--py, 0) * -26px); }
+  #fx-bg .b3 { translate: calc(var(--px, 0) * -40px) calc(var(--py, 0) * 30px); }
+  #fx-bg-img { translate: calc(var(--px, 0) * -10px) calc(var(--py, 0) * -8px); }
+
+  /* knoppen & velden */
+  .btn-ghost, .btn-inline, .shop-pill, .chip-add { border-radius: 999px; transition: transform .35s var(--spring), background .2s ease, box-shadow .25s ease, border-color .2s ease; }
+  .btn-ghost { padding: 8px 16px; background: rgba(128,128,140,.12); border-color: transparent; }
+  .btn-ghost:hover { background: rgba(128,128,140,.2); }
+  .btn-inline { padding: 8px 18px; }
+  .btn-ghost:active, .btn-inline:active, .shop-pill:active, .chip-add:active { transform: scale(.94); }
+  .whatif-row input[type=text], .row input[type=text], .goal-form input, .tm-rend input, .whatif-peil input[type=date] { border-radius: 14px; }
+  .row input[type=number] { border-radius: 10px; }
+
+  /* beweging: veer-animaties */
+  .fx-in { animation: fxUp .85s var(--spring) both; animation-delay: var(--d, 0ms); }
+  @keyframes fxUp { from { opacity: 0; transform: translateY(28px) scale(.96); filter: blur(10px); } 60% { filter: blur(0); } to { opacity: 1; transform: none; filter: blur(0); } }
+  .kpi-tile, .card, .dblock { transition: transform .5s var(--spring), box-shadow .35s ease, border-color .3s ease; }
+  html:not(.no-anim) .dblock:not(.dragging) > .card:hover, html:not(.no-anim) .dblock:not(.dragging) > .kpi-tile:hover { transform: translateY(-3px); }
+  .fx-toast { border-radius: 999px; padding: 12px 22px; }
+
+  /* mobiel: iOS-tabbalk */
+  @media (max-width: 760px) {
+    .wrap { padding: 20px 16px 120px; }
+    #page-title { font-size: 32px; }
+    .side-nav { left: 12px; right: 12px; top: auto; bottom: calc(10px + env(safe-area-inset-bottom)); transform: none; flex-direction: row; justify-content: center; gap: 0; }
+    .nav-pill:not(.nav-tools) { flex-direction: row; justify-content: space-between; width: 100%; max-width: 440px; padding: 7px 10px; border-radius: 30px; }
+    .nav-btn { width: 46px; height: 46px; } .nav-btn::after { display: none; }
+    .nav-ind { width: 46px; height: 46px; }
+    .nav-tools { position: fixed; top: calc(12px + env(safe-area-inset-top)); right: 12px; left: auto; flex-direction: row; padding: 5px 7px; border-radius: 26px; gap: 0; }
+    .nav-tools .nav-btn { width: 38px; height: 38px; } .nav-tools .nav-btn svg { width: 19px; height: 19px; }
+    .page-head { padding-right: 0; margin-top: 44px; }
+    .fx-toast { bottom: 96px; }
+    .kpi-tile { padding: 16px 16px 14px; }
+    .card { padding: 20px 18px; }
+  }
+  @media (max-width: 980px) and (min-width: 761px) { .wrap { padding-left: 104px; padding-right: 22px; } }
+  @media (prefers-reduced-motion: reduce) { .kpi-tile.hero::before { display: none; } }
+  @media print { body.print-peil .side-nav, body.print-peil .page-head, body.print-peil .scen-banner { display: none !important; } }
 </style>
 </head>
 <body>
@@ -920,32 +1071,38 @@
 <div id="fx-bg" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div id="fx-grid"></div><canvas id="fx-canvas"></canvas></div>
 <div class="wrap">
 
-  <header class="page">
-    <div>
-      <h1>Mediumlance Calculator</h1>
-      <p>Bereken je bruto resultaat, kosten en StiPP-pensioenopbouw als mediumlancer</p>
+  <nav class="side-nav" id="side-nav" aria-label="Navigatie">
+    <div class="nav-pill" id="nav-pages">
+      <span class="nav-ind" id="nav-ind"></span>
+      <button type="button" class="nav-btn active" data-page="home" data-label="Overzicht" aria-label="Overzicht"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5V19a1.5 1.5 0 0 1-1.5 1.5H15v-5.5H9v5.5H5.5A1.5 1.5 0 0 1 4 19z"/></svg></button>
+      <button type="button" class="nav-btn" data-page="inkomen" data-label="Inkomen" aria-label="Inkomen"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M15.4 9.2a4 4 0 1 0 0 5.6M7.6 11h5.6M7.6 13.2h5.6"/></svg></button>
+      <button type="button" class="nav-btn" data-page="pensioen" data-label="Pensioen" aria-label="Pensioen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 12.5a8.5 8.5 0 0 1 17 0z"/><path d="M12 12.5V18a2 2 0 0 1-4 0"/><path d="M12 4V3"/></svg></button>
+      <button type="button" class="nav-btn" data-page="belasting" data-label="Belasting" aria-label="Belasting"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><circle cx="7.6" cy="7.6" r="2.3"/><circle cx="16.4" cy="16.4" r="2.3"/></svg></button>
+      <button type="button" class="nav-btn" data-page="doelen" data-label="Doelen &amp; extra’s" aria-label="Doelen en extra’s"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r=".9" fill="currentColor"/></svg></button>
+      <button type="button" class="nav-btn" data-page="invoer" data-label="Invoer van je cijfers" aria-label="Invoer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/></svg></button>
     </div>
-    <div class="header-right">
-      <div class="legend"><span class="swatch"></span> = zelf in te vullen</div>
-      <button type="button" class="theme-toggle" id="themePanelBtn" title="Pas kleuren, achtergrond en animaties aan">🎨 Thema</button>
-      <button type="button" class="theme-toggle" id="installBtn" hidden title="Installeer als app op je apparaat">⬇ Installeer app</button>
-      <button type="button" class="theme-toggle" id="soundToggle" title="Geluid bij het tellen en bij scenario's aan of uit"><span id="soundLabel">♪ Geluid uit</span></button>
-      <button type="button" class="theme-toggle" id="themeToggle" title="Wissel tussen het 2050-thema en het klassieke thema"><span class="tt-dot"></span><span id="themeLabel">2050</span></button>
+    <div class="nav-pill nav-tools">
+      <button type="button" class="nav-btn" id="themePanelBtn" data-label="Thema &amp; achtergrond" aria-label="Thema"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.5 0 2.1-1.1 1.6-2.2-.6-1.3.2-2.4 1.6-2.4H17a3.5 3.5 0 0 0 3.5-3.5C20.5 7 16.8 3.5 12 3.5z"/><circle cx="7.8" cy="11" r="1" fill="currentColor"/><circle cx="10.6" cy="7.6" r="1" fill="currentColor"/><circle cx="15" cy="7.9" r="1" fill="currentColor"/></svg></button>
+      <button type="button" class="nav-btn" id="editToggle" data-label="Dashboard aanpassen" aria-label="Dashboard aanpassen"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><path d="M16.5 13.5v7M13 17h7"/></svg></button>
+      <button type="button" class="nav-btn" id="themeToggle" data-label="Donker / licht" aria-label="Donker of licht"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.4A8 8 0 0 1 9.6 4 8 8 0 1 0 20 14.4z"/></svg><span class="sr-only" id="themeLabel">2050</span></button>
+      <button type="button" class="nav-btn" id="soundToggle" data-label="Geluid" aria-label="Geluid"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9.7h3.4L13 6v12l-4.6-3.7H5z"/><path d="M16.2 9.2a4 4 0 0 1 0 5.6"/></svg><span class="sr-only" id="soundLabel">Geluid uit</span></button>
+      <button type="button" class="nav-btn" id="installBtn" hidden data-label="Installeer als app" aria-label="Installeer app"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10M8 10.5l4 4 4-4M5 19h14"/></svg></button>
     </div>
-  </header>
+  </nav>
 
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
-    <button class="tab-btn" data-tab="invoer">Invoer</button>
-  </div>
+  <header class="page-head" id="page-head">
+    <div>
+      <div class="eyebrow" id="dash-name">—</div>
+      <h1 id="page-title">Overzicht</h1>
+      <div class="page-sub" id="page-sub"></div>
+      <div class="fx-greet" id="fx-greet"></div>
+    </div>
+    <div class="page-head-right"><span class="dash-period" id="period-pill">Jaarbasis</span><span class="legend" id="legend-note" hidden><span class="swatch"></span> = zelf in te vullen</span></div>
+  </header>
+  <div class="scen-banner" id="scen-banner" hidden></div>
 
   <!-- Dashboard tab -->
   <div id="tab-dashboard" class="tab-panel active">
-
-    <div class="dash-intro">
-      <div><h2 id="dash-name">—</h2><div class="fx-greet" id="fx-greet"></div></div>
-      <div class="dash-intro-right"><div class="dash-period">Jaarbasis</div><button type="button" class="btn-ghost" id="editToggle" title="Pas de indeling van je dashboard aan">✎ Aanpassen</button></div>
-    </div>
 
     <div class="card edit-panel" id="edit-panel" hidden>
       <h2>Dashboard aanpassen <span class="badge">bewerkmodus</span></h2>
@@ -976,7 +1133,7 @@
         <span class="peil-quick"><button type="button" class="btn-ghost" id="peilToday">Vandaag</button><button type="button" class="btn-ghost" id="peilEom">Einde maand</button><button type="button" class="btn-ghost" id="peilEoq">Einde kwartaal</button></span>
       </div>
       <div class="whatif-chips" id="whatifChips"></div>
-      <div class="whatif-msg" id="whatifMsg">Typ wat je wilt weten; het dashboard laat dan tijdelijk dat scenario zien. Je invoer en opgeslagen cijfers veranderen niet. Voorbeelden: <i>30 vakantiedagen</i> · <i>uurtarief 105</i> · <i>bonus 5000</i> · <i>basissalaris 2800</i> · <i>uren 1900</i> · <i>1500 km</i> · <i>brandstof 800</i> · <i>zonder pensioen</i> — je kunt ze combineren met een komma.</div>
+      <div class="whatif-msg" id="whatifMsg">Probeer: <i>30 vakantiedagen</i> · <i>uurtarief 105</i> · <i>bonus 5000</i> · <i>zonder pensioen</i> · <i>stand per 30 juni</i> — combineren mag met een komma. Je eigen cijfers blijven ongewijzigd.</div>
     </div>
 
     <div class="kpi-grid">
@@ -2217,6 +2374,11 @@ function renderWhatif(msg) {
     });
     if (SCEN.pension != null) add(SCEN.pension ? 'Met pensioen' : 'Zonder pensioen');
   }
+  const bn = document.getElementById('scen-banner');
+  if (bn) {
+    if (SCEN || PEIL) { const parts = [...chips.children].map(c => c.textContent); bn.innerHTML = `<span class="sb-dot"></span><span class="sb-text"><b>Scenario actief</b> — ${parts.map(esc).join(' · ')}</span><button type="button" id="sb-reset">Terug naar mijn cijfers</button>`; bn.hidden = false; }
+    else bn.hidden = true;
+  }
   if (msg) document.getElementById('whatifMsg').innerHTML = msg;
 }
 
@@ -2249,7 +2411,7 @@ function resetWhatif() {
   document.getElementById('whatifInput').value = '';
   FX_ANIM = true;
   recalc();
-  renderWhatif('Typ wat je wilt weten; het dashboard laat dan tijdelijk dat scenario zien. Je invoer en opgeslagen cijfers veranderen niet. Voorbeelden: <i>30 vakantiedagen</i> · <i>uurtarief 105</i> · <i>bonus 5000</i> · <i>basissalaris 2800</i> · <i>uren 1900</i> · <i>1500 km</i> · <i>brandstof 800</i> · <i>zonder pensioen</i> — je kunt ze combineren met een komma.');
+  renderWhatif('Probeer: <i>30 vakantiedagen</i> · <i>uurtarief 105</i> · <i>bonus 5000</i> · <i>zonder pensioen</i> · <i>stand per 30 juni</i> — combineren mag met een komma. Je eigen cijfers blijven ongewijzigd.');
 }
 
 // ================= 2050 FX LAYER =================
@@ -2274,6 +2436,7 @@ function applyTheme(name, rerender) {
   Object.assign(COLORS, THEME === '2050' ? PALETTES.dark : PALETTES.light);
   tcApplyAll();
   byId('themeLabel').textContent = THEME === '2050' ? '2050' : 'Klassiek';
+  byId('themeToggle').dataset.label = THEME === '2050' ? 'Naar licht thema' : 'Naar donker thema';
   try { localStorage.setItem('mlc-theme', THEME); } catch (e) {}
   fxBgSync();
   if (rerender) { FX_ANIM = true; recalc(); fxEnter(); }
@@ -2363,7 +2526,7 @@ function fxAfterDashboard(v, base) {
 // ---- entree-animatie ----
 function fxEnter() {
   if (REDUCED) return;
-  const els = document.querySelectorAll('#tab-dashboard .dash-intro, #tab-dashboard .fx-ticker, #tab-dashboard .fx-live, #tab-dashboard .kpi-tile, #tab-dashboard .card');
+  const els = document.querySelectorAll('#page-head > div:first-child, #tab-dashboard .dpage.on .dblock > *:not(.dblock-bar)');
   els.forEach((el, i) => {
     el.classList.remove('fx-in'); void el.offsetWidth;
     el.style.setProperty('--d', Math.min(i, 14) * 70 + 'ms');
@@ -2392,7 +2555,7 @@ function fxInitTilt() {
     raf = requestAnimationFrame(() => {
       const r = t.getBoundingClientRect();
       const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
-      const max = t.classList.contains('kpi-tile') ? 7 : 2.2;
+      const max = t.classList.contains('kpi-tile') ? 4.5 : 1.4;
       t.classList.add('fx-tilt');
       t.style.setProperty('--mx', (px * 100).toFixed(1) + '%'); t.style.setProperty('--my', (py * 100).toFixed(1) + '%');
       t.style.transform = `perspective(1000px) rotateX(${((0.5 - py) * max * 2).toFixed(2)}deg) rotateY(${((px - 0.5) * max * 2).toFixed(2)}deg) translateY(-3px)`;
@@ -2496,7 +2659,8 @@ function fxCash() { [1568, 2093, 2637, 3136].forEach((f, i) => fxBeep(f, 0.2, 't
 function fxDown() { fxBeep(247, 0.3, 'sine', 0.06); fxBeep(185, 0.45, 'sine', 0.05, 0.13); }
 function setSound(on) {
   SOUND = !!on;
-  byId('soundLabel').textContent = SOUND ? '♪ Geluid aan' : '♪ Geluid uit';
+  byId('soundLabel').textContent = SOUND ? 'Geluid aan' : 'Geluid uit';
+  byId('soundToggle').classList.toggle('on', SOUND); byId('soundToggle').dataset.label = SOUND ? 'Geluid aan' : 'Geluid uit';
   try { localStorage.setItem('mlc-sound', SOUND ? '1' : '0'); } catch (e) {}
   if (SOUND) { GESTURE = true; fxBeep(880, 0.12, 'sine', 0.05); fxBeep(1320, 0.16, 'sine', 0.05, 0.08); }
 }
@@ -2956,34 +3120,48 @@ function fxExtras(v) {
   window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (FX_LAST) { fxFlow(FX_LAST.v); fxYear(FX_LAST.v); fxTime(); } }, 150); });
 })();
 
-// ================= DASHBOARD-INDELING (bewerkbaar) =================
-const DBLOCKS = [
-  { id: 'ticker', t: 'Lopende band', i: '📈', sel: '#fx-ticker', span: 12, sizes: [12] },
-  { id: 'live', t: 'Live verdienmeter', i: '🔴', sel: '#fx-live', span: 12, sizes: [12] },
-  { id: 'whatif', t: 'Wat als…?', i: '🔮', sel: '#whatif', span: 12, sizes: [12] },
-  { id: 'peil', t: 'Stand per peildatum', i: '📍', sel: '#card-peil', span: 12, sizes: [6, 12] },
-  { id: 'k1', t: 'Eindafrekening bruto', i: '€', sel: '#dash-ea-bruto', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
-  { id: 'k2', t: 'Eindafrekening netto', i: '€', sel: '#dash-ea-netto', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
-  { id: 'k3', t: 'Netto per maand', i: 'Σ', sel: '#dash-netto-maand', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
-  { id: 'k4', t: 'Totaal netto per jaar', i: '↗', sel: '#dash-totaal-netto', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
-  { id: 'flow', t: 'Geldstroom', i: '🌊', sel: '#card-flow', span: 12, sizes: [6, 12] },
-  { id: 'donut', t: 'Waar gaat je omzet naartoe', i: '🍩', sel: '#dash-donut-omzet', closest: '.card', span: 6, sizes: [4, 6, 12] },
-  { id: 'bars', t: 'Bruto vs. netto', i: '📊', sel: '#dash-barchart', closest: '.card', span: 6, sizes: [4, 6, 12] },
-  { id: 'funnel', t: 'Van omzet naar eindafrekening', i: '🔻', sel: '#dash-funnel', closest: '.card', span: 4, sizes: [4, 6, 12] },
-  { id: 'gauge', t: 'Effectieve belastingdruk', i: '🎚️', sel: '#dash-gauge2', closest: '.card', span: 4, sizes: [4, 6, 12] },
-  { id: 'pens', t: 'Pensioen — StiPP', i: '🧓', sel: '#dash-pens-donut', closest: '.card', span: 4, sizes: [4, 6, 12] },
-  { id: 'impact', t: 'Impact van pensioenafdracht', i: '⚖️', sel: '#dash-pension-compare', closest: '.card', span: 12, sizes: [6, 12] },
-  { id: 'insights', t: 'Belangrijkste inzichten', i: '💡', sel: '#dash-insights', closest: '.card', span: 12, sizes: [6, 12] },
-  { id: 'year', t: 'Jaarverloop', i: '📅', sel: '#card-year', span: 6, sizes: [4, 6, 12] },
-  { id: 'meter', t: 'Belasting-snelheidsmeter', i: '⏱️', sel: '#card-meter', span: 6, sizes: [4, 6, 12] },
-  { id: 'time', t: 'Pensioen-tijdmachine', i: '⏳', sel: '#card-time', span: 6, sizes: [6, 12] },
-  { id: 'goal', t: 'Spaardoel-raket', i: '🚀', sel: '#card-goal', span: 6, sizes: [6, 12] },
-  { id: 'shop', t: 'Wat koop je ervan?', i: '🛍️', sel: '#card-shop', span: 12, sizes: [6, 12] },
-  { id: 'print', t: 'Loonstrook-printer', i: '🧾', sel: '#card-print', span: 6, sizes: [4, 6, 12] },
-  { id: 'badges', t: 'Prestaties', i: '🏅', sel: '#card-badges', span: 6, sizes: [4, 6, 12] },
+// ================= PAGINA'S + DASHBOARD-INDELING (bewerkbaar) =================
+const PAGES = [
+  { id: 'home', t: 'Overzicht', d: 'Je belangrijkste cijfers in één oogopslag' },
+  { id: 'inkomen', t: 'Inkomen', d: 'Van omzet naar jouw netto' },
+  { id: 'pensioen', t: 'Pensioen', d: 'Wat je opbouwt en wat het kost' },
+  { id: 'belasting', t: 'Belasting', d: 'Wat er naar de overheid gaat' },
+  { id: 'doelen', t: 'Doelen & extra’s', d: 'Sparen, prestaties en meer' },
 ];
-let LAYOUT = null, DCONT = null, DEDIT = false;
-const defaultLayout = () => ({ order: DBLOCKS.map(b => b.id), hidden: [], span: {} });
+const DBLOCKS = [
+  { id: 'whatif', page: 'home', t: 'Wat als…?', i: '🔮', sel: '#whatif', span: 12, sizes: [12] },
+  { id: 'peil', page: 'home', t: 'Stand per peildatum', i: '📍', sel: '#card-peil', span: 12, sizes: [6, 12] },
+  { id: 'k1', page: 'home', t: 'Eindafrekening bruto', i: '€', sel: '#dash-ea-bruto', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
+  { id: 'k2', page: 'home', t: 'Eindafrekening netto', i: '€', sel: '#dash-ea-netto', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
+  { id: 'k3', page: 'home', t: 'Netto per maand', i: 'Σ', sel: '#dash-netto-maand', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
+  { id: 'k4', page: 'home', t: 'Totaal netto per jaar', i: '↗', sel: '#dash-totaal-netto', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
+  { id: 'year', page: 'home', t: 'Jaarverloop', i: '📅', sel: '#card-year', span: 6, sizes: [4, 6, 12] },
+  { id: 'donut', page: 'home', t: 'Waar gaat je omzet naartoe', i: '🍩', sel: '#dash-donut-omzet', closest: '.card', span: 6, sizes: [4, 6, 12] },
+  { id: 'insights', page: 'home', t: 'Belangrijkste inzichten', i: '💡', sel: '#dash-insights', closest: '.card', span: 12, sizes: [6, 12] },
+  { id: 'flow', page: 'inkomen', t: 'Geldstroom', i: '🌊', sel: '#card-flow', span: 12, sizes: [6, 12] },
+  { id: 'bars', page: 'inkomen', t: 'Bruto vs. netto', i: '📊', sel: '#dash-barchart', closest: '.card', span: 6, sizes: [4, 6, 12] },
+  { id: 'funnel', page: 'inkomen', t: 'Van omzet naar eindafrekening', i: '🔻', sel: '#dash-funnel', closest: '.card', span: 6, sizes: [4, 6, 12] },
+  { id: 'print', page: 'inkomen', t: 'Loonstrook-printer', i: '🧾', sel: '#card-print', span: 6, sizes: [4, 6, 12] },
+  { id: 'pens', page: 'pensioen', t: 'Pensioen — StiPP', i: '🧓', sel: '#dash-pens-donut', closest: '.card', span: 6, sizes: [4, 6, 12] },
+  { id: 'impact', page: 'pensioen', t: 'Impact van pensioenafdracht', i: '⚖️', sel: '#dash-pension-compare', closest: '.card', span: 6, sizes: [6, 12] },
+  { id: 'time', page: 'pensioen', t: 'Pensioen-tijdmachine', i: '⏳', sel: '#card-time', span: 12, sizes: [6, 12] },
+  { id: 'gauge', page: 'belasting', t: 'Effectieve belastingdruk', i: '🎚️', sel: '#dash-gauge2', closest: '.card', span: 6, sizes: [4, 6, 12] },
+  { id: 'meter', page: 'belasting', t: 'Belasting-snelheidsmeter', i: '⏱️', sel: '#card-meter', span: 6, sizes: [4, 6, 12] },
+  { id: 'goal', page: 'doelen', t: 'Spaardoel-raket', i: '🚀', sel: '#card-goal', span: 6, sizes: [6, 12] },
+  { id: 'shop', page: 'doelen', t: 'Wat koop je ervan?', i: '🛍️', sel: '#card-shop', span: 6, sizes: [6, 12] },
+  { id: 'badges', page: 'doelen', t: 'Prestaties', i: '🏅', sel: '#card-badges', span: 12, sizes: [6, 12] },
+  { id: 'ticker', page: 'doelen', t: 'Lopende band', i: '📈', sel: '#fx-ticker', span: 12, sizes: [12] },
+  { id: 'live', page: 'doelen', t: 'Live verdienmeter', i: '🔴', sel: '#fx-live', span: 12, sizes: [12] },
+];
+let LAYOUT = null, DEDIT = false, CUR_PAGE = 'home';
+const defaultLayout = () => ({ order: DBLOCKS.map(b => b.id), hidden: ['ticker', 'live'], span: {}, page: {} });
+const blockDef = id => DBLOCKS.find(b => b.id === id);
+const pageOf = id => (LAYOUT.page[id] && PAGES.some(p => p.id === LAYOUT.page[id])) ? LAYOUT.page[id] : blockDef(id).page;
+const pageCont = pid => document.querySelector(`.dash-blocks[data-page="${pid}"]`);
+const blockEl = id => document.querySelector(`.dblock[data-block="${id}"]`);
+const spanOf = id => LAYOUT.span[id] || blockDef(id).span;
+const pageTitle = pid => (PAGES.find(p => p.id === pid) || {}).t || pid;
+const isShown = e => !e.classList.contains('is-hidden') && !e.classList.contains('peil-off');
 
 function fxLayoutSave() { try { localStorage.setItem('mlc-layout', JSON.stringify(LAYOUT)); } catch (e) {} }
 function fxLayoutLoad() {
@@ -2993,14 +3171,11 @@ function fxLayoutLoad() {
   if (!L || !Array.isArray(L.order)) return defaultLayout();
   const order = L.order.filter(id => ids.includes(id));
   ids.forEach((id, i) => { if (!order.includes(id)) { const prev = ids[i - 1], at = prev ? order.indexOf(prev) : -1; order.splice(at + 1, 0, id); } });
-  return { order, hidden: (L.hidden || []).filter(id => ids.includes(id)), span: L.span || {} };
+  return { order, hidden: (L.hidden || []).filter(id => ids.includes(id)), span: L.span || {}, page: L.page || {} };
 }
-const blockEl = id => DCONT.querySelector(`.dblock[data-block="${id}"]`);
-const blockDef = id => DBLOCKS.find(b => b.id === id);
-const spanOf = id => LAYOUT.span[id] || blockDef(id).span;
-
-function fxFlip(fn) {
-  const els = [...DCONT.children].filter(e => !e.classList.contains('is-hidden') && !e.classList.contains('peil-off'));
+function fxFlip(fn, cont) {
+  cont = cont || pageCont(CUR_PAGE);
+  const els = [...cont.children].filter(isShown);
   const first = new Map(els.map(e => [e, e.getBoundingClientRect()]));
   fn();
   if (REDUCED) return;
@@ -3008,117 +3183,182 @@ function fxFlip(fn) {
     const a = first.get(e), b = e.getBoundingClientRect(), dx = a.left - b.left, dy = a.top - b.top;
     if (!dx && !dy) return;
     e.style.transition = 'none'; e.style.transform = `translate(${dx}px,${dy}px)`;
-    requestAnimationFrame(() => { requestAnimationFrame(() => { e.style.transition = 'transform .38s cubic-bezier(.2,.9,.3,1)'; e.style.transform = ''; setTimeout(() => { e.style.transition = ''; }, 420); }); });
+    requestAnimationFrame(() => { requestAnimationFrame(() => { e.style.transition = 'transform .5s cubic-bezier(.3,1.25,.5,1)'; e.style.transform = ''; setTimeout(() => { e.style.transition = ''; }, 560); }); });
   });
 }
 function fxRelayout() {
-  setTimeout(() => { equalizeTileHeights('.kpi-tile'); if (FX_LAST) { fxFlow(FX_LAST.v); fxYear(FX_LAST.v); fxTime(); } }, 80);
+  setTimeout(() => { equalizeTileHeights('.kpi-tile'); if (FX_LAST) { fxFlow(FX_LAST.v); fxYear(FX_LAST.v); fxTime(); } }, 90);
 }
 function fxApplyLayout() {
   LAYOUT.order.forEach(id => {
     const el = blockEl(id); if (!el) return;
-    DCONT.appendChild(el);
+    pageCont(pageOf(id)).appendChild(el);
     el.dataset.span = spanOf(id);
     el.classList.toggle('is-hidden', LAYOUT.hidden.includes(id));
   });
   fxRenderHiddenChips();
 }
+function fxSyncOrder() { LAYOUT.order = PAGES.flatMap(p => [...pageCont(p.id).children].map(e => e.dataset.block)); }
 function fxRenderHiddenChips() {
   const box = byId('edit-hidden'); if (!box) return;
   box.innerHTML = LAYOUT.hidden.length
-    ? LAYOUT.hidden.map(id => { const d = blockDef(id); return `<button type="button" class="chip-add" data-id="${id}">＋ ${d.i} ${esc(d.t)}</button>`; }).join('')
+    ? LAYOUT.hidden.map(id => { const d = blockDef(id); return `<button type="button" class="chip-add" data-id="${id}">＋ ${d.i} ${esc(d.t)} <small>${esc(pageTitle(pageOf(id)))}</small></button>`; }).join('')
     : '<span class="edit-none">Alle blokken staan op je dashboard. Haal een blok weg met ✕ — je kunt het hier weer terugzetten.</span>';
 }
 function fxLayoutChanged() { fxLayoutSave(); fxRenderHiddenChips(); fxRelayout(); fxUnlock('layout'); }
 
 function fxMove(id, dir) {
   const el = blockEl(id); if (!el) return;
-  const vis = [...DCONT.children].filter(e => !e.classList.contains('is-hidden') && !e.classList.contains('peil-off'));
+  const cont = el.parentNode, vis = [...cont.children].filter(isShown);
   const i = vis.indexOf(el), j = i + dir; if (j < 0 || j >= vis.length) return;
-  fxFlip(() => { if (dir < 0) DCONT.insertBefore(el, vis[j]); else DCONT.insertBefore(el, vis[j].nextSibling); });
-  LAYOUT.order = [...DCONT.children].map(e => e.dataset.block);
-  fxLayoutChanged();
+  fxFlip(() => { if (dir < 0) cont.insertBefore(el, vis[j]); else cont.insertBefore(el, vis[j].nextSibling); }, cont);
+  fxSyncOrder(); fxLayoutChanged();
 }
 function fxCycleSize(id) {
-  const d = blockDef(id), sizes = d.sizes; if (sizes.length < 2) { fxToast('Dit blok heeft maar één formaat'); return; }
+  const sizes = blockDef(id).sizes; if (sizes.length < 2) { fxToast('Dit blok heeft maar één formaat'); return; }
   const cur = spanOf(id), next = sizes[(sizes.indexOf(cur) + 1) % sizes.length];
   fxFlip(() => { LAYOUT.span[id] = next; blockEl(id).dataset.span = next; });
   fxLayoutChanged();
 }
+function fxCyclePage(id) {
+  const ids = PAGES.map(p => p.id), next = ids[(ids.indexOf(pageOf(id)) + 1) % ids.length], el = blockEl(id);
+  el.classList.add('leaving');
+  setTimeout(() => { LAYOUT.page[id] = next; pageCont(next).appendChild(el); el.classList.remove('leaving'); fxSyncOrder(); fxLayoutChanged(); fxToast(`↗ Verplaatst naar <b>${esc(pageTitle(next))}</b>`); }, REDUCED ? 0 : 220);
+}
 function fxHideBlock(id) {
   const el = blockEl(id); if (!el || LAYOUT.hidden.includes(id)) return;
   el.classList.add('leaving');
-  setTimeout(() => { fxFlip(() => { el.classList.remove('leaving'); el.classList.add('is-hidden'); LAYOUT.hidden.push(id); }); fxLayoutChanged(); }, REDUCED ? 0 : 240);
+  setTimeout(() => { fxFlip(() => { el.classList.remove('leaving'); el.classList.add('is-hidden'); LAYOUT.hidden.push(id); }, el.parentNode); fxLayoutChanged(); }, REDUCED ? 0 : 260);
 }
 function fxShowBlock(id) {
   const el = blockEl(id); if (!el) return;
   LAYOUT.hidden = LAYOUT.hidden.filter(x => x !== id);
-  fxFlip(() => { el.classList.remove('is-hidden'); });
-  el.classList.add('arriving'); setTimeout(() => el.classList.remove('arriving'), 900);
-  el.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' });
-  fxLayoutChanged();
+  const pg = pageOf(id), go = pg !== CUR_PAGE;
+  if (go) goPage(pg, { keepEdit: true });
+  setTimeout(() => {
+    fxFlip(() => { el.classList.remove('is-hidden'); }, el.parentNode);
+    el.classList.add('arriving'); setTimeout(() => el.classList.remove('arriving'), 1000);
+    el.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' });
+    fxLayoutChanged();
+  }, go ? 380 : 0);
 }
 function fxSetEditing(on) {
   DEDIT = on;
   document.body.classList.toggle('dash-editing', on);
   byId('edit-panel').hidden = !on;
-  byId('editToggle').textContent = on ? '✓ Klaar' : '✎ Aanpassen';
-  DCONT.querySelectorAll('.dblock').forEach(el => { el.draggable = on; });
-  if (on) { fxRenderHiddenChips(); fxToast('✎ Sleep blokken, of gebruik ◀ ▶ ⇔ ✕ op elk blok'); }
+  const b = byId('editToggle'); b.classList.toggle('on', on); b.dataset.label = on ? 'Klaar met aanpassen' : 'Dashboard aanpassen';
+  document.querySelectorAll('#tab-dashboard .dblock').forEach(el => { el.draggable = on; });
+  if (on) { fxRenderHiddenChips(); fxToast('✎ Sleep blokken, of gebruik ◀ ▶ ⇔ ⇄ ✕ op elk blok'); }
   fxRelayout();
+}
+
+// ---- navigatie ----
+function moveNavInd() {
+  const ind = byId('nav-ind'), pill = byId('nav-pages'); if (!ind || !pill) return;
+  const btn = pill.querySelector('.nav-btn.active'); if (!btn) { ind.style.opacity = 0; return; }
+  const horiz = getComputedStyle(pill).flexDirection === 'row';
+  ind.style.opacity = 1;
+  ind.style.transform = horiz ? `translate(${btn.offsetLeft}px, ${btn.offsetTop}px)` : `translate(${btn.offsetLeft}px, ${btn.offsetTop}px)`;
+}
+function goPage(id, opts) {
+  opts = opts || {};
+  const invoer = id === 'invoer';
+  if (!invoer && !PAGES.some(p => p.id === id)) id = 'home';
+  CUR_PAGE = id;
+  document.querySelectorAll('#nav-pages .nav-btn').forEach(b => b.classList.toggle('active', b.dataset.page === id));
+  moveNavInd();
+  byId('tab-dashboard').classList.toggle('active', !invoer);
+  byId('tab-invoer').classList.toggle('active', invoer);
+  document.querySelectorAll('.dpage').forEach(sec => sec.classList.toggle('on', sec.dataset.page === id));
+  const meta = invoer ? { t: 'Invoer', d: 'Vul hier je eigen cijfers in — alles rekent direct mee' } : PAGES.find(p => p.id === id);
+  byId('page-title').textContent = meta.t; byId('page-sub').textContent = meta.d;
+  byId('fx-greet').style.display = id === 'home' ? '' : 'none';
+  byId('legend-note').hidden = !invoer; byId('period-pill').hidden = invoer;
+  if (!invoer && DEDIT && !opts.keepEdit) { /* bewerken blijft actief per pagina */ }
+  document.body.classList.toggle('on-invoer', invoer);
+  try { localStorage.setItem('mlc-page', id); } catch (e) {}
+  FX_ANIM = true; recalc();
+  if (!invoer) { fxEnter(); fxRelayout(); }
+  if (!opts.noScroll) window.scrollTo({ top: 0, behavior: 'auto' });
+}
+function fxNavInit() {
+  byId('nav-pages').addEventListener('click', e => { const b = e.target.closest('.nav-btn[data-page]'); if (b) goPage(b.dataset.page); });
+  window.addEventListener('resize', moveNavInd);
+  // dock-zoom: icoontjes groeien zacht mee met de muis
+  const pills = document.querySelectorAll('.nav-pill');
+  if (FINE_POINTER) pills.forEach(pill => {
+    const btns = [...pill.querySelectorAll('.nav-btn')];
+    pill.addEventListener('pointermove', e => {
+      if (REDUCED || window.innerWidth < 700) return;
+      btns.forEach(b => { const r = b.getBoundingClientRect(), d = Math.abs(e.clientY - (r.top + r.height / 2)), k = Math.max(0, 1 - d / 96); b.style.setProperty('--s', (1 + 0.3 * k * k).toFixed(3)); });
+    });
+    pill.addEventListener('pointerleave', () => btns.forEach(b => b.style.setProperty('--s', 1)));
+  });
+  // subtiele parallax van de achtergrond
+  if (FINE_POINTER) {
+    let raf = 0;
+    window.addEventListener('pointermove', e => {
+      if (REDUCED) return; cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => { const r = document.documentElement.style; r.setProperty('--px', ((e.clientX / window.innerWidth - .5) * 2).toFixed(3)); r.setProperty('--py', ((e.clientY / window.innerHeight - .5) * 2).toFixed(3)); });
+    }, { passive: true });
+  }
 }
 
 function fxLayoutInit() {
   const panel = byId('edit-panel');
-  DCONT = document.createElement('div'); DCONT.id = 'dash-blocks'; panel.after(DCONT);
+  const pages = document.createElement('div'); pages.id = 'dpages'; panel.after(pages);
+  PAGES.forEach(p => {
+    const sec = document.createElement('section'); sec.className = 'dpage'; sec.dataset.page = p.id; sec.id = 'dpage-' + p.id;
+    const cont = document.createElement('div'); cont.className = 'dash-blocks'; cont.dataset.page = p.id; sec.appendChild(cont); pages.appendChild(sec);
+  });
   DBLOCKS.forEach(d => {
     let el = document.querySelector(d.sel); if (!el) return;
     if (d.closest) el = el.closest(d.closest);
     const w = document.createElement('div'); w.className = 'dblock'; w.dataset.block = d.id; w.dataset.span = d.span;
     el.parentNode.insertBefore(w, el); w.appendChild(el);
     const bar = document.createElement('div'); bar.className = 'dblock-bar';
-    bar.innerHTML = `<span class="dbar-title">⠿ ${d.i} ${esc(d.t)}</span><span class="dbar-btns"><button type="button" data-act="left" title="Eerder">◀</button><button type="button" data-act="right" title="Later">▶</button><button type="button" data-act="size" title="Formaat wisselen">⇔</button><button type="button" data-act="hide" title="Blok weghalen">✕</button></span>`;
+    bar.innerHTML = `<span class="dbar-title">⠿ ${d.i} ${esc(d.t)}</span><span class="dbar-btns"><button type="button" data-act="left" title="Eerder">◀</button><button type="button" data-act="right" title="Later">▶</button><button type="button" data-act="size" title="Formaat wisselen">⇔</button><button type="button" data-act="page" title="Naar een andere pagina">⇄</button><button type="button" data-act="hide" title="Blok weghalen">✕</button></span>`;
     w.appendChild(bar);
-    DCONT.appendChild(w);
+    pageCont(d.page).appendChild(w);
   });
   document.querySelectorAll('#tab-dashboard .kpi-grid, #tab-dashboard .dash-grid-2, #tab-dashboard .dash-grid-3').forEach(g => { if (!g.children.length) g.remove(); });
   LAYOUT = fxLayoutLoad(); fxApplyLayout();
 
-  DCONT.addEventListener('click', e => {
+  pages.addEventListener('click', e => {
     const b = e.target.closest('.dblock-bar button'); if (!b || !DEDIT) return;
     const id = b.closest('.dblock').dataset.block, act = b.dataset.act;
-    if (act === 'left') fxMove(id, -1); else if (act === 'right') fxMove(id, 1); else if (act === 'size') fxCycleSize(id); else if (act === 'hide') fxHideBlock(id);
+    if (act === 'left') fxMove(id, -1); else if (act === 'right') fxMove(id, 1); else if (act === 'size') fxCycleSize(id); else if (act === 'page') fxCyclePage(id); else if (act === 'hide') fxHideBlock(id);
   });
   byId('edit-hidden').addEventListener('click', e => { const c = e.target.closest('.chip-add'); if (c) fxShowBlock(c.dataset.id); });
-  byId('editToggle').addEventListener('click', () => fxSetEditing(!DEDIT));
+  byId('editToggle').addEventListener('click', () => { if (CUR_PAGE === 'invoer') goPage('home'); fxSetEditing(!DEDIT); });
   byId('editDone').addEventListener('click', () => fxSetEditing(false));
   byId('editReset').addEventListener('click', () => {
-    fxFlip(() => { LAYOUT = defaultLayout(); fxApplyLayout(); });
+    LAYOUT = defaultLayout(); fxApplyLayout(); fxSyncOrder();
     try { localStorage.removeItem('mlc-layout'); } catch (e) {}
     fxRelayout(); fxToast('↺ Standaard indeling hersteld');
   });
 
-  // slepen (desktop); op een telefoon gebruik je ◀ ▶
+  // slepen (desktop), alleen binnen dezelfde pagina; op een telefoon gebruik je ◀ ▶
   let dragEl = null, lastSwap = 0;
-  DCONT.addEventListener('dragstart', e => {
+  pages.addEventListener('dragstart', e => {
     const w = e.target.closest && e.target.closest('.dblock'); if (!DEDIT || !w) { e.preventDefault(); return; }
     dragEl = w; e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', w.dataset.block); } catch (x) {}
     setTimeout(() => w.classList.add('dragging'), 0);
   });
-  DCONT.addEventListener('dragover', e => {
+  pages.addEventListener('dragover', e => {
     if (!dragEl) return; e.preventDefault(); e.dataTransfer.dropEffect = 'move';
-    const t = e.target.closest('.dblock'); if (!t || t === dragEl || t.classList.contains('is-hidden')) return;
+    const t = e.target.closest('.dblock'); if (!t || t === dragEl || !isShown(t) || t.parentNode !== dragEl.parentNode) return;
     const now = performance.now(); if (now - lastSwap < 140) return;
-    const r = t.getBoundingClientRect(), dr = dragEl.getBoundingClientRect();
-    const sameRow = Math.abs(r.top - dr.top) < 12;
+    const r = t.getBoundingClientRect(), dr = dragEl.getBoundingClientRect(), sameRow = Math.abs(r.top - dr.top) < 12;
     const before = sameRow ? e.clientX < r.left + r.width / 2 : e.clientY < r.top + r.height / 2;
     const ref = before ? t : t.nextSibling;
-    if (ref === dragEl || (!before && t.nextSibling === dragEl) || (before && t.previousSibling === dragEl && !sameRow && false)) return;
-    lastSwap = now; fxFlip(() => DCONT.insertBefore(dragEl, ref));
+    if (ref === dragEl || (!before && t.nextSibling === dragEl)) return;
+    lastSwap = now; fxFlip(() => t.parentNode.insertBefore(dragEl, ref), t.parentNode);
   });
-  const endDrag = () => { if (!dragEl) return; dragEl.classList.remove('dragging'); dragEl = null; LAYOUT.order = [...DCONT.children].map(x => x.dataset.block); fxLayoutChanged(); };
-  DCONT.addEventListener('drop', e => { e.preventDefault(); endDrag(); });
-  DCONT.addEventListener('dragend', endDrag);
+  const endDrag = () => { if (!dragEl) return; dragEl.classList.remove('dragging'); dragEl = null; fxSyncOrder(); fxLayoutChanged(); };
+  pages.addEventListener('drop', e => { e.preventDefault(); endDrag(); });
+  pages.addEventListener('dragend', endDrag);
+  fxNavInit();
 }
 
 // ================= STAND PER PEILDATUM =================
@@ -3238,7 +3478,7 @@ function peilInit() {
 }
 
 // ================= THEMA-STUDIO (kleuren, achtergrond, animaties) =================
-const DEF_TP = { accent: null, bg: 'aurora', grad: 0, dim: 0.45, blur: 0, glass: null, anim: true, parts: true, tilt: true };
+const DEF_TP = { accent: null, bg: 'aurora', grad: 0, dim: 0.45, blur: 0, glass: null, anim: true, parts: false, tilt: true };
 let TP = { ...DEF_TP }, TC_IMG = null;
 const GRADS = [
   { n: 'Zonsondergang', css: 'linear-gradient(135deg,#ff7e5f,#feb47b 38%,#6a3093 100%)' },
@@ -3247,6 +3487,8 @@ const GRADS = [
   { n: 'Nachthemel', css: 'radial-gradient(circle at 20% 10%,#3a1d7a,#0b0f2a 55%,#050914 100%)' },
   { n: 'Roze wolk', css: 'linear-gradient(135deg,#ff9a9e,#fad0c4 45%,#a18cd1)' },
   { n: 'Graphite', css: 'linear-gradient(160deg,#232526,#414345)' },
+  { n: 'Sonoma', css: 'radial-gradient(1200px 800px at 12% 8%,#5b8def 0%,transparent 60%),radial-gradient(1000px 700px at 90% 15%,#a25bd6 0%,transparent 55%),radial-gradient(1100px 800px at 50% 105%,#f08a5d 0%,transparent 55%),#14192b' },
+  { n: 'Mistblauw', css: 'radial-gradient(1000px 700px at 20% 10%,#7fa6c9 0%,transparent 60%),radial-gradient(900px 700px at 85% 90%,#35607a 0%,transparent 60%),#243746' },
 ];
 const SWATCHES = [['Mint', '#2fe0a2'], ['Oceaan', '#38bdf8'], ['Violet', '#a78bfa'], ['Roze', '#f472b6'], ['Oranje', '#fb923c'], ['Goud', '#fbbf24'], ['Koraal', '#fb7185'], ['Lime', '#a3e635']];
 const ACC_KEYS = ['--accent', '--accent-2', '--accent-3', '--accent-light', '--acc-rgb', '--accent-b', '--accent-c', '--accb-rgb', '--accc-rgb', '--hero-1', '--hero-2', '--hero-3', '--on-accent'];
@@ -3301,7 +3543,7 @@ function applyAccent() {
   if (BG.sprites && BG.sprites.length) BG.sprites = BG_COLORS.map(bgSprite);
 }
 function applyGlass() {
-  const a = TP.glass != null ? TP.glass : (THEME === '2050' ? 0.62 : 1);
+  const a = TP.glass != null ? TP.glass : (THEME === '2050' ? 0.5 : 0.9);
   document.documentElement.style.setProperty('--card-alpha', a);
 }
 function applyAnim() {
@@ -3336,14 +3578,14 @@ function tcRenderPanel() {
   byId('tc-imgopts').hidden = !(TP.bg === 'gradient' || TP.bg === 'photo');
   byId('tc-photo-rm').hidden = !TC_IMG;
   byId('tc-dim').value = Math.round(TP.dim * 100); byId('tc-blur').value = TP.blur;
-  byId('tc-glass').value = Math.round((TP.glass != null ? TP.glass : (THEME === '2050' ? 0.62 : 1)) * 100);
+  byId('tc-glass').value = Math.round((TP.glass != null ? TP.glass : (THEME === '2050' ? 0.5 : 0.9)) * 100);
   byId('tc-anim').checked = !!TP.anim; byId('tc-parts').checked = TP.parts !== false; byId('tc-tilt').checked = TP.tilt !== false;
   byId('tc-parts').disabled = byId('tc-tilt').disabled = !TP.anim;
   byId('tc-aurora-hint').hidden = !(TP.bg === 'aurora' && THEME !== '2050');
 }
 function tcOpen(on) {
   const P = byId('tc-panel'), B = byId('tc-backdrop');
-  if (on) { tcRenderPanel(); P.hidden = false; B.hidden = false; requestAnimationFrame(() => P.classList.add('open')); }
+  if (on) { tcRenderPanel(); P.hidden = false; B.hidden = false; void P.offsetWidth; P.classList.add('open'); }
   else { P.classList.remove('open'); B.hidden = true; setTimeout(() => { if (!P.classList.contains('open')) P.hidden = true; }, REDUCED ? 0 : 400); }
 }
 function tcLoadImage(file) {
@@ -3428,13 +3670,7 @@ function recalc() {
   equalizeTileHeights('.kpi-tile');
 }
 
-function switchTab(name) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
-  if (name === 'dashboard') { FX_ANIM = true; recalc(); fxEnter(); }
-  equalizeTileHeights('.kpi-tile');
-}
-document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+function switchTab(name) { goPage(name === 'dashboard' ? (CUR_PAGE === 'invoer' ? 'home' : CUR_PAGE) : name); }
 document.getElementById('whatifGo').addEventListener('click', runWhatif);
 document.getElementById('whatifReset').addEventListener('click', resetWhatif);
 document.getElementById('whatifInput').addEventListener('keydown', e => { if (e.key === 'Enter') runWhatif(); });
@@ -3486,7 +3722,7 @@ fxMeterInit();
 fxShopInit();
 fxBgInit();
 fxBgSync();
-try { if (localStorage.getItem('mlc-sound') === '1') { SOUND = true; byId('soundLabel').textContent = '♪ Geluid aan'; } } catch (e) {}
+try { if (localStorage.getItem('mlc-sound') === '1') { SOUND = true; byId('soundLabel').textContent = 'Geluid aan'; byId('soundToggle').classList.add('on'); byId('soundToggle').dataset.label = 'Geluid aan'; } } catch (e) {}
 fxInitTilt();
 loadInputs();
 document.querySelectorAll('input').forEach(inp => { if (inp.id !== 'whatifInput' && inp.id !== 'peilDatum' && !inp.id.startsWith('tc-')) inp.addEventListener('input', () => { saveInputs(); recalc(); }); });
@@ -3501,8 +3737,12 @@ byId('goal-launch').addEventListener('click', () => {
 });
 ['spName', 'spGoal', 'spHave', 'spPct'].forEach(id => byId(id).addEventListener('input', () => fxUnlock('doel')));
 ['tmYears', 'tmRend'].forEach(id => byId(id).addEventListener('input', () => fxUnlock('tijd')));
-recalc();
-fxEnter();
+{
+  let startPage = 'home'; try { startPage = localStorage.getItem('mlc-page') || 'home'; } catch (e) {}
+  if (/^#wat-als=/.test(location.hash)) startPage = 'home';
+  byId('scen-banner').addEventListener('click', e => { if (e.target.closest('#sb-reset')) resetWhatif(); });
+  goPage(startPage, { noScroll: true });
+}
 (function () {
   const hm = location.hash.match(/^#wat-als=(.*)$/);
   if (hm) { try { byId('whatifInput').value = decodeURIComponent(hm[1]); runWhatif(); } catch (e) {} }
