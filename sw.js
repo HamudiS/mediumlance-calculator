@@ -1,5 +1,5 @@
 // Service worker: de app werkt ook offline. Netwerk eerst (zodat updates direct binnenkomen), cache als terugval.
-const CACHE = 'mlc-v11';
+const CACHE = 'mlc-v12';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './bg-sand.jpg', './bg-wave.jpg'];
 
 self.addEventListener('install', e => {
