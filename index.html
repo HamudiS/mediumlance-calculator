@@ -1310,6 +1310,37 @@
   html.cards-matte .kpi-tile.hero, html:not([data-theme="2050"]) .kpi-tile.hero, html:not([data-theme="2050"]) .kpi-tile.hero:hover {
     box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 18px 40px -12px rgba(40,34,28,.32); }
   html[data-theme="2050"] .kpi-tile.hero, html[data-theme="2050"].cards-matte .kpi-tile.hero { box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 18px 44px rgba(0,0,0,.4); }
+  /* ===== Wat-als: zoekveld + chips ===== */
+  .whatif h2 { margin-bottom: 16px; }
+  .whatif-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .wi-field { flex: 1 1 320px; display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 16px; border-radius: 999px;
+    background: linear-gradient(160deg, rgba(255,255,255,.8), rgba(255,255,255,.5)); border: 1px solid rgba(255,255,255,.95);
+    box-shadow: inset 0 1px 2px rgba(90,66,44,.08), 0 6px 20px rgba(70,56,40,.08); transition: box-shadow .3s ease, border-color .3s ease; }
+  .wi-field:focus-within { border-color: rgba(var(--acc-rgb), .6); box-shadow: 0 0 0 4px rgba(var(--acc-rgb), .16), 0 6px 20px rgba(70,56,40,.1); }
+  .wi-field > svg { width: 19px; height: 19px; flex: none; fill: none; stroke: var(--text-muted); stroke-width: 1.8; stroke-linecap: round; }
+  .whatif .wi-field input[type=text] { flex: 1; min-width: 0; border: none; background: transparent; box-shadow: none; border-radius: 0; padding: 9px 0; font-size: 15.5px; font-weight: 500; letter-spacing: -.01em; outline: none; }
+  .whatif .wi-field input::placeholder { color: var(--text-muted); opacity: .75; }
+  .wi-field .btn-inline { padding: 9px 22px; font-size: 14px; }
+  .whatif-peil { margin-top: 16px; gap: 10px 16px; font-size: 13px; font-weight: 550; }
+  .whatif-peil label { gap: 9px; }
+  .whatif-peil label i { font-style: normal; font-weight: 500; font-size: 11.5px; opacity: .75; padding: 2px 8px; border-radius: 999px; background: rgba(120,110,100,.12); }
+  .wi-cal { width: 18px; height: 18px; fill: none; stroke: var(--accent); stroke-width: 1.7; stroke-linecap: round; flex: none; }
+  .whatif-peil input[type=date] { padding: 7px 12px; border-radius: 999px; font-size: 13px; background: rgba(255,255,255,.7); border: 1px solid rgba(255,255,255,.95); box-shadow: inset 0 1px 2px rgba(90,66,44,.07); }
+  .peil-quick { gap: 2px; padding: 3px; border-radius: 999px; background: rgba(120,110,100,.1); box-shadow: inset 0 1px 2px rgba(90,66,44,.08); }
+  .peil-quick .btn-ghost { border: none; background: transparent; padding: 6px 13px; font-size: 12.5px; font-weight: 600; color: var(--text-muted); box-shadow: none; }
+  .peil-quick .btn-ghost:hover { background: rgba(255,255,255,.85); color: var(--text); box-shadow: 0 1px 3px rgba(70,56,40,.12); }
+  .whatif-msg { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--row-border); }
+  .wi-try { font-size: 12px; font-weight: 650; color: var(--text-muted); letter-spacing: .02em; text-transform: uppercase; margin-right: 2px; }
+  .whatif-msg .sug { font: inherit; font-size: 12.5px; font-weight: 600; padding: 6px 13px; border-radius: 999px; cursor: pointer; color: var(--text);
+    background: linear-gradient(160deg, rgba(255,255,255,.8), rgba(255,255,255,.45)); border: 1px solid rgba(255,255,255,.95); box-shadow: inset 0 1px 0 #fff, 0 2px 8px rgba(70,56,40,.07);
+    transition: transform .35s var(--spring), box-shadow .25s ease, background .2s ease; }
+  .whatif-msg .sug:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 #fff, 0 8px 18px rgba(70,56,40,.14); }
+  .whatif-msg .sug:active { transform: scale(.95); }
+  .wi-note { flex-basis: 100%; font-size: 12px; color: var(--text-muted); }
+  html[data-theme="2050"] .wi-field, html[data-theme="2050"] .whatif-peil input[type=date], html[data-theme="2050"] .whatif-msg .sug { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.16); box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
+  html[data-theme="2050"] .peil-quick { background: rgba(255,255,255,.07); }
+  html[data-theme="2050"] .peil-quick .btn-ghost:hover { background: rgba(255,255,255,.14); }
+  @media (max-width: 600px) { .whatif-row { display: flex; } .wi-field { flex-basis: 100%; } }
 </style>
 </head>
 <body>
@@ -1374,17 +1405,18 @@
     <div class="card whatif" id="whatif">
       <h2>Wat als…? <span class="badge">tijdelijk scenario</span></h2>
       <div class="whatif-row">
-        <input type="text" id="whatifInput" placeholder="Bijv. 30 vakantiedagen, uurtarief 105, bonus 5000" autocomplete="off" enterkeyhint="go">
-        <button type="button" class="btn-inline" id="whatifGo">Toon</button>
+        <div class="wi-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+        <input type="text" id="whatifInput" placeholder="Wat als je 30 vakantiedagen opneemt?" autocomplete="off" enterkeyhint="go">
+        <button type="button" class="btn-inline" id="whatifGo">Toon</button></div>
         <button type="button" class="btn-ghost" id="whatifShare" hidden>🔗 Deel scenario</button>
         <button type="button" class="btn-ghost" id="whatifReset" hidden>Terug naar mijn cijfers</button>
       </div>
       <div class="whatif-peil">
-        <label>📅 Stand per peildatum <i>(optioneel)</i> <input type="date" id="peilDatum"></label>
+        <label><svg class="wi-cal" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="3.5"/><path d="M8 3.5v4M16 3.5v4M4 10h16"/></svg>Stand per peildatum <i>optioneel</i> <input type="date" id="peilDatum"></label>
         <span class="peil-quick"><button type="button" class="btn-ghost" id="peilToday">Vandaag</button><button type="button" class="btn-ghost" id="peilEom">Einde maand</button><button type="button" class="btn-ghost" id="peilEoq">Einde kwartaal</button></span>
       </div>
       <div class="whatif-chips" id="whatifChips"></div>
-      <div class="whatif-msg" id="whatifMsg">Probeer: <i>30 vakantiedagen</i> · <i>uurtarief 105</i> · <i>bonus 5000</i> · <i>zonder pensioen</i> · <i>stand per 30 juni</i> — combineren mag met een komma. Je eigen cijfers blijven ongewijzigd.</div>
+      <div class="whatif-msg" id="whatifMsg"><span class="wi-try">Probeer</span><button type="button" class="sug" data-s="30 vakantiedagen">30 vakantiedagen</button><button type="button" class="sug" data-s="uurtarief 105">uurtarief 105</button><button type="button" class="sug" data-s="bonus 5000">bonus 5000</button><button type="button" class="sug" data-s="zonder pensioen">zonder pensioen</button><button type="button" class="sug" data-s="stand per 30 juni">stand per 30 juni</button><span class="wi-note">Combineren mag met een komma. Je eigen cijfers blijven ongewijzigd.</span></div>
     </div>
 
     <div class="kpi-grid">
@@ -1994,7 +2026,7 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b22</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b23</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
   <div class="tc-head"><b>🎨 Thema-studio</b><button type="button" class="btn-ghost" id="tc-close">✕</button></div>
@@ -2629,6 +2661,7 @@ function renderWhatif(msg) {
   if (msg) document.getElementById('whatifMsg').innerHTML = msg;
 }
 
+const WHATIF_HINT = '<span class="wi-try">Probeer</span><button type="button" class="sug" data-s="30 vakantiedagen">30 vakantiedagen</button><button type="button" class="sug" data-s="uurtarief 105">uurtarief 105</button><button type="button" class="sug" data-s="bonus 5000">bonus 5000</button><button type="button" class="sug" data-s="zonder pensioen">zonder pensioen</button><button type="button" class="sug" data-s="stand per 30 juni">stand per 30 juni</button><span class="wi-note">Combineren mag met een komma. Je eigen cijfers blijven ongewijzigd.</span>';
 function runWhatif() {
   const text = document.getElementById('whatifInput').value.trim();
   if (!text) { resetWhatif(); return; }
@@ -2658,7 +2691,7 @@ function resetWhatif() {
   document.getElementById('whatifInput').value = '';
   FX_ANIM = true;
   recalc();
-  renderWhatif('Probeer: <i>30 vakantiedagen</i> · <i>uurtarief 105</i> · <i>bonus 5000</i> · <i>zonder pensioen</i> · <i>stand per 30 juni</i> — combineren mag met een komma. Je eigen cijfers blijven ongewijzigd.');
+  renderWhatif(WHATIF_HINT);
 }
 
 // ================= 2050 FX LAYER =================
@@ -4179,6 +4212,7 @@ function recalc() {
 
 function switchTab(name) { goPage(name === 'dashboard' ? (CUR_PAGE === 'invoer' ? 'home' : CUR_PAGE) : name); }
 document.getElementById('whatifGo').addEventListener('click', runWhatif);
+byId('whatifMsg').addEventListener('click', e => { const b = e.target.closest('.sug'); if (!b) return; const i = byId('whatifInput'); i.value = i.value.trim() ? i.value.trim().replace(/,$/, '') + ', ' + b.dataset.s : b.dataset.s; i.focus(); });
 document.getElementById('whatifReset').addEventListener('click', resetWhatif);
 document.getElementById('whatifInput').addEventListener('keydown', e => { if (e.key === 'Enter') runWhatif(); });
 document.getElementById('useWerkUren').addEventListener('click', () => {
