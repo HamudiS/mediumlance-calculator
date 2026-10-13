@@ -1351,6 +1351,66 @@
   @keyframes wiIn { from { opacity: 0; transform: translateY(14px); filter: blur(7px); } to { opacity: 1; transform: none; filter: blur(0); } }
   @keyframes wiOut { from { opacity: 1; transform: none; filter: blur(0); } to { opacity: 0; transform: translateY(-14px); filter: blur(7px); } }
   .wi-field:has(input:not(:placeholder-shown)) .wi-ph { opacity: 0; }
+  /* ===== Apple-widgets: spaardoel + koper ===== */
+  .dblock > .card, .dblock > .kpi-tile { border-radius: 28px; }
+  /* spaardoel */
+  #card-goal .goal-grid { grid-template-columns: 200px 1fr; gap: 28px; align-items: center; }
+  #card-goal .goal-ring { width: 200px; height: 200px; }
+  #card-goal #goal-arc { filter: drop-shadow(0 4px 10px rgba(var(--acc-rgb), .35)); }
+  #card-goal .goal-center b { font-size: 44px; font-weight: 800; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+  #card-goal .goal-center span { font-size: 12px; font-weight: 600; letter-spacing: .02em; text-transform: none; max-width: 110px; margin-top: 2px; }
+  #card-goal .goal-out { margin: 0; min-width: 0; }
+  .gs-lbl { font-size: 12px; font-weight: 650; color: var(--text-muted); letter-spacing: .02em; text-transform: uppercase; margin-bottom: 4px; }
+  .gs-big { font-size: clamp(30px, 3.4vw, 42px); font-weight: 800; letter-spacing: -.04em; line-height: 1.05; font-variant-numeric: tabular-nums; color: var(--text); }
+  .gs-big small { font-size: 15px; font-weight: 600; letter-spacing: -.01em; color: var(--text-muted); }
+  .gs-cap { font-size: 13.5px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
+  .gs-cap b { color: var(--text); font-weight: 650; }
+  .gs-eta { margin-top: 16px; padding: 12px 16px; border-radius: 18px; background: linear-gradient(160deg, rgba(var(--acc-rgb), .14), rgba(var(--acc-rgb), .06)); border: 1px solid rgba(var(--acc-rgb), .18); }
+  .gs-ev { display: block; font-size: 19px; font-weight: 750; letter-spacing: -.025em; color: var(--text); }
+  .gs-es { display: block; font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+  #card-goal .goal-form { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 22px; }
+  #card-goal .goal-form label { font-size: 11.5px; font-weight: 600; letter-spacing: .01em; gap: 6px; }
+  #card-goal .goal-form label:first-child { grid-column: auto; }
+  #card-goal .goal-form input { padding: 11px 14px; font-size: 15px; font-weight: 550; border-radius: 16px; border: 1px solid rgba(255,255,255,.9); background: rgba(255,255,255,.62); box-shadow: inset 0 1px 2px rgba(90,66,44,.08); }
+  #card-goal .goal-form input:focus { outline: none; border-color: rgba(var(--acc-rgb), .6); box-shadow: 0 0 0 4px rgba(var(--acc-rgb), .15); }
+  #card-goal #goal-launch { margin-top: 18px; align-self: flex-start; padding: 11px 24px; font-size: 14.5px; }
+  html[data-theme="2050"] #card-goal .goal-form input { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.16); }
+  @media (max-width: 600px) { #card-goal .goal-grid { grid-template-columns: 1fr; justify-items: center; text-align: center; } #card-goal .goal-form { grid-template-columns: 1fr 1fr; } }
+  /* koper */
+  #card-shop .shop-pills { flex-wrap: nowrap; overflow-x: auto; gap: 10px; margin: 0 -26px 22px; padding: 4px 26px 8px; scroll-snap-type: x proximity; scrollbar-width: none; -webkit-mask: linear-gradient(90deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%); mask: linear-gradient(90deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%); }
+  #card-shop .shop-pills::-webkit-scrollbar { display: none; }
+  #card-shop .shop-pill { flex: none; display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 0; border: none; background: none; box-shadow: none; scroll-snap-align: center; color: var(--text-muted); font-size: 11.5px; font-weight: 600; }
+  #card-shop .shop-pill .sp-i { width: 54px; height: 54px; border-radius: 19px; display: grid; place-items: center; font-size: 26px;
+    background: linear-gradient(160deg, rgba(255,255,255,.85), rgba(255,255,255,.45)); border: 1px solid rgba(255,255,255,.95); box-shadow: inset 0 1px 0 #fff, 0 6px 16px rgba(70,56,40,.1); transition: transform .45s var(--spring), box-shadow .3s ease, background .3s ease; }
+  #card-shop .shop-pill:hover .sp-i { transform: translateY(-3px) scale(1.05); }
+  #card-shop .shop-pill.on { background: none; box-shadow: none; color: var(--text); }
+  #card-shop .shop-pill.on .sp-i { background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 22%, #fff), color-mix(in srgb, var(--accent) 8%, #fff)); border-color: rgba(var(--acc-rgb), .55); box-shadow: 0 0 0 3px rgba(var(--acc-rgb), .18), 0 10px 22px rgba(70,56,40,.14); transform: scale(1.06); }
+  html[data-theme="2050"] #card-shop .shop-pill .sp-i { background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.16); box-shadow: inset 0 1px 0 rgba(255,255,255,.2); }
+  #card-shop .shop-headline { display: flex; align-items: center; gap: 22px; margin: 4px 0 24px; }
+  .sh-ico { flex: none; width: 92px; height: 92px; border-radius: 30px; display: grid; place-items: center; font-size: 50px; background: linear-gradient(160deg, rgba(255,255,255,.9), rgba(255,255,255,.4)); border: 1px solid rgba(255,255,255,.95); box-shadow: inset 0 2px 0 #fff, 0 16px 34px rgba(70,56,40,.16); }
+  html[data-theme="2050"] .sh-ico { background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.18); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 16px 34px rgba(0,0,0,.35); }
+  .sh-ico.pop { animation: fxPop .6s cubic-bezier(.3,1.6,.5,1); }
+  .sh-num b { font-size: clamp(44px, 5.4vw, 68px); font-weight: 800; letter-spacing: -.05em; line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+  .sh-cap { font-size: 17px; font-weight: 650; letter-spacing: -.015em; margin-top: 4px; }
+  .sh-sub { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; }
+  #card-shop .shop-grid { max-height: none; flex-wrap: nowrap; gap: 0; font-size: 28px; padding: 14px 18px; border-radius: 22px; background: rgba(120,110,100,.08); box-shadow: inset 0 1px 2px rgba(90,66,44,.06); align-items: center; overflow: hidden; }
+  #card-shop .shop-ico { margin-left: -6px; opacity: var(--o, 1); filter: drop-shadow(0 2px 3px rgba(70,56,40,.18)); }
+  #card-shop .shop-ico:first-child { margin-left: 0; }
+  #card-shop .shop-more { margin-left: 14px; font-size: 14px; font-weight: 650; color: var(--text-muted); }
+  html[data-theme="2050"] #card-shop .shop-grid { background: rgba(255,255,255,.06); }
+  /* prestaties als app-iconen */
+  .badge-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 18px 10px; }
+  .bdg { border: none; background: none; box-shadow: none !important; padding: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .bdg .bi { width: 62px; height: 62px; border-radius: 22px; display: grid; place-items: center; font-size: 30px; margin: 0; filter: grayscale(1); opacity: .5;
+    background: linear-gradient(160deg, rgba(255,255,255,.7), rgba(255,255,255,.3)); border: 1px solid rgba(255,255,255,.9); box-shadow: inset 0 1px 0 #fff, 0 6px 16px rgba(70,56,40,.08); transition: transform .45s var(--spring), box-shadow .3s ease; }
+  .bdg .bn { font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: -.005em; }
+  .bdg .bd { display: none; }
+  .bdg.on { background: none; border: none; }
+  .bdg.on .bi { filter: none; opacity: 1; background: linear-gradient(160deg, #fff, color-mix(in srgb, var(--accent) 14%, #fff)); border-color: rgba(var(--acc-rgb), .4); box-shadow: inset 0 1px 0 #fff, 0 10px 22px rgba(70,56,40,.16); }
+  .bdg.on .bn { color: var(--text); font-weight: 650; }
+  .bdg:hover .bi { transform: translateY(-3px) scale(1.06); }
+  html[data-theme="2050"] .bdg .bi { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.14); box-shadow: none; }
+  html[data-theme="2050"] .bdg.on .bi { background: rgba(var(--acc-rgb), .16); border-color: rgba(var(--acc-rgb), .5); box-shadow: 0 8px 22px rgba(0,0,0,.35); }
 </style>
 </head>
 <body>
@@ -1573,18 +1633,18 @@
         <h2>Spaardoel-raket <span class="badge">3 · 2 · 1 …</span></h2>
         <div class="goal-grid">
           <div class="goal-ring" id="goal-ring">
-            <svg viewBox="0 0 140 140" aria-hidden="true"><circle cx="70" cy="70" r="54" fill="none" stroke="var(--track)" stroke-width="12"/><circle id="goal-arc" cx="70" cy="70" r="54" fill="none" stroke="var(--accent)" stroke-width="12" stroke-linecap="round" stroke-dasharray="0 339.3" transform="rotate(-90 70 70)"/></svg>
+            <svg viewBox="0 0 140 140" aria-hidden="true"><defs><linearGradient id="goal-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--accent)"/><stop offset="1" stop-color="var(--accent-2, var(--accent))"/></linearGradient></defs><circle cx="70" cy="70" r="56" fill="none" stroke="var(--track)" stroke-width="13"/><circle id="goal-arc" cx="70" cy="70" r="56" fill="none" stroke="url(#goal-grad)" stroke-width="13" stroke-linecap="round" stroke-dasharray="0 351.9" transform="rotate(-90 70 70)"/></svg>
             <div class="goal-orbit"><span class="goal-rocket" id="goal-rocket">🚀</span></div>
             <div class="goal-center"><b id="goal-pct">0%</b><span id="goal-name-out">doel</span></div>
           </div>
-          <div class="goal-form">
-            <label>Waar spaar je voor?<input type="text" id="spName" value="Droomauto" maxlength="28" autocomplete="off"></label>
-            <label>Bedrag (€)<input type="number" id="spGoal" value="25000" step="500" min="0"></label>
-            <label>Al gespaard (€)<input type="number" id="spHave" value="0" step="250" min="0"></label>
-            <label>Van je netto per maand sparen (%)<input type="number" id="spPct" value="20" step="1" min="0" max="100"></label>
-          </div>
+          <div class="goal-out" id="goal-out">—</div>
         </div>
-        <div class="goal-out" id="goal-out">—</div>
+        <div class="goal-form">
+          <label>Waar spaar je voor?<input type="text" id="spName" value="Droomauto" maxlength="28" autocomplete="off"></label>
+          <label>Bedrag (€)<input type="number" id="spGoal" value="25000" step="500" min="0"></label>
+          <label>Al gespaard (€)<input type="number" id="spHave" value="0" step="250" min="0"></label>
+          <label>Sparen van je netto (%)<input type="number" id="spPct" value="20" step="1" min="0" max="100"></label>
+        </div>
         <button type="button" class="btn-inline" id="goal-launch">🚀 Lanceer</button>
       </div>
     </div>
@@ -2036,7 +2096,7 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b24</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b26</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
   <div class="tc-head"><b>🎨 Thema-studio</b><button type="button" class="btn-ghost" id="tc-close">✕</button></div>
@@ -3388,19 +3448,20 @@ function fxGoal(v) {
   const goal = Math.max(0, parseFloat(byId('spGoal').value) || 0), have = Math.max(0, parseFloat(byId('spHave').value) || 0);
   const pct = Math.max(0, Math.min(100, parseFloat(byId('spPct').value) || 0)), name = (byId('spName').value || 'je doel').trim();
   const perMonth = v.nettoMaandTotaal * pct / 100, frac = goal > 0 ? Math.min(1, have / goal) : 0;
-  const C = 2 * Math.PI * 54;
+  const C = 2 * Math.PI * 56;
   byId('goal-arc').setAttribute('stroke-dasharray', `${(frac * C).toFixed(1)} ${C.toFixed(1)}`);
   byId('goal-pct').textContent = Math.round(frac * 100) + '%';
   byId('goal-name-out').textContent = name;
   let msg;
-  if (goal <= 0) msg = 'Vul een bedrag in om je spaardoel te berekenen.';
-  else if (have >= goal) msg = `🎉 <b>${esc(name)}</b> is al gehaald!`;
-  else if (perMonth <= 0) msg = 'Stel een spaarpercentage in om de landing te berekenen.';
+  if (goal <= 0) msg = '<div class="gs-cap">Vul een bedrag in om je spaardoel te berekenen.</div>';
+  else if (have >= goal) msg = `<div class="gs-big">🎉</div><div class="gs-cap"><b>${esc(name)}</b> is al gehaald!</div>`;
+  else if (perMonth <= 0) msg = '<div class="gs-cap">Stel een spaarpercentage in om de landing te berekenen.</div>';
   else {
     const months = Math.ceil((goal - have) / perMonth), d = new Date(); d.setMonth(d.getMonth() + months);
     const eta = d.toLocaleDateString('nl-NL', { month: 'long', year: 'numeric' });
-    const yrs = months >= 24 ? ` (±${(months / 12).toFixed(1).replace('.', ',')} jaar)` : '';
-    msg = `Je spaart <b>${fmt(perMonth)}</b> per maand (${pct}% van je netto). <b>${esc(name)}</b> (${fmt(goal)}) bereik je over <b>${months} maanden</b>${yrs} — rond <b>${eta}</b>.`;
+    const yrs = months >= 24 ? ` · ±${(months / 12).toFixed(1).replace('.', ',')} jaar` : '';
+    msg = `<div class="gs-lbl">Je spaart</div><div class="gs-big">${fmt(perMonth)}<small> / maand</small></div><div class="gs-cap">${pct}% van je netto voor <b>${esc(name)}</b> (${fmt(goal)})</div>` +
+      `<div class="gs-eta"><span class="gs-ev">${months} maanden</span><span class="gs-es">landing rond ${eta}${yrs}</span></div>`;
   }
   byId('goal-out').innerHTML = msg;
 }
@@ -3415,7 +3476,7 @@ const SHOP = [
 ];
 let SHOP_I = 0;
 function fxShopInit() {
-  byId('shop-pills').innerHTML = SHOP.map((it, i) => `<button type="button" class="shop-pill${i === SHOP_I ? ' on' : ''}" data-i="${i}">${it.i} ${it.s}</button>`).join('');
+  byId('shop-pills').innerHTML = SHOP.map((it, i) => `<button type="button" class="shop-pill${i === SHOP_I ? ' on' : ''}" data-i="${i}"><span class="sp-i">${it.i}</span><span class="sp-l">${it.s}</span></button>`).join('');
   byId('shop-pills').addEventListener('click', e => {
     const b = e.target.closest('.shop-pill'); if (!b) return;
     SHOP_I = +b.dataset.i; byId('shop-pills').querySelectorAll('.shop-pill').forEach((x, i) => x.classList.toggle('on', i === SHOP_I));
@@ -3425,16 +3486,17 @@ function fxShopInit() {
 function fxShop(v, force) {
   const it = SHOP[SHOP_I], n = Math.max(0, Math.floor(v.totaalNettoJaar / it.p));
   const head = byId('shop-head');
-  if (!head.querySelector('b')) head.innerHTML = '<span id="shop-pre"></span><b id="shop-count">0</b> <span id="shop-post"></span>';
-  byId('shop-pre').textContent = 'Met je netto van ' + fmt(v.totaalNettoJaar) + ' per jaar koop je ';
-  byId('shop-post').textContent = it.n + ' ' + it.i;
+  if (!head.querySelector('b')) head.innerHTML = '<div class="sh-ico" id="sh-ico"></div><div class="sh-txt"><div class="sh-num"><b id="shop-count">0</b></div><div class="sh-cap" id="shop-post"></div><div class="sh-sub" id="shop-pre"></div></div>';
+  byId('sh-ico').textContent = it.i; byId('sh-ico').classList.remove('pop'); void byId('sh-ico').offsetWidth; byId('sh-ico').classList.add('pop');
+  byId('shop-pre').textContent = 'Met je netto van ' + fmt(v.totaalNettoJaar) + ' per jaar · 1 ' + it.i + ' = ' + fmt(it.p);
+  byId('shop-post').textContent = it.n;
   fxTween(byId('shop-count'), n, numNl, 900);
   const grid = byId('shop-grid'), sig = SHOP_I + '|' + n;
   if (!force && !FX_ANIM && grid._sig === sig) return;
   grid._sig = sig;
-  const show = Math.min(n, 150), big = n <= 30;
-  grid.className = 'shop-grid' + (big ? ' big' : '');
-  grid.innerHTML = Array.from({ length: show }, (_, i) => `<span class="shop-ico" style="--i:${i}">${it.i}</span>`).join('') + (n > show ? `<span class="shop-more">+ ${numNl(n - show)} meer</span>` : '');
+  const show = Math.min(n, 14), big = false;
+  grid.className = 'shop-grid';
+  grid.innerHTML = Array.from({ length: show }, (_, i) => `<span class="shop-ico" style="--i:${i}; --o:${(1 - i / (show + 3)).toFixed(2)}">${it.i}</span>`).join('') + (n > show ? `<span class="shop-more">+ ${numNl(n - show)}</span>` : '');
 }
 
 // ---- loonstrook-printer ----
