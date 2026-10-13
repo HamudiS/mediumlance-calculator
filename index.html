@@ -816,6 +816,46 @@
   .chip-add:hover { background: var(--accent); color: #04140e; }
   .edit-actions { display: flex; justify-content: space-between; gap: 10px; }
 
+
+  /* ================= PEILDATUM ================= */
+  .whatif-peil { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 12px; font-size: 12.5px; color: var(--text-muted); font-weight: 600; }
+  .whatif-peil label { display: flex; align-items: center; gap: 8px; }
+  .whatif-peil input[type=date] { padding: 6px 9px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text); border-radius: 8px; font: inherit; font-size: 13px; color-scheme: light dark; }
+  html[data-theme="2050"] .whatif-peil input[type=date] { color-scheme: dark; }
+  .peil-quick { display: flex; gap: 6px; flex-wrap: wrap; }
+  .peil-quick .btn-ghost { padding: 5px 11px; font-size: 12px; }
+  .dblock.peil-off { display: none; }
+  .dash-editing .dblock.peil-off { display: block; }
+  .peil-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px; margin-bottom: 12px; font-size: 15px; }
+  .peil-prog { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-muted); }
+  .peil-prog-bar { width: 150px; height: 8px; border-radius: 6px; background: var(--track); overflow: hidden; }
+  #peil-prog-fill { height: 100%; width: 0; border-radius: 6px; background: linear-gradient(90deg, var(--accent), #38bdf8); transition: width 1s cubic-bezier(.3,.9,.3,1); }
+  .peil-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 12px; }
+  .peil-kpi { background: var(--accent-light); border: 1px solid transparent; border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+  .peil-kpi.hi { border-color: rgba(47,224,162,.5); box-shadow: 0 0 16px rgba(47,224,162,.15); }
+  .peil-kpi span { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); font-weight: 700; }
+  .peil-kpi b { font-size: 17px; font-variant-numeric: tabular-nums; }
+  .peil-kpi small { font-size: 10.5px; color: var(--text-muted); min-height: 13px; }
+  .peil-chart svg { width: 100%; display: block; }
+  .peil-details { margin: 8px 0; border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px; }
+  .peil-details summary { cursor: pointer; font-size: 13px; font-weight: 600; }
+  .peil-tbl-wrap { overflow-x: auto; margin-top: 8px; }
+  .peil-tbl { border-collapse: collapse; width: 100%; font-size: 11.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .peil-tbl th, .peil-tbl td { padding: 5px 8px; text-align: right; border-bottom: 1px solid var(--row-border); }
+  .peil-tbl th:first-child, .peil-tbl td:first-child { text-align: left; }
+  .peil-tbl th { color: var(--text-muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; }
+  .peil-tbl tr.cur td { background: var(--accent-light); font-weight: 700; }
+  .peil-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+  @media print {
+    body.print-peil #fx-bg, body.print-peil header.page, body.print-peil .tabs, body.print-peil #tab-invoer, body.print-peil .dash-intro, body.print-peil #edit-panel,
+    body.print-peil .dblock:not([data-block="peil"]), body.print-peil .app-footer, body.print-peil .dash-footer-note, body.print-peil .fx-toast, body.print-peil .peil-actions, body.print-peil .fx-glare { display: none !important; }
+    body.print-peil, html[data-theme] { background: #fff !important; --bg: #fff; --card-bg: #fff; --text: #000; --text-muted: #444; --border: #ccc; --track: #e5e7eb; --accent-light: #eef6f1; --row-border: #ddd; }
+    body.print-peil .wrap { padding: 0; max-width: none; }
+    body.print-peil .card { box-shadow: none !important; backdrop-filter: none !important; color: #000; }
+    body.print-peil #card-peil svg text { fill: #000 !important; stroke: none !important; }
+    body.print-peil .peil-details { display: block; } body.print-peil .peil-details > div { display: block !important; }
+  }
+
   /* easter egg: regenboog */
   .fx-rainbow .card, .fx-rainbow .kpi-tile { animation: fxHue 1.4s linear 4; }
   @keyframes fxHue { to { filter: hue-rotate(360deg); } }
@@ -888,6 +928,10 @@
         <button type="button" class="btn-ghost" id="whatifShare" hidden>🔗 Deel scenario</button>
         <button type="button" class="btn-ghost" id="whatifReset" hidden>Terug naar mijn cijfers</button>
       </div>
+      <div class="whatif-peil">
+        <label>📅 Stand per peildatum <i>(optioneel)</i> <input type="date" id="peilDatum"></label>
+        <span class="peil-quick"><button type="button" class="btn-ghost" id="peilToday">Vandaag</button><button type="button" class="btn-ghost" id="peilEom">Einde maand</button><button type="button" class="btn-ghost" id="peilEoq">Einde kwartaal</button></span>
+      </div>
       <div class="whatif-chips" id="whatifChips"></div>
       <div class="whatif-msg" id="whatifMsg">Typ wat je wilt weten; het dashboard laat dan tijdelijk dat scenario zien. Je invoer en opgeslagen cijfers veranderen niet. Voorbeelden: <i>30 vakantiedagen</i> · <i>uurtarief 105</i> · <i>bonus 5000</i> · <i>basissalaris 2800</i> · <i>uren 1900</i> · <i>1500 km</i> · <i>brandstof 800</i> · <i>zonder pensioen</i> — je kunt ze combineren met een komma.</div>
     </div>
@@ -921,6 +965,22 @@
         <div class="kpi-sub" id="dash-totaal-netto-sub">—</div>
         <div class="kpi-delta" id="dash-totaal-netto-delta"></div>
       </div>
+    </div>
+
+
+    <div class="card" id="card-peil">
+      <h2>Stand per peildatum <span class="badge" id="peil-badge">peildatum</span></h2>
+      <div class="peil-head"><div id="peil-title"></div><div class="peil-prog"><div class="peil-prog-bar"><div id="peil-prog-fill"></div></div><span id="peil-prog-lbl"></span></div></div>
+      <div class="peil-grid" id="peil-grid"></div>
+      <div class="peil-chart" id="peil-chart"></div>
+      <details class="peil-details"><summary>Maandoverzicht (zoals in de Excel)</summary><div id="peil-table"></div></details>
+      <div class="peil-actions">
+        <button type="button" class="btn-ghost" id="peilCopy">📋 Kopieer samenvatting</button>
+        <button type="button" class="btn-ghost" id="peilCsv">⬇ Download CSV</button>
+        <button type="button" class="btn-ghost" id="peilPrint">🖨 Print / PDF</button>
+        <button type="button" class="btn-ghost" id="peilClose">✕ Peildatum wissen</button>
+      </div>
+      <div class="flow-note" id="peil-note"></div>
     </div>
 
     <div class="card" id="card-flow">
@@ -2012,13 +2072,25 @@ function updateWerkUren() {
 }
 
 // ---------- "Wat als…?"-scenario (tijdelijk, wordt nergens opgeslagen) ----------
-let SCEN = null;
+let SCEN = null, PEIL = null;
+const NL_MONTHS = { jan: 0, januari: 0, feb: 1, februari: 1, mrt: 2, maart: 2, apr: 3, april: 3, mei: 4, jun: 5, juni: 5, jul: 6, juli: 6, aug: 7, augustus: 7, sep: 8, sept: 8, september: 8, okt: 9, oktober: 9, nov: 10, november: 10, dec: 11, december: 11 };
 
 function parseNum(str) { return parseFloat(str.replace(/\.(?=\d{3}(?:\D|$))/g, '').replace(',', '.')); }
 
 function parseScenarioText(text) {
   let t = ' ' + text.toLowerCase().replace(/€|euro/g, ' ') + ' ';
-  const sc = { fields: {}, kosten: {}, vakantie: null, pension: null };
+  const sc = { fields: {}, kosten: {}, vakantie: null, pension: null, peil: null };
+  {
+    const yr = new Date().getFullYear(), mk = (d, mo, y) => { const dt = new Date(y, mo, d); return dt.getMonth() === mo ? dt : null; };
+    const pats = [
+      [/(?:stand\s+)?(?:per|peildatum)\s+eind(?:e)?\s+([a-z]+)(?:\s+(\d{4}))?/, m => { const mo = NL_MONTHS[m[1]]; return mo == null ? null : new Date(m[2] ? +m[2] : yr, mo + 1, 0); }],
+      [/(?:stand\s+)?(?:per|peildatum)\s+(\d{1,2})\s+([a-z]+)\.?(?:\s+(\d{4}))?/, m => { const mo = NL_MONTHS[m[2]]; return mo == null ? null : mk(+m[1], mo, m[3] ? +m[3] : yr); }],
+      [/(?:stand\s+)?(?:per|peildatum)\s+(\d{1,2})[-\/.](\d{1,2})(?:[-\/.](\d{2,4}))?/, m => { let y = m[3] ? +m[3] : yr; if (y < 100) y += 2000; return mk(+m[1], +m[2] - 1, y); }],
+      [/(?:stand\s+)?(?:per|peildatum)\s+(?:vandaag|nu)\b/, () => new Date()],
+    ];
+    for (const [re, fn] of pats) { const m = t.match(re); if (!m) continue; const d = fn(m); if (d) { sc.peil = new Date(d.getFullYear(), d.getMonth(), d.getDate()); t = t.replace(re, ' '); break; } }
+    sc.textNoPeil = t.trim().replace(/^[,\s]+|[,\s]+$/g, '').replace(/\s*,\s*,+/g, ',');
+  }
   const N = '(\\d+(?:[.,]\\d+)*)';
   const take = (res, fn) => {
     for (const re of res) {
@@ -2063,10 +2135,11 @@ const SCEN_LABELS = {
 function renderWhatif(msg) {
   const box = document.getElementById('whatif');
   const chips = document.getElementById('whatifChips');
-  box.classList.toggle('active', !!SCEN);
-  document.getElementById('whatifReset').hidden = !SCEN;
-  document.getElementById('whatifShare').hidden = !SCEN;
+  box.classList.toggle('active', !!(SCEN || PEIL));
+  document.getElementById('whatifReset').hidden = !(SCEN || PEIL);
+  document.getElementById('whatifShare').hidden = !(SCEN || PEIL);
   chips.innerHTML = '';
+  if (PEIL) { const c = document.createElement('span'); c.className = 'whatif-chip'; c.textContent = '📍 Peildatum: ' + peilDatumTxt(PEIL); chips.appendChild(c); }
   if (SCEN) {
     const o = buildOverrides();
     const add = t => { const c = document.createElement('span'); c.className = 'whatif-chip'; c.textContent = t; chips.appendChild(c); };
@@ -2086,25 +2159,28 @@ function runWhatif() {
   const text = document.getElementById('whatifInput').value.trim();
   if (!text) { resetWhatif(); return; }
   const sc = parseScenarioText(text);
-  const herkend = sc.vakantie != null || sc.pension != null || Object.keys(sc.fields).length || Object.keys(sc.kosten).length;
+  const hasScen = sc.vakantie != null || sc.pension != null || Object.keys(sc.fields).length || Object.keys(sc.kosten).length;
+  const herkend = hasScen || sc.peil;
   if (!herkend) {
-    renderWhatif('Dat begrijp ik nog niet. Probeer bijvoorbeeld: <i>30 vakantiedagen</i>, <i>uurtarief 105</i>, <i>bonus 5000</i>, <i>1500 km</i>, <i>brandstof 800</i> of <i>zonder pensioen</i>.');
+    renderWhatif('Dat begrijp ik nog niet. Probeer bijvoorbeeld: <i>30 vakantiedagen</i>, <i>uurtarief 105</i>, <i>bonus 5000</i>, <i>1500 km</i>, <i>brandstof 800</i>, <i>zonder pensioen</i> of <i>stand per 30 juni</i>.');
     return;
   }
-  SCEN = sc; SCEN_TEXT = text;
-  let msg = 'Dit is een tijdelijk scenario: het dashboard laat nu zien wat er verandert (▲▼ t.o.v. je eigen cijfers). Je Invoer-tab en opgeslagen cijfers blijven ongewijzigd.';
+  if (hasScen) { SCEN = sc; SCEN_TEXT = sc.textNoPeil; }
+  if (sc.peil) { PEIL = sc.peil; peilEnableUI(); if (LAYOUT && LAYOUT.hidden.includes('peil')) { LAYOUT.hidden = LAYOUT.hidden.filter(x => x !== 'peil'); fxApplyLayout(); fxLayoutSave(); } }
+  let msg = hasScen ? 'Dit is een tijdelijk scenario: het dashboard laat nu zien wat er verandert (▲▼ t.o.v. je eigen cijfers). Je Invoer-tab en opgeslagen cijfers blijven ongewijzigd.' : 'Peildatum ingesteld: zie het blok “Stand per peildatum” voor de pro-rata stand op die dag.';
+  if (hasScen && sc.peil) msg += ' De stand per peildatum is berekend mét dit scenario.';
   if ('reiskostenKm' in sc.fields && val('mobiliteitsbijdrage') === 0 && !('mobiliteitsbijdrage' in sc.fields)) {
     msg += ' <b>Let op:</b> je mobiliteitsbudget staat op €0, dus deze kilometers tellen als extra kosten.';
   }
   FX_ANIM = true;
   recalc();
   renderWhatif(msg);
-  fxUnlock('scenario');
-  fxCelebrate();
+  if (hasScen) { fxUnlock('scenario'); fxCelebrate(); }
+  if (sc.peil) { fxUnlock('peil'); const w = byId('card-peil').closest('.dblock'); if (w) setTimeout(() => w.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' }), 150); }
 }
 
 function resetWhatif() {
-  SCEN = null;
+  SCEN = null; PEIL = null; peilEnableUI();
   document.getElementById('whatifInput').value = '';
   FX_ANIM = true;
   recalc();
@@ -2723,6 +2799,7 @@ const BADGES = [
   { id: 'printer', i: '🧾', n: 'Loonstrook-lezer', d: 'Print een loonstrook' },
   { id: 'deler', i: '🔗', n: 'Deel de blijdschap', d: 'Deel een scenario-link' },
   { id: 'streak3', i: '🔥', n: 'Vaste klant', d: 'Kom op 3 verschillende dagen terug' },
+  { id: 'peil', i: '📍', n: 'Peildatum-pro', d: 'Bekijk de stand per peildatum' },
   { id: 'layout', i: '🧩', n: 'Interieurarchitect', d: 'Pas je dashboard-indeling aan' },
   { id: 'konami', i: '🕹️', n: 'Cheat code', d: '???' },
 ];
@@ -2783,10 +2860,13 @@ function fxKonami() {
 // ---- deelbare scenario-link + installeren ----
 let SCEN_TEXT = '';
 function fxShare() {
-  if (!SCEN) return;
-  const url = location.href.split('#')[0] + '#wat-als=' + encodeURIComponent(SCEN_TEXT);
+  if (!SCEN && !PEIL) return;
+  let txt = SCEN ? (SCEN_TEXT || '') : '';
+  if (PEIL) txt += (txt ? ', ' : '') + `stand per ${PEIL.getDate()}-${PEIL.getMonth() + 1}-${PEIL.getFullYear()}`;
+  const SCEN_TEXT_ = txt;
+  const url = location.href.split('#')[0] + '#wat-als=' + encodeURIComponent(SCEN_TEXT_);
   const ok = () => { fxToast('🔗 Link gekopieerd — je collega ziet dit scenario op <i>zijn eigen</i> cijfers'); fxUnlock('deler'); };
-  if (navigator.share && !FINE_POINTER) { navigator.share({ title: 'Mediumlance-scenario', text: 'Wat als: ' + SCEN_TEXT, url }).then(() => fxUnlock('deler')).catch(() => {}); return; }
+  if (navigator.share && !FINE_POINTER) { navigator.share({ title: 'Mediumlance-scenario', text: 'Wat als: ' + SCEN_TEXT_, url }).then(() => fxUnlock('deler')).catch(() => {}); return; }
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(ok).catch(() => { window.prompt('Kopieer deze link:', url); fxUnlock('deler'); });
   else { window.prompt('Kopieer deze link:', url); fxUnlock('deler'); }
 }
@@ -2798,7 +2878,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigat
 
 // ---- alles tekenen ----
 function fxExtras(v) {
-  fxGreeting(); fxFlow(v); fxYear(v); fxMeter(v); fxTime(); fxGoal(v); fxShop(v); fxBadgeCheck(v);
+  fxGreeting(); fxPeil(v); fxFlow(v); fxYear(v); fxMeter(v); fxTime(); fxGoal(v); fxShop(v); fxBadgeCheck(v);
 }
 (function () {
   let rt = 0;
@@ -2810,6 +2890,7 @@ const DBLOCKS = [
   { id: 'ticker', t: 'Lopende band', i: '📈', sel: '#fx-ticker', span: 12, sizes: [12] },
   { id: 'live', t: 'Live verdienmeter', i: '🔴', sel: '#fx-live', span: 12, sizes: [12] },
   { id: 'whatif', t: 'Wat als…?', i: '🔮', sel: '#whatif', span: 12, sizes: [12] },
+  { id: 'peil', t: 'Stand per peildatum', i: '📍', sel: '#card-peil', span: 12, sizes: [6, 12] },
   { id: 'k1', t: 'Eindafrekening bruto', i: '€', sel: '#dash-ea-bruto', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
   { id: 'k2', t: 'Eindafrekening netto', i: '€', sel: '#dash-ea-netto', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
   { id: 'k3', t: 'Netto per maand', i: 'Σ', sel: '#dash-netto-maand', closest: '.kpi-tile', span: 3, sizes: [3, 6] },
@@ -2848,7 +2929,7 @@ const blockDef = id => DBLOCKS.find(b => b.id === id);
 const spanOf = id => LAYOUT.span[id] || blockDef(id).span;
 
 function fxFlip(fn) {
-  const els = [...DCONT.children].filter(e => !e.classList.contains('is-hidden'));
+  const els = [...DCONT.children].filter(e => !e.classList.contains('is-hidden') && !e.classList.contains('peil-off'));
   const first = new Map(els.map(e => [e, e.getBoundingClientRect()]));
   fn();
   if (REDUCED) return;
@@ -2881,7 +2962,7 @@ function fxLayoutChanged() { fxLayoutSave(); fxRenderHiddenChips(); fxRelayout()
 
 function fxMove(id, dir) {
   const el = blockEl(id); if (!el) return;
-  const vis = [...DCONT.children].filter(e => !e.classList.contains('is-hidden'));
+  const vis = [...DCONT.children].filter(e => !e.classList.contains('is-hidden') && !e.classList.contains('peil-off'));
   const i = vis.indexOf(el), j = i + dir; if (j < 0 || j >= vis.length) return;
   fxFlip(() => { if (dir < 0) DCONT.insertBefore(el, vis[j]); else DCONT.insertBefore(el, vis[j].nextSibling); });
   LAYOUT.order = [...DCONT.children].map(e => e.dataset.block);
@@ -2969,6 +3050,122 @@ function fxLayoutInit() {
   DCONT.addEventListener('dragend', endDrag);
 }
 
+// ================= STAND PER PEILDATUM =================
+function peilStand(v, d) {
+  const y = d.getFullYear(), m = d.getMonth(), dim = new Date(y, m + 1, 0).getDate();
+  const months = Math.min(12, m + d.getDate() / dim), f = months / 12;
+  const prem = v.premieJaar / 12, omzet = v.jaaromzet / 12, pot70 = v.mediumlancePct * (omzet - prem);
+  const wg = v.salariskosten / 12, wn = (v.kostenTotaalJaar + v.reiskostenJaar) / 12;
+  const rows = Array.from({ length: 12 }, (_, i) => ({ i, omzet, prem, pot70, wg, wn, res: pot70 - wg - wn }));
+  let cum = 0; rows.forEach(r => { cum += r.res; r.cum = cum; });
+  const resYtd = (pot70 - wg - wn) * months;
+  const resNetto = resYtd > 0 ? resYtd * (1 - v.bijzonderTarief) : resYtd;
+  const uitbetaald = v.nettoMaandTotaal * months;
+  return { months, f, rows, omzetYtd: omzet * months, premYtd: prem * months, pot70Ytd: pot70 * months, wgYtd: wg * months, wnYtd: wn * months, resYtd, resNetto, uitbetaald, totaalNetto: uitbetaald + resNetto,
+    eaJaar: v.eindafrekening, eaNettoJaar: v.eindafrekeningNetto, bruto: v.brutoMaand * months };
+}
+const peilDatumTxt = d => d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+const PEIL_ITEMS = [
+  ['omzet', 'Omzet tot nu', s => s.omzetYtd, ''],
+  ['prem', 'Pensioenreservering', s => s.premYtd, ''],
+  ['wg', 'Kosten WG', s => s.wgYtd, 'salaris + werkgeverslasten'],
+  ['wn', 'Kosten WN', s => s.wnYtd, 'overige kosten + reiskosten'],
+  ['res', 'Pot-stand (reservering) bruto', s => s.resYtd, 'jouw deel na kosten', true],
+  ['resn', 'Pot-stand netto', s => s.resNetto, 'na bijzonder tarief'],
+  ['uit', 'Netto uitbetaald tot nu', s => s.uitbetaald, 'salaris, bonus, mobiliteit'],
+  ['tot', 'Totale stand netto', s => s.totaalNetto, 'uitbetaald + pot', true],
+];
+function peilSummaryText(v) {
+  const s = peilStand(v, PEIL);
+  const L = [`Stand per ${peilDatumTxt(PEIL)} (pro-rata, ${(s.f * 100).toFixed(0)}% van het jaar)`];
+  if (SCEN) L.push(`Scenario: ${SCEN_TEXT}`);
+  L.push('', `Omzet tot nu: ${fmt(s.omzetYtd)}`, `Pensioenreservering: ${fmt(s.premYtd)}`, `Kosten WG (salaris + werkgeverslasten): ${fmt(s.wgYtd)}`, `Kosten WN (overige kosten + reiskosten): ${fmt(s.wnYtd)}`,
+    `Pot-stand (reservering) bruto: ${fmt(s.resYtd)}`, `Pot-stand netto (na bijzonder tarief): ${fmt(s.resNetto)}`, `Netto uitbetaald tot nu: ${fmt(s.uitbetaald)}`, `Totale stand netto: ${fmt(s.totaalNetto)}`,
+    '', `Verwachting einde jaar: eindafrekening ${fmt(s.eaJaar)} bruto / ${fmt(s.eaNettoJaar)} netto`, '', 'Indicatief — berekend met de Mediumlance Calculator (gelijke maanden, geen werkelijke cijfers).');
+  return L.join('\n');
+}
+function peilCsv(v) {
+  const s = peilStand(v, PEIL), n = x => x.toFixed(2).replace('.', ',');
+  const rows = [['Maand', 'Omzet', 'Pensioen', '70% (na pensioen)', 'Kosten WG', 'Kosten WN', 'Reservering', 'Cumulatief']];
+  s.rows.forEach(r => rows.push([MONTHS_KORT[r.i], n(r.omzet), n(r.prem), n(r.pot70), n(r.wg), n(r.wn), n(r.res), n(r.cum)]));
+  rows.push([], ['Stand per', peilDatumTxt(PEIL)], ['Omzet tot nu', n(s.omzetYtd)], ['Pensioenreservering', n(s.premYtd)], ['Kosten WG', n(s.wgYtd)], ['Kosten WN', n(s.wnYtd)], ['Pot-stand bruto', n(s.resYtd)], ['Pot-stand netto', n(s.resNetto)], ['Netto uitbetaald', n(s.uitbetaald)], ['Totale stand netto', n(s.totaalNetto)]);
+  return '﻿' + rows.map(r => r.join(';')).join('\r\n');
+}
+function fxPeil(v) {
+  const el = byId('card-peil'); if (!el) return;
+  const wrap = el.closest('.dblock'); if (wrap) wrap.classList.toggle('peil-off', !PEIL);
+  const grid = byId('peil-grid');
+  if (!PEIL) { grid.innerHTML = '<div class="edit-none">Kies een peildatum bij “Wat als…?” of typ bijvoorbeeld <i>stand per 30 juni</i>.</div>'; byId('peil-chart').innerHTML = ''; byId('peil-table').innerHTML = ''; byId('peil-note').textContent = ''; return; }
+  const s = peilStand(v, PEIL);
+  byId('peil-badge').textContent = SCEN ? 'peildatum · scenario' : 'peildatum';
+  byId('peil-title').innerHTML = `Stand per <b>${esc(peilDatumTxt(PEIL))}</b>`;
+  byId('peil-prog-fill').style.width = (s.f * 100).toFixed(1) + '%';
+  byId('peil-prog-lbl').textContent = `${(s.f * 100).toFixed(0)}% van het jaar · nog ${(12 - s.months).toFixed(1).replace('.', ',')} maanden`;
+  if (!grid.querySelector('.peil-kpi')) grid.innerHTML = PEIL_ITEMS.map(it => `<div class="peil-kpi${it[4] ? ' hi' : ''}"><span>${it[1]}</span><b id="pk-${it[0]}">—</b><small>${it[3]}</small></div>`).join('');
+  PEIL_ITEMS.forEach(it => fxTween(byId('pk-' + it[0]), it[2](s), fmt, 700));
+  // grafiek: cumulatieve reservering
+  const host = byId('peil-chart'), W = Math.round(host.clientWidth || 640), H = 170, pl = 8, pr = 8, pt = 16, pb = 22, cw = W - pl - pr, ch = H - pt - pb;
+  const vals = [0, ...s.rows.map(r => r.cum)], mn = Math.min(0, ...vals), mx = Math.max(1, ...vals), rng = mx - mn || 1;
+  const X = i => pl + i / 12 * cw, Y = val => pt + ch - (val - mn) / rng * ch;
+  let line = '', area = `M${X(0)},${Y(0)} `;
+  vals.forEach((val, i) => { line += `${i ? 'L' : 'M'}${X(i).toFixed(1)},${Y(val).toFixed(1)} `; area += `L${X(i).toFixed(1)},${Y(val).toFixed(1)} `; });
+  area += `L${X(12)},${Y(0)} Z`;
+  const px = X(s.months), py = Y(s.resYtd);
+  let ml = ''; for (let i = 1; i <= 12; i++) ml += `<text x="${(X(i) - cw / 24).toFixed(1)}" y="${H - 6}" text-anchor="middle" font-size="9.5" fill="${COLORS.muted}">${W > 420 ? MONTHS_KORT[i - 1] : MONTHS_KORT[i - 1][0]}</text>`;
+  host.innerHTML = `<svg class="${FX_ANIM ? 'fx-anim' : ''}" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
+    <defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${COLORS.ea}" stop-opacity=".4"/><stop offset="1" stop-color="${COLORS.ea}" stop-opacity="0"/></linearGradient></defs>
+    <line x1="${pl}" y1="${Y(0).toFixed(1)}" x2="${W - pr}" y2="${Y(0).toFixed(1)}" stroke="${COLORS.axis}"/>
+    <path d="${area}" fill="url(#pg)"/>
+    <path class="tm-line" pathLength="1" d="${line}" fill="none" stroke="${COLORS.ea}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="${px.toFixed(1)}" y1="${pt}" x2="${px.toFixed(1)}" y2="${pt + ch}" stroke="${COLORS.belasting}" stroke-dasharray="4 4"/>
+    <circle class="ping" cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="4" fill="${COLORS.belasting}"/>
+    <circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="5" fill="${COLORS.belasting}" stroke="${COLORS.text}" stroke-width="1.5" data-tip="<b>${esc(peilDatumTxt(PEIL))}</b><br>pot (reservering) ${fmt(s.resYtd)}"/>
+    <text x="${Math.min(W - 44, Math.max(36, px)).toFixed(1)}" y="${pt - 3}" text-anchor="middle" font-size="10.5" font-weight="800" fill="${COLORS.belasting}" style="paint-order:stroke;stroke:var(--halo);stroke-width:3px">peildatum</text>${ml}</svg>`;
+  byId('peil-table').innerHTML = `<div class="peil-tbl-wrap"><table class="peil-tbl"><thead><tr><th>Maand</th><th>Omzet</th><th>Pensioen</th><th>70%</th><th>Kosten WG</th><th>Kosten WN</th><th>Reservering</th><th>Cumulatief</th></tr></thead><tbody>${
+    s.rows.map(r => `<tr class="${r.i === PEIL.getMonth() ? 'cur' : ''}"><td>${MONTHS_KORT[r.i]}</td><td>${fmt(r.omzet)}</td><td>${fmt(r.prem)}</td><td>${fmt(r.pot70)}</td><td>${fmt(r.wg)}</td><td>${fmt(r.wn)}</td><td>${fmt(r.res)}</td><td>${fmt(r.cum)}</td></tr>`).join('')
+  }</tbody></table></div>`;
+  byId('peil-note').innerHTML = `Verwachting einde jaar: eindafrekening <b>${fmt(s.eaJaar)}</b> bruto / <b>${fmt(s.eaNettoJaar)}</b> netto. <i>Indicatief: gelijke maanden op basis van je jaarcijfers — geen werkelijke omzet- of uitbetalingsgegevens.</i>`;
+}
+function peilEnableUI() {
+  const on = !!PEIL;
+  const d = byId('peilDatum');
+  if (on) { const p = n => String(n).padStart(2, '0'); d.value = `${PEIL.getFullYear()}-${p(PEIL.getMonth() + 1)}-${p(PEIL.getDate())}`; } else d.value = '';
+}
+function setPeil(date, scroll) {
+  PEIL = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  peilEnableUI();
+  if (typeof LAYOUT !== 'undefined' && LAYOUT && LAYOUT.hidden.includes('peil')) { LAYOUT.hidden = LAYOUT.hidden.filter(x => x !== 'peil'); fxApplyLayout(); fxLayoutSave(); fxToast('📍 Het blok “Stand per peildatum” is weer zichtbaar gemaakt'); }
+  FX_ANIM = true; recalc(); renderWhatif();
+  fxUnlock('peil');
+  if (scroll) { const w = byId('card-peil').closest('.dblock'); if (w) setTimeout(() => w.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' }), 120); }
+}
+function clearPeil() { PEIL = null; peilEnableUI(); FX_ANIM = true; recalc(); renderWhatif(); }
+function peilInit() {
+  byId('peilDatum').addEventListener('change', e => { const v = e.target.value; if (v) { const [y, m, d] = v.split('-').map(Number); setPeil(new Date(y, m - 1, d), true); } else clearPeil(); });
+  const today = () => new Date();
+  byId('peilToday').addEventListener('click', () => setPeil(today(), true));
+  byId('peilEom').addEventListener('click', () => { const t = today(); setPeil(new Date(t.getFullYear(), t.getMonth() + 1, 0), true); });
+  byId('peilEoq').addEventListener('click', () => { const t = today(), q = Math.floor(t.getMonth() / 3); setPeil(new Date(t.getFullYear(), q * 3 + 3, 0), true); });
+  byId('peilClose').addEventListener('click', clearPeil);
+  byId('peilCopy').addEventListener('click', () => {
+    if (!PEIL || !FX_LAST) return; const txt = peilSummaryText(FX_LAST.v);
+    const ok = () => { fxToast('📋 Samenvatting gekopieerd — plak hem in je mail of chat'); fxUnlock('deler'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(ok).catch(() => window.prompt('Kopieer de samenvatting:', txt)); else window.prompt('Kopieer de samenvatting:', txt);
+  });
+  byId('peilCsv').addEventListener('click', () => {
+    if (!PEIL || !FX_LAST) return;
+    const blob = new Blob([peilCsv(FX_LAST.v)], { type: 'text/csv;charset=utf-8' }), a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = `stand-per-${PEIL.getFullYear()}-${String(PEIL.getMonth() + 1).padStart(2, '0')}-${String(PEIL.getDate()).padStart(2, '0')}.csv`;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    fxToast('⬇ CSV gedownload (opent in Excel)'); fxUnlock('deler');
+  });
+  byId('peilPrint').addEventListener('click', () => {
+    if (!PEIL) return; document.body.classList.add('print-peil');
+    const done = () => { document.body.classList.remove('print-peil'); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done); setTimeout(() => window.print(), 80);
+  });
+}
+
 function recalc() {
   updateWerkUren();
   const pensionOn = document.getElementById('pensionToggle').checked;
@@ -3001,7 +3198,7 @@ function recalc() {
     renderPensionCompare(dZonder, dMet);
   }
 
-  if (SCEN) renderWhatif();
+  if (SCEN || PEIL) renderWhatif();
   FX_ANIM = false;
   equalizeTileHeights('.kpi-tile');
 }
@@ -3026,7 +3223,7 @@ window.addEventListener('resize', () => equalizeTileHeights('.kpi-tile'));
 const STORAGE_KEY = 'mediumlance-calculator-v2';
 
 function inputStorageKey(inp) {
-  if (inp.id === 'whatifInput') return null;
+  if (inp.id === 'whatifInput' || inp.id === 'peilDatum') return null;
   return inp.id ? 'id:' + inp.id : (inp.dataset.key ? 'kosten:' + inp.dataset.key : null);
 }
 
@@ -3056,6 +3253,7 @@ let savedTheme = null;
 try { savedTheme = localStorage.getItem('mlc-theme'); } catch (e) {}
 applyTheme(savedTheme === 'classic' ? 'classic' : '2050', false);
 fxLayoutInit();
+peilInit();
 fxTipInit();
 fxMeterInit();
 fxShopInit();
@@ -3064,7 +3262,7 @@ fxBgSync();
 try { if (localStorage.getItem('mlc-sound') === '1') { SOUND = true; byId('soundLabel').textContent = '♪ Geluid aan'; } } catch (e) {}
 fxInitTilt();
 loadInputs();
-document.querySelectorAll('input').forEach(inp => { if (inp.id !== 'whatifInput') inp.addEventListener('input', () => { saveInputs(); recalc(); }); });
+document.querySelectorAll('input').forEach(inp => { if (inp.id !== 'whatifInput' && inp.id !== 'peilDatum') inp.addEventListener('input', () => { saveInputs(); recalc(); }); });
 document.getElementById('pensionToggle').addEventListener('change', () => { saveInputs(); recalc(); });
 byId('whatifShare').addEventListener('click', fxShare);
 byId('printPayslip').addEventListener('click', fxPrint);
