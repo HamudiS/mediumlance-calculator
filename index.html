@@ -1278,6 +1278,9 @@
   .dblock[data-block="bars"] .bar-legend, .dblock[data-block="goal"] #goal-launch { margin-bottom: auto; }
   .dblock[data-block="goal"] #goal-launch { align-self: flex-start; }
   .dblock[data-block="bars"] .bar-legend, .dblock[data-block="impact"] .bar-legend { margin-top: 10px; }
+  .fx-pre { opacity: 0; transform: translateY(30px) scale(.96); filter: blur(10px); }
+  .btn-inline, #whatifGo, #printPayslip { transition: translate .45s var(--spring), transform .25s var(--spring), background .2s ease, box-shadow .25s ease, filter .2s ease; }
+  .btn-inline:active, #whatifGo:active, #printPayslip:active { transform: scale(.95); }
 </style>
 </head>
 <body>
@@ -1962,7 +1965,7 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b16</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b18</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
   <div class="tc-head"><b>🎨 Thema-studio</b><button type="button" class="btn-ghost" id="tc-close">✕</button></div>
@@ -1986,7 +1989,7 @@
     </section>
     <section><h4>Animaties</h4>
       <label class="tc-sw"><input type="checkbox" id="tc-anim"><span>Animaties aan</span></label>
-      <label class="tc-sw"><input type="checkbox" id="tc-parts"><span>Zwevende deeltjes en euro’s</span></label>
+      <label class="tc-sw"><input type="checkbox" id="tc-parts"><span>Zwevende deeltjes · dauwdruppels (licht)</span></label>
       <label class="tc-sw"><input type="checkbox" id="tc-tilt"><span>3D-kantelen van blokken</span></label>
     </section>
     <section><button type="button" class="btn-ghost" id="tc-reset">↺ Standaard thema</button><p class="tc-note">Je thema en foto blijven op dit apparaat — er wordt niets online opgeslagen.</p></section>
@@ -2739,16 +2742,38 @@ function fxAfterDashboard(v, base) {
 }
 
 // ---- entree-animatie ----
+let FX_IO = null;
+function fxPlayIn(el, i) {
+  el.classList.remove('fx-in', 'fx-pre'); void el.offsetWidth;
+  el.style.setProperty('--d', Math.min(i, 14) * 70 + 'ms');
+  el.classList.add('fx-in');
+  const done = e => { if (e.target !== el) return; el.classList.remove('fx-in'); el.style.removeProperty('--d'); el.removeEventListener('animationend', done); };
+  el.addEventListener('animationend', done);
+}
 function fxEnter() {
+  if (FX_IO) FX_IO.disconnect();
+  document.querySelectorAll('.fx-pre').forEach(e => e.classList.remove('fx-pre'));
   if (REDUCED) return;
+  if (!FX_IO && 'IntersectionObserver' in window) FX_IO = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { FX_IO.unobserve(en.target); fxPlayIn(en.target, 0); } }), { rootMargin: '0px 0px -8% 0px' });
   const els = document.querySelectorAll('#page-head > div:first-child, #tab-dashboard .dpage.on .dblock > *:not(.dblock-bar)');
-  els.forEach((el, i) => {
-    el.classList.remove('fx-in'); void el.offsetWidth;
-    el.style.setProperty('--d', Math.min(i, 14) * 70 + 'ms');
-    el.classList.add('fx-in');
-    const done = e => { if (e.target !== el) return; el.classList.remove('fx-in'); el.style.removeProperty('--d'); el.removeEventListener('animationend', done); };
-    el.addEventListener('animationend', done);
+  let k = 0;
+  els.forEach(el => {
+    const docTop = el.getBoundingClientRect().top + window.scrollY;
+    if (FX_IO && el.closest('.dblock') && docTop > window.innerHeight * 0.92) { el.classList.add('fx-pre'); FX_IO.observe(el); return; }
+    fxPlayIn(el, k++);
   });
+}
+
+// magnetische knoppen
+function fxMagnetic() {
+  if (!FINE_POINTER) return;
+  const SEL = '.btn-inline, #whatifGo, #printPayslip';
+  document.addEventListener('pointermove', e => {
+    if (REDUCED) return;
+    const b = e.target.closest && e.target.closest(SEL); if (!b) return;
+    const r = b.getBoundingClientRect(); b.style.translate = `${((e.clientX - r.left - r.width / 2) * .16).toFixed(1)}px ${((e.clientY - r.top - r.height / 2) * .24).toFixed(1)}px`;
+  });
+  document.addEventListener('pointerout', e => { const b = e.target.closest && e.target.closest(SEL); if (b && !b.contains(e.relatedTarget)) b.style.translate = ''; });
 }
 
 // ---- 3D-tilt + glare ----
@@ -2780,7 +2805,7 @@ function fxInitTilt() {
 }
 
 // ---- achtergrond: deeltjes, netwerk en zwevende euro's ----
-const BG = { cv: null, ctx: null, w: 0, h: 0, dpr: 1, parts: [], coins: [], raf: 0, mx: -999, my: -999, running: false, sprites: [] };
+const BG = { mode: null, cv: null, ctx: null, w: 0, h: 0, dpr: 1, parts: [], coins: [], raf: 0, mx: -999, my: -999, running: false, sprites: [] };
 const BG_COLORS = ['47,224,162', '56,189,248', '167,139,250'];
 function bgSprite(rgb) {
   const c = document.createElement('canvas'); c.width = c.height = 48;
@@ -2794,12 +2819,102 @@ function fxBgResize() {
   BG.w = window.innerWidth; BG.h = window.innerHeight;
   BG.cv.width = BG.w * BG.dpr; BG.cv.height = BG.h * BG.dpr;
   BG.ctx.setTransform(BG.dpr, 0, 0, BG.dpr, 0, 0);
+  BG.mode = THEME; DEW.last = 0; if (THEME !== '2050') { dewReset(); return; }
+  if (DEW.cv) DEW.cv.style.display = 'none';
   const n = Math.max(22, Math.min(64, Math.round(BG.w * BG.h / 24000)));
   BG.parts = Array.from({ length: n }, () => ({ x: Math.random() * BG.w, y: Math.random() * BG.h, vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35, s: 10 + Math.random() * 26, c: Math.floor(Math.random() * 3), a: .35 + Math.random() * .5 }));
   BG.coins = Array.from({ length: BG.w < 700 ? 5 : 9 }, () => ({ x: Math.random() * BG.w, y: Math.random() * BG.h, vy: -(0.15 + Math.random() * 0.35), sz: 13 + Math.random() * 14, a: .06 + Math.random() * .12, ph: Math.random() * 6.28, dx: (Math.random() - .5) * .15 }));
 }
+
+// ---- lichte thema: dauwdruppels die je weg kunt blazen ----
+const DEW = { drops: [], rip: [], spd: 0, last: 0, pmx: null, pmy: null };
+function dewMake(w, h, fresh) {
+  const r = 4 + Math.pow(Math.random(), 2.2) * 9;
+  return { x: 40 + Math.random() * (w - 80), y: 40 + Math.random() * (h - 80), r, vx: 0, vy: 0, g: fresh ? 0 : 1, born: fresh ? 1 : 0, ph: Math.random() * 6.28 };
+}
+function dewCanvas() {
+  if (!DEW.cv) { const c = document.createElement('canvas'); c.id = 'fx-dew'; c.setAttribute('aria-hidden', 'true'); c.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:4'; document.body.appendChild(c); DEW.cv = c; DEW.ctx = c.getContext('2d'); }
+  DEW.cv.width = BG.w * BG.dpr; DEW.cv.height = BG.h * BG.dpr; DEW.ctx.setTransform(BG.dpr, 0, 0, BG.dpr, 0, 0); DEW.cv.style.display = '';
+}
+function dewReset() {
+  dewCanvas();
+  const n = Math.max(9, Math.min(22, Math.round(BG.w * BG.h / 70000)));
+  DEW.drops = Array.from({ length: n }, () => dewMake(BG.w, BG.h, false));
+  DEW.rip = [];
+}
+function dewDraw(ctx, d) {
+  const r = d.r * (0.35 + 0.65 * d.g), x = d.x, y = d.y, a = Math.min(1, d.g * 1.4);
+  ctx.save(); ctx.globalAlpha = a;
+  // zachte schaduw onder de druppel
+  ctx.shadowColor = 'rgba(70,58,46,.30)'; ctx.shadowBlur = r * 1.1; ctx.shadowOffsetY = r * .38;
+  ctx.fillStyle = 'rgba(255,255,255,.10)'; ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.fill();
+  ctx.shadowColor = 'transparent';
+  // lichaam: doorzichtig, donkerder aan de onderrand (lichtbreking)
+  let g = ctx.createRadialGradient(x - r * .2, y - r * .3, r * .1, x, y, r);
+  g.addColorStop(0, 'rgba(255,255,255,.55)'); g.addColorStop(.55, 'rgba(255,255,255,.16)'); g.addColorStop(.9, 'rgba(110,100,92,.16)'); g.addColorStop(1, 'rgba(255,255,255,.7)');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.fill();
+  // lichtvlek rechtsonder (gebundeld licht door de druppel)
+  g = ctx.createRadialGradient(x + r * .32, y + r * .4, 0, x + r * .32, y + r * .4, r * .6);
+  g.addColorStop(0, 'rgba(255,255,255,.65)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r * .98, 0, 6.2832); ctx.fill();
+  // glans linksboven
+  ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.beginPath(); ctx.ellipse(x - r * .38, y - r * .42, r * .26, r * .15, -0.7, 0, 6.2832); ctx.fill();
+  // dunne rand
+  ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = Math.max(.7, r * .08); ctx.beginPath(); ctx.arc(x, y, r - .4, 0, 6.2832); ctx.stroke();
+  ctx.restore();
+}
+function dewFrame(t) {
+  const ctx = DEW.ctx, { w, h } = BG, ds = DEW.drops, dtf = DEW.last ? Math.min(2.2, (t - DEW.last) / 16.7) : 1; DEW.last = t;
+  ctx.clearRect(0, 0, w, h);
+  DEW.spd *= Math.pow(.9, dtf);
+  // rimpelingen
+  for (let i = DEW.rip.length - 1; i >= 0; i--) {
+    const q = DEW.rip[i], age = (t - q.t) / 1300;
+    if (age >= 1) { DEW.rip.splice(i, 1); continue; }
+    const e = 1 - Math.pow(1 - age, 3), R = e * 190, al = (1 - age) * .7;
+    for (let k = 0; k < 2; k++) {
+      const rr = R - k * 15; if (rr <= 2) continue;
+      ctx.lineWidth = 2.2 - k * .8; ctx.strokeStyle = `rgba(255,255,255,${(al * (1 - k * .45)).toFixed(3)})`;
+      ctx.shadowColor = `rgba(70,58,46,${(al * .22).toFixed(3)})`; ctx.shadowBlur = 8; ctx.shadowOffsetY = 2;
+      ctx.beginPath(); ctx.arc(q.x, q.y, rr, 0, 6.2832); ctx.stroke();
+    }
+    ctx.shadowColor = 'transparent';
+  }
+  for (let i = ds.length - 1; i >= 0; i--) {
+    const d = ds[i];
+    if (d.born) { d.g += .012 * dtf; if (d.g >= 1) { d.g = 1; d.born = 0; } }
+    // wind van de muis
+    const dx = d.x - BG.mx, dy = d.y - BG.my, d2 = dx * dx + dy * dy, R = 120 + d.r * 3;
+    if (d2 < R * R) { const dist = Math.sqrt(d2) || 1, f = (1 - dist / R) * (.12 + Math.min(DEW.spd, 40) * .05) / (1 + d.r * .12); d.vx += dx / dist * f * dtf; d.vy += dy / dist * f * dtf; }
+    d.vx *= Math.pow(.955, dtf); d.vy *= Math.pow(.955, dtf);
+    d.x += d.vx * dtf + Math.sin(t / 3400 + d.ph) * .012; d.y += d.vy * dtf + Math.cos(t / 4100 + d.ph) * .01;
+    // weggeblazen: buiten beeld -> nieuwe druppel condenseert elders
+    if (d.x < -30 || d.x > w + 30 || d.y < -30 || d.y > h + 30) { ds[i] = dewMake(w, h, true); ds[i].g = -(Math.random() * 1.5); continue; }
+    // samensmelten
+    for (let j = i - 1; j >= 0; j--) {
+      const o = ds[j]; if (o.g < .8 || d.g < .8) continue;
+      const ex = o.x - d.x, ey = o.y - d.y, dist = Math.hypot(ex, ey);
+      if (dist < (o.r + d.r) * .7) {
+        const big = o.r >= d.r ? o : d, small = big === o ? d : o, A = big.r * big.r, B = small.r * small.r;
+        big.x = (big.x * A + small.x * B) / (A + B); big.y = (big.y * A + small.y * B) / (A + B);
+        big.vx = (big.vx * A + small.vx * B) / (A + B); big.vy = (big.vy * A + small.vy * B) / (A + B);
+        big.r = Math.min(22, Math.sqrt(A + B));
+        const k = ds.indexOf(small); const nd = dewMake(w, h, true); nd.g = -(1 + Math.random() * 2); ds[k] = nd; break;
+      }
+    }
+  }
+  for (const d of ds) if (d.g > 0) dewDraw(ctx, d);
+  BG.raf = requestAnimationFrame(fxBgFrame);
+}
+function dewRipple(x, y) {
+  if (BG.mode === '2050' || !BG.running) return;
+  DEW.rip.push({ x, y, t: performance.now() });
+  for (const d of DEW.drops) { const dx = d.x - x, dy = d.y - y, dist = Math.hypot(dx, dy) || 1; if (dist < 230) { const f = (1 - dist / 230) * 5 / (1 + d.r * .1); d.vx += dx / dist * f; d.vy += dy / dist * f; } }
+}
 function fxBgFrame(t) {
   if (!BG.running) return;
+  if (BG.mode !== THEME) { fxBgResize(); }
+  if (THEME !== '2050') return dewFrame(t);
   const { ctx, w, h, parts, coins } = BG;
   ctx.clearRect(0, 0, w, h);
   for (const p of parts) {
@@ -2828,16 +2943,17 @@ function fxBgFrame(t) {
   BG.raf = requestAnimationFrame(fxBgFrame);
 }
 function fxBgSync() {
-  const on = THEME === '2050' && !REDUCED && TP.parts !== false && !document.hidden && BG.ctx;
+  const on = !REDUCED && TP.parts !== false && !document.hidden && BG.ctx;
   if (on && !BG.running) { BG.running = true; fxBgResize(); BG.raf = requestAnimationFrame(fxBgFrame); }
-  else if (!on) { BG.running = false; cancelAnimationFrame(BG.raf); if (BG.ctx) BG.ctx.clearRect(0, 0, BG.w, BG.h); }
+  else if (!on) { BG.running = false; cancelAnimationFrame(BG.raf); if (BG.ctx) BG.ctx.clearRect(0, 0, BG.w, BG.h); if (DEW.cv) DEW.cv.style.display = 'none'; }
 }
 function fxBgInit() {
   BG.cv = byId('fx-canvas'); if (!BG.cv || !BG.cv.getContext) return;
   BG.ctx = BG.cv.getContext('2d');
   BG.sprites = BG_COLORS.map(bgSprite);
   window.addEventListener('resize', () => { if (BG.running) fxBgResize(); });
-  window.addEventListener('pointermove', e => { BG.mx = e.clientX; BG.my = e.clientY; }, { passive: true });
+  window.addEventListener('pointermove', e => { if (DEW.pmx != null) DEW.spd = Math.max(DEW.spd * .6, Math.hypot(e.clientX - DEW.pmx, e.clientY - DEW.pmy)); DEW.pmx = e.clientX; DEW.pmy = e.clientY; BG.mx = e.clientX; BG.my = e.clientY; }, { passive: true });
+  window.addEventListener('pointerdown', e => { if (e.target.closest && e.target.closest('button, input, select, textarea, a, label, [role=button]')) return; dewRipple(e.clientX, e.clientY); }, { passive: true });
   window.addEventListener('pointerleave', () => { BG.mx = BG.my = -999; });
   document.addEventListener('visibilitychange', fxBgSync);
 }
@@ -3703,7 +3819,7 @@ function peilInit() {
 }
 
 // ================= THEMA-STUDIO (kleuren, achtergrond, animaties) =================
-const DEF_TP = { accent: null, bg: null, grad: 0, dim2: null, blur: 0, glass: null, anim: true, parts: false, tilt: true, gl: 'kristal', orbs: false, refract: true, grid: false, cardGlass: true };
+const DEF_TP = { accent: null, bg: null, grad: 0, dim2: null, blur: 0, glass: null, anim: true, parts: true, tilt: true, gl: 'kristal', orbs: false, refract: true, grid: false, cardGlass: true };
 let TP = { ...DEF_TP }, TC_IMG = null;
 const GRADS = [
   { n: 'Zonsondergang', css: 'linear-gradient(135deg,#ff7e5f,#feb47b 38%,#6a3093 100%)' },
@@ -4165,6 +4281,7 @@ fxTipInit();
 fxMeterInit();
 fxShopInit();
 fxHoverLens();
+fxMagnetic();
 cmdkInit();
 fxTopPill();
 fxCardLight();
