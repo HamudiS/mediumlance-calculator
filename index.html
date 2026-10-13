@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mediumlance Calculator</title>
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="preload" as="image" href="bg-sand.jpg">
 <meta name="theme-color" content="#050914">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1062,6 +1063,59 @@
   @media (max-width: 980px) and (min-width: 761px) { .wrap { padding-left: 104px; padding-right: 22px; } }
   @media (prefers-reduced-motion: reduce) { .kpi-tile.hero::before { display: none; } }
   @media print { body.print-peil .side-nav, body.print-peil .page-head, body.print-peil .scen-banner { display: none !important; } }
+
+  /* ================= LIQUID GLASS v2 — echt doorzichtig glas ================= */
+  :root {
+    --bg: #efe6dc; --text: #2a2420; --text-muted: rgba(62,48,38,.62);
+    --card-bg: rgba(255,255,255,var(--card-alpha,.18)); --border: rgba(255,255,255,.55);
+    --row-border: rgba(90,66,44,.1); --track: rgba(90,66,44,.11);
+    --input-bg: rgba(255,255,255,.5); --input-border: rgba(120,90,60,.22);
+    --note-bg: rgba(255,246,218,.55); --note-border: rgba(214,182,104,.5);
+    --panel-bg: rgba(248,242,235,.8); --dim-rgb: 239,230,220;
+    --shadow: 0 2px 6px rgba(120,84,48,.08), 0 22px 54px rgba(120,84,48,.15);
+  }
+  html:not([data-theme="2050"]) body { background: #efe6dc; }
+  html:not([data-theme="2050"]) .card, html:not([data-theme="2050"]) .kpi-tile {
+    background: linear-gradient(135deg, rgba(255,255,255,.48) 0%, rgba(255,255,255,.1) 36%, rgba(255,255,255,.02) 60%, rgba(255,255,255,.26) 100%), var(--card-bg);
+    border: 1px solid rgba(255,255,255,.5);
+    box-shadow: inset 0 1.5px 1px rgba(255,255,255,.95), inset 0 -1.5px 1px rgba(255,255,255,.45), inset 0 0 30px rgba(255,255,255,.2), var(--shadow);
+    -webkit-backdrop-filter: blur(26px) saturate(190%) brightness(1.07); backdrop-filter: blur(26px) saturate(190%) brightness(1.07);
+  }
+  html[data-theme="2050"] .card, html[data-theme="2050"] .kpi-tile {
+    background: linear-gradient(135deg, rgba(255,255,255,.2) 0%, rgba(255,255,255,.04) 38%, rgba(255,255,255,.02) 62%, rgba(255,255,255,.12) 100%), var(--card-bg);
+    border: 1px solid rgba(255,255,255,.14);
+    box-shadow: inset 0 1.5px 1px rgba(255,255,255,.38), inset 0 -1px 1px rgba(255,255,255,.08), inset 0 0 28px rgba(255,255,255,.05), 0 2px 6px rgba(0,0,0,.2), 0 24px 60px rgba(0,0,0,.34);
+    -webkit-backdrop-filter: blur(30px) saturate(190%) brightness(1.1); backdrop-filter: blur(30px) saturate(190%) brightness(1.1);
+  }
+  /* lichtboog bovenin: het glas vangt licht */
+  .dblock > .card::before, .dblock > .kpi-tile:not(.hero)::before {
+    content: ""; display: block; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: radial-gradient(120% 70% at 18% -12%, rgba(255,255,255,.55), rgba(255,255,255,0) 58%), linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,0) 30%);
+  }
+  html[data-theme="2050"] .dblock > .card::before, html[data-theme="2050"] .dblock > .kpi-tile:not(.hero)::before {
+    background: radial-gradient(120% 70% at 18% -12%, rgba(255,255,255,.2), rgba(255,255,255,0) 58%), linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,0) 30%);
+  }
+  .dblock > .card::after, .dblock > .kpi-tile::after { opacity: 1; background: linear-gradient(135deg, rgba(255,255,255,.95), rgba(255,255,255,.14) 30%, rgba(255,255,255,0) 55%, rgba(255,255,255,.4) 85%, rgba(255,255,255,.7)); }
+  .fx-glare { mix-blend-mode: normal; background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.42), rgba(255,255,255,0) 42%); }
+  .card:hover, .kpi-tile:hover { --card-alpha: .34; }
+  html:not([data-theme="2050"]) .kpi-tile.hero { background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 92%, transparent) 0%, color-mix(in srgb, var(--accent-2) 82%, transparent) 55%, color-mix(in srgb, var(--accent-3, #1c4a34) 88%, transparent) 100%); border-color: rgba(255,255,255,.45); box-shadow: inset 0 1.5px 1px rgba(255,255,255,.55), inset 0 -1px 1px rgba(255,255,255,.18), 0 22px 54px rgba(var(--acc-rgb), .28); }
+  html:not([data-theme="2050"]) .kpi-tile.hero, html:not([data-theme="2050"]) .kpi-tile.hero .kpi-label, html:not([data-theme="2050"]) .kpi-tile.hero .kpi-value, html:not([data-theme="2050"]) .kpi-tile.hero .kpi-sub { color: #fff; }
+  html:not([data-theme="2050"]) .kpi-tile.hero .kpi-label, html:not([data-theme="2050"]) .kpi-tile.hero .kpi-sub { color: rgba(255,255,255,.82); }
+
+  /* zijmenu, paneel, meldingen: hetzelfde glas */
+  .nav-pill { background: linear-gradient(135deg, rgba(255,255,255,.6), rgba(255,255,255,.14) 45%, rgba(255,255,255,.3)), rgba(255,255,255,.22); border: 1px solid rgba(255,255,255,.55);
+    box-shadow: inset 0 1.5px 1px rgba(255,255,255,.95), inset 0 -1px 1px rgba(255,255,255,.4), 0 22px 56px rgba(120,84,48,.2); -webkit-backdrop-filter: blur(30px) saturate(200%); backdrop-filter: blur(30px) saturate(200%); }
+  html[data-theme="2050"] .nav-pill { background: linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,.04) 45%, rgba(255,255,255,.1)), rgba(24,32,52,.3); border-color: rgba(255,255,255,.16); box-shadow: inset 0 1.5px 1px rgba(255,255,255,.4), 0 22px 56px rgba(0,0,0,.4); }
+  .nav-ind { background: linear-gradient(160deg, rgba(255,255,255,.95), rgba(255,255,255,.4)); box-shadow: inset 0 1px 1px #fff, 0 8px 20px rgba(120,84,48,.22); }
+  html[data-theme="2050"] .nav-ind { background: linear-gradient(160deg, rgba(255,255,255,.34), rgba(255,255,255,.1)); }
+  .tc-panel { -webkit-backdrop-filter: blur(34px) saturate(190%); backdrop-filter: blur(34px) saturate(190%); border-left: 1px solid rgba(255,255,255,.55); }
+  .dash-period, .scen-banner { -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%); }
+  .dash-period { background: rgba(255,255,255,.35); border-color: rgba(255,255,255,.55); }
+  html[data-theme="2050"] .dash-period { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.16); }
+  .btn-ghost { background: rgba(255,255,255,.4); box-shadow: inset 0 1px 1px rgba(255,255,255,.9); }
+  html[data-theme="2050"] .btn-ghost { background: rgba(255,255,255,.1); box-shadow: inset 0 1px 1px rgba(255,255,255,.25); }
+  .whatif-row input[type=text], .row input[type=number], .row input[type=text], .goal-form input, .tm-rend input, .whatif-peil input[type=date] { box-shadow: inset 0 1px 2px rgba(90,66,44,.08); }
+  #fx-bg-img { background-size: cover; background-position: center; }
 </style>
 </head>
 <body>
@@ -1741,7 +1795,7 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 13-10-2026 · b3</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 13-10-2026 · b4</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
   <div class="tc-head"><b>🎨 Thema-studio</b><button type="button" class="btn-ghost" id="tc-close">✕</button></div>
@@ -1749,13 +1803,13 @@
     <section><h4>Weergave</h4><div class="tc-seg" id="tc-mode"><button type="button" data-v="2050">🌙 Donker · 2050</button><button type="button" data-v="classic">☀️ Licht · klassiek</button></div></section>
     <section><h4>Accentkleur</h4><div class="tc-swatches" id="tc-swatches"></div><label class="tc-line">Eigen kleur <input type="color" id="tc-color" value="#2fe0a2"></label></section>
     <section><h4>Achtergrond</h4>
-      <div class="tc-seg" id="tc-bgmode"><button type="button" data-v="aurora">✨ Aurora</button><button type="button" data-v="plain">▫️ Effen</button><button type="button" data-v="gradient">🌅 Verloop</button><button type="button" data-v="photo">🖼 Foto</button></div>
+      <div class="tc-seg" id="tc-bgmode"><button type="button" data-v="sand">🏜 Zand</button><button type="button" data-v="aurora">✨ Aurora</button><button type="button" data-v="plain">▫️ Effen</button><button type="button" data-v="gradient">🌅 Verloop</button><button type="button" data-v="photo">🖼 Foto</button></div>
       <div class="tc-note" id="tc-aurora-hint" hidden>De aurora-gloed werkt in het donkere thema.</div>
       <div class="tc-sub" id="tc-grads" hidden></div>
       <div class="tc-sub" id="tc-photo" hidden><label class="btn-ghost tc-upload">📤 Foto kiezen…<input type="file" id="tc-file" accept="image/*" hidden></label><button type="button" class="btn-ghost" id="tc-photo-rm">🗑 Verwijderen</button></div>
       <div id="tc-imgopts" hidden><label class="tc-line">Donkerte <input type="range" id="tc-dim" min="0" max="85" value="45"></label><label class="tc-line">Vervaging <input type="range" id="tc-blur" min="0" max="24" value="0"></label></div>
     </section>
-    <section><h4>Kaarten</h4><label class="tc-line">Doorzichtigheid <input type="range" id="tc-glass" min="25" max="100" value="62"></label></section>
+    <section><h4>Glas</h4><label class="tc-line">Dichtheid <input type="range" id="tc-glass" min="4" max="100" value="18"></label></section>
     <section><h4>Animaties</h4>
       <label class="tc-sw"><input type="checkbox" id="tc-anim"><span>Animaties aan</span></label>
       <label class="tc-sw"><input type="checkbox" id="tc-parts"><span>Zwevende deeltjes en euro’s</span></label>
@@ -2423,7 +2477,7 @@ function applyTheme(name, rerender) {
   tcApplyAll();
   byId('themeLabel').textContent = THEME === '2050' ? '2050' : 'Klassiek';
   byId('themeToggle').dataset.label = THEME === '2050' ? 'Naar licht thema' : 'Naar donker thema';
-  try { localStorage.setItem('mlc-theme', THEME); } catch (e) {}
+  try { localStorage.setItem('mlc-theme2', THEME); } catch (e) {}
   fxBgSync();
   if (rerender) { FX_ANIM = true; recalc(); fxEnter(); }
 }
@@ -3464,7 +3518,7 @@ function peilInit() {
 }
 
 // ================= THEMA-STUDIO (kleuren, achtergrond, animaties) =================
-const DEF_TP = { accent: null, bg: 'aurora', grad: 0, dim: 0.45, blur: 0, glass: null, anim: true, parts: false, tilt: true };
+const DEF_TP = { accent: null, bg: null, grad: 0, dim2: null, blur: 0, glass: null, anim: true, parts: false, tilt: true };
 let TP = { ...DEF_TP }, TC_IMG = null;
 const GRADS = [
   { n: 'Zonsondergang', css: 'linear-gradient(135deg,#ff7e5f,#feb47b 38%,#6a3093 100%)' },
@@ -3503,9 +3557,9 @@ function mkAccent(hex, theme) {
     rgb: rgb.join(','), brgb: hexToRgb(b).join(','), crgb: hexToRgb(c).join(','),
     h1: hsl2hex(h, s, .38), h2: hsl2hex(h, s, .28), h3: hsl2hex(h, s * .9, .18), on: relLum(rgb) > .35 ? '#04140e' : '#ffffff' };
 }
-function tcSave() { try { localStorage.setItem('mlc-theme-prefs', JSON.stringify(TP)); } catch (e) {} }
+function tcSave() { try { localStorage.setItem('mlc-theme-prefs2', JSON.stringify(TP)); } catch (e) {} }
 function tcLoad() {
-  try { const o = JSON.parse(localStorage.getItem('mlc-theme-prefs')); if (o && typeof o === 'object') TP = { ...DEF_TP, ...o }; } catch (e) {}
+  try { const o = JSON.parse(localStorage.getItem('mlc-theme-prefs2')); if (o && typeof o === 'object') TP = { ...DEF_TP, ...o }; } catch (e) {}
   try { TC_IMG = localStorage.getItem('mlc-bg-img'); } catch (e) {}
 }
 
@@ -3529,7 +3583,7 @@ function applyAccent() {
   if (BG.sprites && BG.sprites.length) BG.sprites = BG_COLORS.map(bgSprite);
 }
 function applyGlass() {
-  const a = TP.glass != null ? TP.glass : (THEME === '2050' ? 0.5 : 0.9);
+  const a = TP.glass != null ? TP.glass : (THEME === '2050' ? 0.34 : 0.18);
   document.documentElement.style.setProperty('--card-alpha', a);
 }
 function applyAnim() {
@@ -3537,15 +3591,19 @@ function applyAnim() {
   document.documentElement.classList.toggle('no-anim', REDUCED);
   fxBgSync();
 }
+const effBg = () => TP.bg || (THEME === '2050' ? 'aurora' : 'sand');
+const effDim = bg => TP.dim2 != null ? TP.dim2 : (bg === 'sand' ? (THEME === '2050' ? 0.55 : 0) : 0.45);
 function applyBackground() {
   const h = document.documentElement, el = byId('fx-bg-img');
   h.classList.remove('bg-aurora', 'bg-plain', 'bg-image');
+  if (TP.bg === 'photo' && !TC_IMG) TP.bg = null;
+  const bg = effBg();
   let css = null;
-  if (TP.bg === 'photo' && TC_IMG) css = `url(${TC_IMG})`;
-  else if (TP.bg === 'gradient') css = GRADS[TP.grad % GRADS.length].css;
-  else if (TP.bg === 'photo') TP.bg = 'aurora';
-  h.classList.add(TP.bg === 'aurora' ? 'bg-aurora' : css ? 'bg-image' : 'bg-plain');
-  if (css) { el.style.backgroundImage = css; el.style.setProperty('--bg-blur', TP.blur + 'px'); el.style.setProperty('--bg-dim', TP.dim); el.hidden = false; }
+  if (bg === 'photo') css = `url(${TC_IMG})`;
+  else if (bg === 'gradient') css = GRADS[TP.grad % GRADS.length].css;
+  else if (bg === 'sand') css = 'url(bg-sand.jpg)';
+  h.classList.add(bg === 'aurora' ? 'bg-aurora' : css ? 'bg-image' : 'bg-plain');
+  if (css) { el.style.backgroundImage = css; el.style.setProperty('--bg-blur', TP.blur + 'px'); el.style.setProperty('--bg-dim', effDim(bg)); el.hidden = false; }
   else { el.hidden = true; el.style.backgroundImage = ''; }
   fxBgSync();
 }
@@ -3555,19 +3613,19 @@ function tcChanged(rerender) { tcSave(); tcApplyAll(); tcRenderPanel(); if (rere
 function tcRenderPanel() {
   const P = byId('tc-panel'); if (!P) return;
   P.querySelectorAll('#tc-mode button').forEach(b => b.classList.toggle('on', b.dataset.v === THEME));
-  P.querySelectorAll('#tc-bgmode button').forEach(b => b.classList.toggle('on', b.dataset.v === TP.bg));
+  P.querySelectorAll('#tc-bgmode button').forEach(b => b.classList.toggle('on', b.dataset.v === effBg()));
   P.querySelectorAll('#tc-swatches button').forEach(b => b.classList.toggle('on', (TP.accent || '#2fe0a2').toLowerCase() === b.dataset.c));
   P.querySelectorAll('#tc-grads button').forEach(b => b.classList.toggle('on', +b.dataset.i === TP.grad));
   byId('tc-color').value = TP.accent || '#2fe0a2';
-  byId('tc-grads').hidden = TP.bg !== 'gradient';
-  byId('tc-photo').hidden = TP.bg !== 'photo';
-  byId('tc-imgopts').hidden = !(TP.bg === 'gradient' || TP.bg === 'photo');
+  byId('tc-grads').hidden = effBg() !== 'gradient';
+  byId('tc-photo').hidden = effBg() !== 'photo';
+  byId('tc-imgopts').hidden = !['gradient', 'photo', 'sand'].includes(effBg());
   byId('tc-photo-rm').hidden = !TC_IMG;
-  byId('tc-dim').value = Math.round(TP.dim * 100); byId('tc-blur').value = TP.blur;
-  byId('tc-glass').value = Math.round((TP.glass != null ? TP.glass : (THEME === '2050' ? 0.5 : 0.9)) * 100);
+  byId('tc-dim').value = Math.round(effDim(effBg()) * 100); byId('tc-blur').value = TP.blur;
+  byId('tc-glass').value = Math.round((TP.glass != null ? TP.glass : (THEME === '2050' ? 0.34 : 0.18)) * 100);
   byId('tc-anim').checked = !!TP.anim; byId('tc-parts').checked = TP.parts !== false; byId('tc-tilt').checked = TP.tilt !== false;
   byId('tc-parts').disabled = byId('tc-tilt').disabled = !TP.anim;
-  byId('tc-aurora-hint').hidden = !(TP.bg === 'aurora' && THEME !== '2050');
+  byId('tc-aurora-hint').hidden = !(effBg() === 'aurora' && THEME !== '2050');
 }
 function tcOpen(on) {
   const P = byId('tc-panel'), B = byId('tc-backdrop');
@@ -3609,14 +3667,14 @@ function tcInit() {
   byId('tc-bgmode').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; if (b.dataset.v === 'photo' && !TC_IMG) { byId('tc-file').click(); TP.bg = 'photo'; tcRenderPanel(); return; } TP.bg = b.dataset.v; tcChanged(false); });
   byId('tc-grads').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { TP.grad = +b.dataset.i; tcChanged(false); } });
   byId('tc-file').addEventListener('change', e => { tcLoadImage(e.target.files[0]); e.target.value = ''; });
-  byId('tc-photo-rm').addEventListener('click', () => { TC_IMG = null; try { localStorage.removeItem('mlc-bg-img'); } catch (e) {} TP.bg = 'aurora'; tcChanged(false); });
-  byId('tc-dim').addEventListener('input', e => { TP.dim = +e.target.value / 100; tcSave(); byId('fx-bg-img').style.setProperty('--bg-dim', TP.dim); });
+  byId('tc-photo-rm').addEventListener('click', () => { TC_IMG = null; try { localStorage.removeItem('mlc-bg-img'); } catch (e) {} TP.bg = null; tcChanged(false); });
+  byId('tc-dim').addEventListener('input', e => { TP.dim2 = +e.target.value / 100; tcSave(); byId('fx-bg-img').style.setProperty('--bg-dim', TP.dim2); });
   byId('tc-blur').addEventListener('input', e => { TP.blur = +e.target.value; tcSave(); byId('fx-bg-img').style.setProperty('--bg-blur', TP.blur + 'px'); });
   byId('tc-glass').addEventListener('input', e => { TP.glass = +e.target.value / 100; tcSave(); applyGlass(); });
   byId('tc-anim').addEventListener('change', e => { TP.anim = e.target.checked; tcChanged(false); });
   byId('tc-parts').addEventListener('change', e => { TP.parts = e.target.checked; tcChanged(false); });
   byId('tc-tilt').addEventListener('change', e => { TP.tilt = e.target.checked; tcChanged(false); });
-  byId('tc-reset').addEventListener('click', () => { TP = { ...DEF_TP }; TC_IMG = null; try { localStorage.removeItem('mlc-bg-img'); localStorage.removeItem('mlc-theme-prefs'); } catch (e) {} tcApplyAll(); tcRenderPanel(); FX_ANIM = false; recalc(); fxToast('↺ Standaard thema hersteld'); });
+  byId('tc-reset').addEventListener('click', () => { TP = { ...DEF_TP }; TC_IMG = null; try { localStorage.removeItem('mlc-bg-img'); localStorage.removeItem('mlc-theme-prefs2'); } catch (e) {} tcApplyAll(); tcRenderPanel(); FX_ANIM = false; recalc(); fxToast('↺ Standaard thema hersteld'); });
 }
 
 function recalc() {
@@ -3698,8 +3756,8 @@ function loadInputs() {
 
 tcLoad();
 let savedTheme = null;
-try { savedTheme = localStorage.getItem('mlc-theme'); } catch (e) {}
-applyTheme(savedTheme === 'classic' ? 'classic' : '2050', false);
+try { savedTheme = localStorage.getItem('mlc-theme2'); } catch (e) {}
+applyTheme(savedTheme === '2050' ? '2050' : 'classic', false);
 fxLayoutInit();
 tcInit();
 peilInit();
