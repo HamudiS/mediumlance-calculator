@@ -613,13 +613,6 @@
   @keyframes fxTitle { to { background-position: 100% 0; } }
   html[data-theme="2050"] .kpi-tile.hero { background: linear-gradient(150deg, var(--hero-1,#0fb487) 0%, var(--hero-2,#0a7d66) 55%, var(--hero-3,#064a47) 100%); box-shadow: 0 0 36px rgba(var(--acc-rgb),.28), 0 10px 40px rgba(0,0,0,.45); }
   html[data-theme="2050"] .kpi-tile.hero::after { display: none; }
-  html[data-theme="2050"] .kpi-tile.hero::before, html[data-theme="2050"] .whatif.active::before {
-    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
-    background: conic-gradient(from var(--ang, 0deg), transparent 0 60%, var(--accent) 78%, var(--accent-b) 90%, transparent 100%);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
-            mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-    animation: fxSpin 5s linear infinite;
-  }
   @property --ang { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
   @keyframes fxSpin { to { --ang: 360deg; } }
   html[data-theme="2050"] .kpi-value, html[data-theme="2050"] .hero .amount { text-shadow: 0 0 18px rgba(var(--acc-rgb),.28); }
