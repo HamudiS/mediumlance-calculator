@@ -1263,6 +1263,13 @@
   /* pagina-inhoud: zachte "ademhaling" van het licht op kaarten onder de muis */
   html.cards-matte .card, html.cards-matte .kpi-tile:not(.hero) { background-image: radial-gradient(420px circle at var(--lx, 50%) var(--ly, -20%), rgba(255,255,255,.55), rgba(255,255,255,0) 60%); background-repeat: no-repeat; }
   html[data-theme="2050"].cards-matte .card, html[data-theme="2050"].cards-matte .kpi-tile:not(.hero) { background-image: radial-gradient(420px circle at var(--lx, 50%) var(--ly, -20%), rgba(255,255,255,.1), rgba(255,255,255,0) 60%); }
+  /* hover in licht thema: zelfde gloed als donker */
+  html:not([data-theme="2050"]) .card:hover, html:not([data-theme="2050"]) .kpi-tile:not(.hero):hover,
+  html:not([data-theme="2050"]).cards-matte .card:hover, html:not([data-theme="2050"]).cards-matte .kpi-tile:not(.hero):hover {
+    border-color: rgba(var(--acc-rgb), .5);
+    box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(var(--acc-rgb), .16), 0 22px 56px rgba(60,50,40,.18), 0 0 38px rgba(var(--acc-rgb), .2); }
+  html:not([data-theme="2050"]) .fx-glare { mix-blend-mode: normal; background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.7), rgba(var(--acc-rgb), .12) 28%, rgba(255,255,255,0) 58%); }
+  html:not([data-theme="2050"]).cards-matte .card, html:not([data-theme="2050"]).cards-matte .kpi-tile:not(.hero) { transition: box-shadow .35s ease, border-color .3s ease, transform .5s var(--spring); }
 </style>
 </head>
 <body>
@@ -1947,7 +1954,7 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b12</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b13</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
   <div class="tc-head"><b>🎨 Thema-studio</b><button type="button" class="btn-ghost" id="tc-close">✕</button></div>
