@@ -1008,9 +1008,7 @@
   .kpi-sub { font-size: 12.5px; margin-top: 8px; }
   html[data-theme="2050"] .kpi-tile.hero, .kpi-tile.hero { background: linear-gradient(150deg, var(--hero-1, #1a9c7a) 0%, var(--hero-2, #0f6f66) 58%, var(--hero-3, #0a4350) 100%); border-color: rgba(255,255,255,.22); box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 18px 48px rgba(0,0,0,.32); }
   html:not([data-theme="2050"]) .kpi-tile.hero { background: linear-gradient(150deg, var(--accent) 0%, var(--accent-2) 60%, var(--accent-3, #1c4a34) 100%); }
-  .kpi-tile.hero::before { content: ""; display: block; position: absolute; inset: -60%; padding: 0; pointer-events: none; -webkit-mask: none; mask: none; border-radius: 0;
-    background: linear-gradient(115deg, transparent 42%, rgba(255,255,255,.2) 50%, transparent 58%); transform: translateX(-70%); animation: heroSheen 9s var(--smooth) 2s infinite; }
-  @keyframes heroSheen { 0% { transform: translateX(-70%); } 22%, 100% { transform: translateX(70%); } }
+  .kpi-tile.hero::before { display: none !important; }
   html[data-theme="2050"] .whatif.active::before { display: none; }
   html[data-theme="2050"] .donut-wrap::before, html[data-theme="2050"] .donut-wrap svg { display: none; }
   html[data-theme="2050"] .donut-wrap svg { display: block; filter: none; }
@@ -1046,6 +1044,8 @@
   /* blokken in dezelfde rij zijn altijd even hoog */
   .dblock { display: flex; }
   .dblock > :not(.dblock-bar) { flex: 1 1 auto; min-width: 0; }
+  /* lichtrand van de hoofdtegel: volle tegelgrootte (de oude decoratiecirkel had een vaste breedte) */
+  .dblock > .kpi-tile.hero::after { width: auto; height: auto; inset: 0; }
   @media (max-width: 760px) {
     .wrap { padding: 20px 16px 120px; }
     #page-title { font-size: 32px; }
@@ -1795,7 +1795,7 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 13-10-2026 · b4</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b5</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
   <div class="tc-head"><b>🎨 Thema-studio</b><button type="button" class="btn-ghost" id="tc-close">✕</button></div>
