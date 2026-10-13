@@ -935,7 +935,7 @@
   .page-head-right { display: flex; align-items: center; gap: 10px; }
   .dash-period { font-size: 12.5px; font-weight: 600; color: var(--text-muted); padding: 7px 14px; border-radius: 999px; background: var(--card-bg); border: 1px solid var(--border); }
   .dpage { display: none; } .dpage.on { display: block; }
-  .dash-blocks { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; align-items: start; }
+  .dash-blocks { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
   #dash-blocks { display: block; }
   .tab-panel { display: none; } .tab-panel.active { display: block; }
   .scen-banner { display: flex; align-items: center; gap: 12px; margin: -6px 0 18px; padding: 10px 14px 10px 16px; border-radius: 999px; font-size: 13px;
@@ -1040,6 +1040,10 @@
   .fx-toast { border-radius: 999px; padding: 12px 22px; }
 
   /* mobiel: iOS-tabbalk */
+
+  /* blokken in dezelfde rij zijn altijd even hoog */
+  .dblock { display: flex; }
+  .dblock > :not(.dblock-bar) { flex: 1 1 auto; min-width: 0; }
   @media (max-width: 760px) {
     .wrap { padding: 20px 16px 120px; }
     #page-title { font-size: 32px; }
@@ -2239,20 +2243,8 @@ function renderPensionCompare(zonder, met) {
 
 // Grid "stretch" alignment doesn't reliably equalize row heights across browsers
 // when tiles have differently-wrapping sub-text, so equalize explicitly per visual row.
-function equalizeTileHeights(selector) {
-  const tiles = [...document.querySelectorAll(selector)].filter(t => t.offsetParent !== null);
-  if (!tiles.length) return;
-  tiles.forEach(t => { t.style.height = 'auto'; });
-  const groups = {};
-  tiles.forEach(t => {
-    const top = Math.round(t.getBoundingClientRect().top);
-    (groups[top] = groups[top] || []).push(t);
-  });
-  Object.values(groups).forEach(group => {
-    const max = Math.max(...group.map(t => t.offsetHeight));
-    group.forEach(t => { t.style.height = max + 'px'; });
-  });
-}
+// Gelijke hoogtes regelt het CSS-raster (align-items: stretch); hier alleen oude inline hoogtes opruimen.
+function equalizeTileHeights(selector) { document.querySelectorAll(selector).forEach(t => { t.style.height = ''; }); }
 
 function easterSunday(y) {
   const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4;
