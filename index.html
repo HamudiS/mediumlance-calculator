@@ -1411,6 +1411,13 @@
   .bdg:hover .bi { transform: translateY(-3px) scale(1.06); }
   html[data-theme="2050"] .bdg .bi { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.14); box-shadow: none; }
   html[data-theme="2050"] .bdg.on .bi { background: rgba(var(--acc-rgb), .16); border-color: rgba(var(--acc-rgb), .5); box-shadow: 0 8px 22px rgba(0,0,0,.35); }
+  /* spaardoel: Activity-ring-stijl */
+  .goal-orbit, .goal-rocket { display: none !important; }
+  #goal-knob { filter: drop-shadow(0 1px 3px rgba(20,30,25,.4)); }
+  #goal-ring.ping #goal-arc { animation: fxRingPing .9s ease-out; }
+  @keyframes fxRingPing { 0% { filter: drop-shadow(0 4px 10px rgba(var(--acc-rgb), .35)); } 40% { filter: drop-shadow(0 0 20px rgba(var(--acc-rgb), .8)); } 100% { filter: drop-shadow(0 4px 10px rgba(var(--acc-rgb), .35)); } }
+  #goal-launch { display: inline-flex; align-items: center; gap: 8px; }
+  #goal-launch svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 </style>
 </head>
 <body>
@@ -1630,11 +1637,10 @@
         <div class="flow-note" id="tm-note"></div>
       </div>
       <div class="card" id="card-goal">
-        <h2>Spaardoel-raket <span class="badge">3 · 2 · 1 …</span></h2>
+        <h2>Spaardoel <span class="badge">je voortgang</span></h2>
         <div class="goal-grid">
           <div class="goal-ring" id="goal-ring">
-            <svg viewBox="0 0 140 140" aria-hidden="true"><defs><linearGradient id="goal-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--accent)"/><stop offset="1" stop-color="var(--accent-2, var(--accent))"/></linearGradient></defs><circle cx="70" cy="70" r="56" fill="none" stroke="var(--track)" stroke-width="13"/><circle id="goal-arc" cx="70" cy="70" r="56" fill="none" stroke="url(#goal-grad)" stroke-width="13" stroke-linecap="round" stroke-dasharray="0 351.9" transform="rotate(-90 70 70)"/></svg>
-            <div class="goal-orbit"><span class="goal-rocket" id="goal-rocket">🚀</span></div>
+            <svg viewBox="0 0 140 140" aria-hidden="true"><defs><linearGradient id="goal-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--accent)"/><stop offset="1" stop-color="var(--accent-2, var(--accent))"/></linearGradient></defs><circle cx="70" cy="70" r="56" fill="none" stroke="var(--track)" stroke-width="13"/><circle id="goal-arc" cx="70" cy="70" r="56" fill="none" stroke="url(#goal-grad)" stroke-width="13" stroke-linecap="round" stroke-dasharray="0 351.9" transform="rotate(-90 70 70)"/><circle id="goal-knob" cx="70" cy="14" r="5.2" fill="#fff" style="transform-origin:70px 70px; transform:rotate(0deg); opacity:0; transition: transform 1.4s cubic-bezier(.3,.9,.3,1), opacity .4s"/></svg>
             <div class="goal-center"><b id="goal-pct">0%</b><span id="goal-name-out">doel</span></div>
           </div>
           <div class="goal-out" id="goal-out">—</div>
@@ -1645,7 +1651,7 @@
           <label>Al gespaard (€)<input type="number" id="spHave" value="0" step="250" min="0"></label>
           <label>Sparen van je netto (%)<input type="number" id="spPct" value="20" step="1" min="0" max="100"></label>
         </div>
-        <button type="button" class="btn-inline" id="goal-launch">🚀 Lanceer</button>
+        <button type="button" class="btn-inline" id="goal-launch"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4 4.5v4h4"/></svg>Voortgang afspelen</button>
       </div>
     </div>
 
@@ -2096,7 +2102,7 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b26</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b27</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
   <div class="tc-head"><b>🎨 Thema-studio</b><button type="button" class="btn-ghost" id="tc-close">✕</button></div>
@@ -3450,7 +3456,8 @@ function fxGoal(v) {
   const perMonth = v.nettoMaandTotaal * pct / 100, frac = goal > 0 ? Math.min(1, have / goal) : 0;
   const C = 2 * Math.PI * 56;
   byId('goal-arc').setAttribute('stroke-dasharray', `${(frac * C).toFixed(1)} ${C.toFixed(1)}`);
-  byId('goal-pct').textContent = Math.round(frac * 100) + '%';
+  byId('goal-pct').textContent = Math.round(frac * 100) + '%'; window.GOAL_FRAC = frac;
+  { const k = byId('goal-knob'); k.style.opacity = frac > 0 ? 1 : 0; k.style.transform = `rotate(${(frac * 360).toFixed(1)}deg)`; }
   byId('goal-name-out').textContent = name;
   let msg;
   if (goal <= 0) msg = '<div class="gs-cap">Vul een bedrag in om je spaardoel te berekenen.</div>';
@@ -3650,7 +3657,7 @@ const DBLOCKS = [
   { id: 'time', page: 'pensioen', t: 'Pensioen-tijdmachine', i: '⏳', sel: '#card-time', span: 12, sizes: [6, 12] },
   { id: 'gauge', page: 'belasting', t: 'Effectieve belastingdruk', i: '🎚️', sel: '#dash-gauge2', closest: '.card', span: 6, sizes: [4, 6, 12] },
   { id: 'meter', page: 'belasting', t: 'Belasting-snelheidsmeter', i: '⏱️', sel: '#card-meter', span: 6, sizes: [4, 6, 12] },
-  { id: 'goal', page: 'doelen', t: 'Spaardoel-raket', i: '🚀', sel: '#card-goal', span: 6, sizes: [6, 12] },
+  { id: 'goal', page: 'doelen', t: 'Spaardoel', i: '🎯', sel: '#card-goal', span: 6, sizes: [6, 12] },
   { id: 'shop', page: 'doelen', t: 'Wat koop je ervan?', i: '🛍️', sel: '#card-shop', span: 6, sizes: [6, 12] },
   { id: 'badges', page: 'doelen', t: 'Prestaties', i: '🏅', sel: '#card-badges', span: 12, sizes: [6, 12] },
   { id: 'ticker', page: 'doelen', t: 'Lopende band', i: '📈', sel: '#fx-ticker', span: 12, sizes: [12] },
@@ -4475,10 +4482,15 @@ document.getElementById('pensionToggle').addEventListener('change', () => { save
 byId('whatifShare').addEventListener('click', fxShare);
 byId('printPayslip').addEventListener('click', fxPrint);
 byId('goal-launch').addEventListener('click', () => {
-  const ring = byId('goal-ring'); ring.classList.remove('launch'); void ring.offsetWidth; ring.classList.add('launch');
-  fxToast('🚀 3 · 2 · 1 … lancering!');
-  [0, 120, 240, 360, 480, 600].forEach((t, i) => setTimeout(() => fxBeep(110 + i * 70, 0.25, 'sawtooth', 0.025), t));
-  setTimeout(() => { ring.classList.remove('launch'); fxConfetti(ring); fxCash(); }, 1750);
+  const arc = byId('goal-arc'), knob = byId('goal-knob'), ring = byId('goal-ring'), frac = window.GOAL_FRAC || 0, C = 2 * Math.PI * 56;
+  arc.style.transition = 'none'; knob.style.transition = 'none';
+  arc.setAttribute('stroke-dasharray', `0 ${C.toFixed(1)}`); knob.style.transform = 'rotate(0deg)'; knob.style.opacity = frac > 0 ? 1 : 0;
+  void arc.getBoundingClientRect();
+  arc.style.transition = 'stroke-dasharray 1.9s cubic-bezier(.22,1,.36,1)'; knob.style.transition = 'transform 1.9s cubic-bezier(.22,1,.36,1)';
+  arc.setAttribute('stroke-dasharray', `${(frac * C).toFixed(1)} ${C.toFixed(1)}`); knob.style.transform = `rotate(${(frac * 360).toFixed(1)}deg)`;
+  fxTween(byId('goal-pct'), Math.round(frac * 100), n => Math.round(n) + '%', 1900);
+  [0, 380, 760].forEach((t, i) => setTimeout(() => fxBeep(660 + i * 110, 0.14, 'sine', 0.025), t));
+  setTimeout(() => { arc.style.transition = ''; knob.style.transition = 'transform 1.4s cubic-bezier(.3,.9,.3,1), opacity .4s'; ring.classList.add('ping'); setTimeout(() => ring.classList.remove('ping'), 900); if (frac >= 1) { fxConfetti(ring); fxCash(); } }, 1950);
 });
 ['spName', 'spGoal', 'spHave', 'spPct'].forEach(id => byId(id).addEventListener('input', () => fxUnlock('doel')));
 ['tmYears', 'tmRend'].forEach(id => byId(id).addEventListener('input', () => fxUnlock('tijd')));
