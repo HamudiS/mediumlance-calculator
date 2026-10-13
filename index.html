@@ -30,6 +30,12 @@
     --c-pensioen: #7b5ea7;
     --c-overig: #d1d5db;
     --c-belasting: #c0524a;
+    --row-border: #f0f1f4;
+    --track: #f0f1f3;
+    --note-bg: #fbf9ec;
+    --note-border: #ecdf9a;
+    --bar-a: #d8e4de;
+    --bar-b: #2f6f4f;
   }
   * { box-sizing: border-box; }
   body {
@@ -126,7 +132,7 @@
     align-items: center;
     gap: 12px;
     padding: 7px 0;
-    border-bottom: 1px solid #f0f1f4;
+    border-bottom: 1px solid var(--row-border);
   }
   .row:last-child { border-bottom: none; }
   .row.computed {
@@ -252,8 +258,8 @@
   .note {
     font-size: 11.5px;
     color: var(--text-muted);
-    background: #fbf9ec;
-    border: 1px solid #ecdf9a;
+    background: var(--note-bg);
+    border: 1px solid var(--note-border);
     border-radius: 8px;
     padding: 8px 10px;
     margin-top: 10px;
@@ -322,15 +328,16 @@
   .whatif { margin-bottom: 18px; }
   .whatif h2 { margin-bottom: 12px; }
   .whatif-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center; }
-  .whatif-row input[type=text] { width: 100%; text-align: left; }
+  .whatif-row input[type=text], .row input[type=text] { width: 100%; text-align: left; padding: 9px 12px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text); border-radius: 10px; font: inherit; font-size: 14px; }
+  .whatif-row input[type=text]:focus { outline: none; border-color: var(--accent); }
   .btn-ghost { font: inherit; font-weight: 600; font-size: 13px; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer; }
   .btn-ghost:hover { background: var(--bg); }
   .whatif-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-  .whatif-chip { font-size: 12.5px; background: #e8f1ec; color: var(--accent); border-radius: 20px; padding: 4px 11px; font-weight: 600; }
+  .whatif-chip { font-size: 12.5px; background: var(--accent-light); color: var(--accent); border-radius: 20px; padding: 4px 11px; font-weight: 600; }
   .whatif-msg { font-size: 12.5px; color: var(--text-muted); margin-top: 10px; line-height: 1.5; }
   .whatif.active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(47,111,79,0.15); }
   .kpi-delta { font-size: 12px; font-weight: 700; margin-top: 6px; }
-  .kpi-delta.up { color: #2f6f4f; }
+  .kpi-delta.up { color: var(--accent); }
   .kpi-delta.down { color: #c0524a; }
   .kpi-tile.hero .kpi-delta { color: #fff; }
   @media (max-width: 600px) { .whatif-row { grid-template-columns: 1fr 1fr; } .whatif-row input[type=text] { grid-column: 1 / -1; } }
@@ -444,7 +451,7 @@
   .funnel-label-row { display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px; }
   .funnel-label-row .fl-name { font-weight: 600; }
   .funnel-label-row .fl-val { font-variant-numeric: tabular-nums; font-weight: 700; }
-  .funnel-track { height: 30px; border-radius: 8px; background: #f0f1f3; overflow: hidden; }
+  .funnel-track { height: 30px; border-radius: 8px; background: var(--track); overflow: hidden; }
   .funnel-fill {
     height: 100%; border-radius: 8px;
     display: flex; align-items: center;
@@ -466,9 +473,181 @@
   .dash-footer-note button {
     background: none; border: none; color: var(--accent); font-weight: 700; cursor: pointer; font-size: 12px; padding: 0; font-family: inherit;
   }
+
+  /* ================= 2050 FX LAYER ================= */
+  .wrap { position: relative; z-index: 1; }
+
+  /* thema-knop */
+  .theme-toggle {
+    font: inherit; font-size: 12px; font-weight: 700; letter-spacing: .04em;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 13px; border-radius: 20px; cursor: pointer;
+    background: var(--card-bg); color: var(--text); border: 1px solid var(--border);
+    transition: box-shadow .25s ease, border-color .25s ease, transform .15s ease;
+  }
+  .theme-toggle:hover { transform: translateY(-1px); border-color: var(--accent); box-shadow: 0 0 14px rgba(47,224,162,.35); }
+  .theme-toggle .tt-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: fxPulse 2s ease-in-out infinite; }
+  .header-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+  /* ticker (lopende band) */
+  .fx-ticker {
+    overflow: hidden; white-space: nowrap; margin-bottom: 10px;
+    border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  }
+  .fx-ticker-track { display: inline-flex; padding: 9px 0; animation: fxTicker 70s linear infinite; will-change: transform; }
+  .fx-ticker:hover .fx-ticker-track { animation-play-state: paused; }
+  .tk-half { display: inline-flex; }
+  .tk { display: inline-flex; align-items: baseline; gap: 8px; padding: 0 20px; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+  .tk-l { color: var(--text-muted); text-transform: uppercase; letter-spacing: .07em; font-size: 10.5px; }
+  .tk b { font-weight: 800; }
+  .tk i { font-style: normal; font-weight: 700; font-size: 11px; }
+  .tk i.up { color: var(--accent); } .tk i.down { color: var(--danger); }
+  .tk-sep { color: var(--accent); opacity: .55; align-self: center; font-size: 9px; }
+  @keyframes fxTicker { to { transform: translateX(-50%); } }
+
+  /* live strip */
+  .fx-live {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-bottom: 16px;
+    font-size: 12.5px; color: var(--text-muted); padding: 0 4px;
+  }
+  .fx-live b { color: var(--text); font-variant-numeric: tabular-nums; }
+  .fx-live-tag { font-size: 10px; font-weight: 800; letter-spacing: .12em; color: #fff; background: var(--danger); border-radius: 5px; padding: 2px 6px; }
+  .fx-live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); animation: fxPulse 1.2s ease-in-out infinite; box-shadow: 0 0 8px var(--danger); }
+  @keyframes fxPulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.45); opacity: .55; } }
+
+  /* entree */
+  .fx-in { animation: fxUp .75s cubic-bezier(.2,.85,.25,1) both; animation-delay: var(--d, 0ms); }
+  @keyframes fxUp { from { opacity: 0; transform: translateY(22px) scale(.975); } to { opacity: 1; transform: none; } }
+
+  /* flash bij waardewijziging */
+  .kpi-tile.flash-up { animation: fxFlashUp .9s ease-out; }
+  .kpi-tile.flash-down { animation: fxFlashDown .9s ease-out; }
+  @keyframes fxFlashUp { 0% { box-shadow: 0 0 0 0 rgba(47,224,162,.7); } 100% { box-shadow: 0 0 0 16px rgba(47,224,162,0); } }
+  @keyframes fxFlashDown { 0% { box-shadow: 0 0 0 0 rgba(251,113,133,.7); } 100% { box-shadow: 0 0 0 16px rgba(251,113,133,0); } }
+
+  /* grafieken: tekenen / groeien */
+  .fx-anim .fx-seg { animation: fxSeg 1.3s cubic-bezier(.22,.9,.28,1) both; animation-delay: calc(var(--i) * 120ms + 200ms); }
+  @keyframes fxSeg { from { stroke-dasharray: 0 var(--c); } to { stroke-dasharray: var(--d) var(--r); } }
+  .fx-anim .fx-bar { transform-box: fill-box; transform-origin: 50% 100%; animation: fxBar 1s cubic-bezier(.2,.9,.3,1) both; animation-delay: calc(var(--i) * 90ms + 250ms); }
+  @keyframes fxBar { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  .fx-anim .funnel-fill { transform-origin: left center; animation: fxFill 1.1s cubic-bezier(.2,.9,.3,1) both; }
+  .fx-anim .funnel-row:nth-child(2) .funnel-fill { animation-delay: .12s; }
+  .fx-anim .funnel-row:nth-child(3) .funnel-fill { animation-delay: .24s; }
+  .fx-anim .funnel-row:nth-child(4) .funnel-fill { animation-delay: .36s; }
+  .fx-anim .funnel-row:nth-child(5) .funnel-fill { animation-delay: .48s; }
+  @keyframes fxFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .funnel-fill { position: relative; overflow: hidden; }
+  .funnel-fill::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.38) 50%, transparent 70%);
+    transform: translateX(-110%); animation: fxShine 3.4s ease-in-out infinite;
+  }
+  .funnel-row:nth-child(2) .funnel-fill::after { animation-delay: .4s; }
+  .funnel-row:nth-child(3) .funnel-fill::after { animation-delay: .8s; }
+  .funnel-row:nth-child(4) .funnel-fill::after { animation-delay: 1.2s; }
+  @keyframes fxShine { 0% { transform: translateX(-110%); } 55%, 100% { transform: translateX(110%); } }
+
+  /* glare + tilt */
+  .kpi-tile, #tab-dashboard .card { transition: transform .18s ease-out, box-shadow .25s ease, border-color .25s ease; }
+  .fx-tilt { will-change: transform; }
+  .fx-glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .25s ease;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.16), transparent 46%); }
+  .fx-tilt > .fx-glare { opacity: 1; }
+  #tab-dashboard .card { position: relative; }
+
+  /* achtergrond-laag */
+  #fx-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; display: none; }
+  html[data-theme="2050"] #fx-bg { display: block; }
+  #fx-bg .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .5; will-change: transform; }
+  #fx-bg .b1 { width: 52vmax; height: 52vmax; left: -14vmax; top: -16vmax; background: radial-gradient(circle, rgba(47,224,162,.55), transparent 65%); animation: fxBlob1 26s ease-in-out infinite alternate; }
+  #fx-bg .b2 { width: 48vmax; height: 48vmax; right: -16vmax; top: 8vmax; background: radial-gradient(circle, rgba(56,130,248,.5), transparent 65%); animation: fxBlob2 31s ease-in-out infinite alternate; }
+  #fx-bg .b3 { width: 44vmax; height: 44vmax; left: 18vmax; bottom: -22vmax; background: radial-gradient(circle, rgba(167,139,250,.45), transparent 65%); animation: fxBlob3 36s ease-in-out infinite alternate; }
+  @keyframes fxBlob1 { to { transform: translate(14vmax, 10vmax) scale(1.2); } }
+  @keyframes fxBlob2 { to { transform: translate(-12vmax, 14vmax) scale(.9); } }
+  @keyframes fxBlob3 { to { transform: translate(10vmax, -12vmax) scale(1.25); } }
+  #fx-grid { position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(110,190,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(110,190,255,.07) 1px, transparent 1px);
+    background-size: 54px 54px; animation: fxGrid 14s linear infinite;
+    -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 0%, transparent 72%); mask-image: radial-gradient(ellipse at 50% 30%, #000 0%, transparent 72%); }
+  @keyframes fxGrid { to { background-position: 0 54px, 54px 0; } }
+  #fx-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  /* ================= THEMA 2050 ================= */
+  html[data-theme="2050"] {
+    color-scheme: dark;
+    --bg: #050914; --card-bg: rgba(13,21,40,.62); --border: rgba(110,190,255,.17);
+    --text: #e8f1ff; --text-muted: #8ea3c4;
+    --accent: #2fe0a2; --accent-2: #14b886; --accent-light: rgba(47,224,162,.13);
+    --gold: #fbbf24; --input-bg: rgba(8,14,30,.78); --input-border: rgba(110,190,255,.3);
+    --danger: #fb7185; --danger-light: rgba(251,113,133,.12);
+    --shadow: 0 0 0 1px rgba(110,190,255,.04), 0 8px 30px rgba(0,0,0,.38);
+    --shadow-md: 0 10px 40px rgba(0,0,0,.5);
+    --row-border: rgba(110,190,255,.10); --track: rgba(255,255,255,.07);
+    --note-bg: rgba(251,191,36,.08); --note-border: rgba(251,191,36,.28);
+    --bar-a: rgba(142,163,196,.45); --bar-b: #2fe0a2;
+    --c-pensioen: #a78bfa;
+  }
+  html[data-theme="2050"] body { background: var(--bg); }
+  html[data-theme="2050"] .card, html[data-theme="2050"] .kpi-tile, html[data-theme="2050"] .fx-ticker, html[data-theme="2050"] .theme-toggle {
+    -webkit-backdrop-filter: blur(16px) saturate(150%); backdrop-filter: blur(16px) saturate(150%);
+  }
+  html[data-theme="2050"] .card:hover, html[data-theme="2050"] .kpi-tile:hover { border-color: rgba(47,224,162,.45); box-shadow: 0 0 0 1px rgba(47,224,162,.12), 0 12px 40px rgba(0,0,0,.5), 0 0 28px rgba(47,224,162,.12); }
+  html[data-theme="2050"] input, html[data-theme="2050"] select, html[data-theme="2050"] textarea { color: var(--text); }
+  html[data-theme="2050"] input::placeholder { color: var(--text-muted); opacity: .7; }
+  html[data-theme="2050"] input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(47,224,162,.2); }
+  html[data-theme="2050"] header.page h1, html[data-theme="2050"] .dash-intro h2 {
+    background: linear-gradient(90deg, #e8f1ff, #2fe0a2 60%, #38bdf8); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200% 100%; animation: fxTitle 9s ease-in-out infinite alternate;
+  }
+  @keyframes fxTitle { to { background-position: 100% 0; } }
+  html[data-theme="2050"] .kpi-tile.hero { background: linear-gradient(150deg, #0fb487 0%, #0a7d66 55%, #064a47 100%); box-shadow: 0 0 36px rgba(47,224,162,.28), 0 10px 40px rgba(0,0,0,.45); }
+  html[data-theme="2050"] .kpi-tile.hero::after { display: none; }
+  html[data-theme="2050"] .kpi-tile.hero::before, html[data-theme="2050"] .whatif.active::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
+    background: conic-gradient(from var(--ang, 0deg), transparent 0 60%, #2fe0a2 78%, #38bdf8 90%, transparent 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    animation: fxSpin 5s linear infinite;
+  }
+  @property --ang { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+  @keyframes fxSpin { to { --ang: 360deg; } }
+  html[data-theme="2050"] .kpi-value, html[data-theme="2050"] .hero .amount { text-shadow: 0 0 18px rgba(47,224,162,.28); }
+  html[data-theme="2050"] .donut-wrap::before {
+    content: ""; position: absolute; inset: -10px; border-radius: 50%; pointer-events: none;
+    border: 1px dashed rgba(110,190,255,.28);
+    background: radial-gradient(circle at 50% 0, #2fe0a2 0 3px, transparent 4.5px);
+    animation: fxOrbit 24s linear infinite;
+  }
+  @keyframes fxOrbit { to { transform: rotate(360deg); } }
+  html[data-theme="2050"] .donut-wrap svg { filter: drop-shadow(0 0 7px rgba(47,224,162,.22)); }
+  html[data-theme="2050"] .donut-center .dc-value, html[data-theme="2050"] .gauge2-center .g2-val { text-shadow: 0 0 14px rgba(47,224,162,.4); animation: fxGlow 3.4s ease-in-out infinite; }
+  @keyframes fxGlow { 0%,100% { opacity: 1; } 50% { opacity: .78; } }
+  html[data-theme="2050"] .tab-btn.active { text-shadow: 0 0 12px rgba(47,224,162,.55); }
+  html[data-theme="2050"] .toggle-slider { background: rgba(255,255,255,.18); }
+  html[data-theme="2050"] .btn-inline { box-shadow: 0 0 16px rgba(47,224,162,.35); color: #04140e; }
+  html[data-theme="2050"] .btn-ghost { color: var(--text); }
+  html[data-theme="2050"] .app-footer { color: var(--text-muted); border-color: var(--border); }
+  html[data-theme="2050"] details.subcard { background: rgba(13,21,40,.5); border-color: var(--border); }
+  html[data-theme="2050"] .whatif-chip { border: 1px solid rgba(47,224,162,.3); }
+  html[data-theme="2050"] .whatif-row input[type=text]:focus { box-shadow: 0 0 0 3px rgba(47,224,162,.25), 0 0 22px rgba(47,224,162,.25); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .fx-ticker-track { transform: none !important; }
+  }
+  @media (max-width: 600px) {
+    .tk { padding: 0 14px; } #fx-bg .blob { filter: blur(50px); }
+    .kpi-value { font-size: 19px; } .kpi-tile { padding: 14px 14px; }
+    .fx-live-sep { display: none; }
+    .donut-row, .mini-donut-row, .gauge2-row { flex-direction: column; align-items: stretch; }
+    .donut-row .donut-wrap, .mini-donut-row .donut-wrap, .gauge2-row .donut-wrap { align-self: center; margin: 8px 0; }
+    .whatif-row .btn-inline { justify-self: stretch; }
+  }
 </style>
 </head>
 <body>
+<div id="fx-bg" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div id="fx-grid"></div><canvas id="fx-canvas"></canvas></div>
 <div class="wrap">
 
   <header class="page">
@@ -476,7 +655,10 @@
       <h1>Mediumlance Calculator</h1>
       <p>Bereken je bruto resultaat, kosten en StiPP-pensioenopbouw als mediumlancer</p>
     </div>
-    <div class="legend"><span class="swatch"></span> = zelf in te vullen</div>
+    <div class="header-right">
+      <div class="legend"><span class="swatch"></span> = zelf in te vullen</div>
+      <button type="button" class="theme-toggle" id="themeToggle" title="Wissel tussen het 2050-thema en het klassieke thema"><span class="tt-dot"></span><span id="themeLabel">2050</span></button>
+    </div>
   </header>
 
   <div class="tabs">
@@ -490,6 +672,14 @@
     <div class="dash-intro">
       <h2 id="dash-name">—</h2>
       <div class="dash-period">Jaarbasis</div>
+    </div>
+
+    <div class="fx-ticker" id="fx-ticker" aria-hidden="true"><div class="fx-ticker-track" id="fx-ticker-track"></div></div>
+    <div class="fx-live" id="fx-live">
+      <span class="fx-live-dot"></span><span class="fx-live-tag">LIVE</span>
+      <span>Als je nu declarabel werkt, verdien je netto <b id="fx-live-rate">—</b> per seconde</span>
+      <span class="fx-live-sep">·</span>
+      <span>sinds je hier bent: <b id="fx-live-count">—</b></span>
     </div>
 
     <div class="card whatif" id="whatif">
@@ -545,7 +735,7 @@
       <div class="card">
         <h2>Bruto vs. netto per inkomensstroom <span class="badge">per jaar</span></h2>
         <div class="bar-chart-wrap" id="dash-barchart"></div>
-        <div class="bar-legend"><span><span class="dot" style="background:#d8e4de"></span>bruto</span><span><span class="dot" style="background:#2f6f4f"></span>netto</span></div>
+        <div class="bar-legend"><span><span class="dot" style="background:var(--bar-a)"></span>bruto</span><span><span class="dot" style="background:var(--bar-b)"></span>netto</span></div>
       </div>
     </div>
 
@@ -574,8 +764,8 @@
       <h2>Impact van pensioenafdracht <span class="badge">zonder vs. met</span></h2>
       <div class="bar-chart-wrap" id="dash-pension-compare"></div>
       <div class="bar-legend">
-        <span><span class="dot" style="background:#d8e4de"></span>zonder pensioen</span>
-        <span><span class="dot" style="background:#7b5ea7"></span>met pensioen</span>
+        <span><span class="dot" style="background:var(--bar-a)"></span>zonder pensioen</span>
+        <span><span class="dot" style="background:var(--c-pensioen)"></span>met pensioen</span>
       </div>
       <p class="dash-footer-note" id="dash-pension-impact-note" style="margin-top:14px; text-align:left;"></p>
     </div>
@@ -1021,7 +1211,8 @@ const fmtShort = (n) => {
   return fmt(n);
 };
 
-const COLORS = { basis:'#3f7a8c', bonus:'#c8963e', ea:'#2f6f4f', kosten:'#94a3b8', pensioen:'#7b5ea7', overig:'#d1d5db', belasting:'#c0524a', reiskosten:'#5fb0a3', track:'#e5e7eb' };
+let FX_ANIM = true;
+const COLORS = { basis:'#3f7a8c', bonus:'#c8963e', ea:'#2f6f4f', kosten:'#94a3b8', pensioen:'#7b5ea7', overig:'#d1d5db', belasting:'#c0524a', reiskosten:'#5fb0a3', track:'#e5e7eb', text:'#161c14', muted:'#6b7280', axis:'#e5e7eb', barA:'#d8e4de', barB:'#2f6f4f' };
 
 function donutSVG(segments, opts) {
   opts = opts || {};
@@ -1031,7 +1222,7 @@ function donutSVG(segments, opts) {
   const cx = size / 2, cy = size / 2;
   const circumference = 2 * Math.PI * r;
   const total = segments.reduce((a, s) => a + Math.max(0, s.value), 0);
-  let offset = 0;
+  let offset = 0, segIdx = 0;
   let circles = '';
   if (total <= 0) {
     circles = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${COLORS.track}" stroke-width="${thickness}"/>`;
@@ -1041,11 +1232,11 @@ function donutSVG(segments, opts) {
       if (value <= 0) return;
       const frac = value / total;
       const dash = frac * circumference;
-      circles += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${s.color}" stroke-width="${thickness}" stroke-dasharray="${dash} ${circumference - dash}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})"/>`;
+      circles += `<circle class="fx-seg" style="--c:${circumference};--d:${dash};--r:${circumference - dash};--i:${segIdx++}" cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${s.color}" stroke-width="${thickness}" stroke-dasharray="${dash} ${circumference - dash}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})"/>`;
       offset += dash;
     });
   }
-  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">${circles}</svg>`;
+  return `<svg class="${FX_ANIM ? 'fx-anim' : ''}" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">${circles}</svg>`;
 }
 
 function renderDonut(wrapId, segments, centerValue, centerLabel) {
@@ -1065,8 +1256,8 @@ function renderLegend(listId, segments, total) {
 }
 
 function groupedBarSVG(groups, colorA, colorB) {
-  colorA = colorA || '#d8e4de';
-  colorB = colorB || '#2f6f4f';
+  colorA = colorA || COLORS.barA;
+  colorB = colorB || COLORS.barB;
   const width = 460, height = 190;
   const padTop = 26, padBottom = 26;
   const chartH = height - padTop - padBottom;
@@ -1083,21 +1274,22 @@ function groupedBarSVG(groups, colorA, colorB) {
     const brutoY = padTop + chartH - brutoH;
     const nettoY = padTop + chartH - nettoH;
     bars += `
-      <rect x="${gx}" y="${brutoY}" width="${barW}" height="${brutoH}" rx="5" fill="${colorA}"/>
-      <text x="${gx + barW / 2}" y="${brutoY - 6}" font-size="10.5" text-anchor="middle" fill="#6b7280">${fmtShort(g.bruto)}</text>
-      <rect x="${gx + barW + innerGap}" y="${nettoY}" width="${barW}" height="${nettoH}" rx="5" fill="${colorB}"/>
+      <rect class="fx-bar" style="--i:${i * 2}" x="${gx}" y="${brutoY}" width="${barW}" height="${brutoH}" rx="5" fill="${colorA}"/>
+      <text x="${gx + barW / 2}" y="${brutoY - 6}" font-size="10.5" text-anchor="middle" fill="${COLORS.muted}">${fmtShort(g.bruto)}</text>
+      <rect class="fx-bar" style="--i:${i * 2 + 1}" x="${gx + barW + innerGap}" y="${nettoY}" width="${barW}" height="${nettoH}" rx="5" fill="${colorB}"/>
       <text x="${gx + barW + innerGap + barW / 2}" y="${nettoY - 6}" font-size="10.5" text-anchor="middle" fill="${colorB}" font-weight="700">${fmtShort(g.netto)}</text>
-      <text x="${gx + groupW / 2}" y="${height - 8}" font-size="11.5" text-anchor="middle" fill="#161c14" font-weight="700">${g.label}</text>
+      <text x="${gx + groupW / 2}" y="${height - 8}" font-size="11.5" text-anchor="middle" fill="${COLORS.text}" font-weight="700">${g.label}</text>
     `;
   });
-  return `<svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}" preserveAspectRatio="xMidYMid meet">
-    <line x1="6" y1="${padTop + chartH}" x2="${width - 6}" y2="${padTop + chartH}" stroke="#e5e7eb"/>
+  return `<svg class="${FX_ANIM ? 'fx-anim' : ''}" viewBox="0 0 ${width} ${height}" width="100%" height="${height}" preserveAspectRatio="xMidYMid meet">
+    <line x1="6" y1="${padTop + chartH}" x2="${width - 6}" y2="${padTop + chartH}" stroke="${COLORS.axis}"/>
     ${bars}
   </svg>`;
 }
 
 function renderFunnel(containerId, steps) {
   const max = Math.max(...steps.map(s => Math.abs(s.value)), 1);
+  document.getElementById(containerId).classList.toggle('fx-anim', !!FX_ANIM);
   document.getElementById(containerId).innerHTML = steps.map(s => {
     const pct = Math.max(2, Math.min(100, Math.abs(s.value) / max * 100));
     const neg = s.value < 0;
@@ -1418,7 +1610,7 @@ function renderDashboard(v, base) {
     { label: 'Basissalaris', bruto: v.brutoBasisJaar, netto: v.nettoBasisJaar },
     { label: 'Omzetbonus+mob.', bruto: 12 * (v.omzetbonus + v.mobiliteitsbijdrage), netto: v.nettoOmzetbonusJaar + v.nettoMobiliteitJaar },
     { label: 'Eindafrekening', bruto: Math.max(0, v.eindafrekening), netto: Math.max(0, v.eindafrekeningNetto) },
-  ], '#d8e4de', '#2f6f4f');
+  ], COLORS.barA, COLORS.barB);
 
   renderFunnel('dash-funnel', [
     { name: 'Jaaromzet excl. btw', value: v.jaaromzet },
@@ -1467,6 +1659,7 @@ function renderDashboard(v, base) {
       : insightHTML('%', `Pensioenopbouw staat nu uit — zie de kaart "Impact van pensioenafdracht" hieronder voor het verschil.`),
   ];
   document.getElementById('dash-insights').innerHTML = insights.join('');
+  fxAfterDashboard(v, base);
 }
 
 function renderPensionCompare(zonder, met) {
@@ -1474,7 +1667,7 @@ function renderPensionCompare(zonder, met) {
     { label: 'Eindafr. (netto)', bruto: zonder.eindafrekeningNetto, netto: met.eindafrekeningNetto },
     { label: 'Netto / maand', bruto: zonder.nettoMaandTotaal, netto: met.nettoMaandTotaal },
     { label: 'Totaal netto / jr', bruto: zonder.totaalNettoJaar, netto: met.totaalNettoJaar },
-  ], '#d8e4de', '#7b5ea7');
+  ], COLORS.barA, COLORS.pensioen);
 
   const deltaTotaal = met.totaalNettoJaar - zonder.totaalNettoJaar;
   const richting = deltaTotaal < 0 ? 'minder' : 'meer';
@@ -1615,6 +1808,7 @@ function runWhatif() {
   if ('reiskostenKm' in sc.fields && val('mobiliteitsbijdrage') === 0 && !('mobiliteitsbijdrage' in sc.fields)) {
     msg += ' <b>Let op:</b> je mobiliteitsbudget staat op €0, dus deze kilometers tellen als extra kosten.';
   }
+  FX_ANIM = true;
   recalc();
   renderWhatif(msg);
 }
@@ -1622,9 +1816,215 @@ function runWhatif() {
 function resetWhatif() {
   SCEN = null;
   document.getElementById('whatifInput').value = '';
+  FX_ANIM = true;
   recalc();
   renderWhatif('Typ wat je wilt weten; het dashboard laat dan tijdelijk dat scenario zien. Je invoer en opgeslagen cijfers veranderen niet. Voorbeelden: <i>30 vakantiedagen</i> · <i>uurtarief 105</i> · <i>bonus 5000</i> · <i>basissalaris 2800</i> · <i>uren 1900</i> · <i>1500 km</i> · <i>brandstof 800</i> · <i>zonder pensioen</i> — je kunt ze combineren met een komma.');
 }
+
+// ================= 2050 FX LAYER =================
+const REDUCED = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+const FINE_POINTER = !!(window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches);
+const byId = id => document.getElementById(id);
+let THEME = 'classic';
+
+const PALETTES = {
+  light: { basis:'#3f7a8c', bonus:'#c8963e', ea:'#2f6f4f', kosten:'#94a3b8', pensioen:'#7b5ea7', overig:'#d1d5db', belasting:'#c0524a', reiskosten:'#5fb0a3', track:'#e5e7eb', text:'#161c14', muted:'#6b7280', axis:'#e5e7eb', barA:'#d8e4de', barB:'#2f6f4f' },
+  dark: { basis:'#38bdf8', bonus:'#fbbf24', ea:'#2fe0a2', kosten:'#64748b', pensioen:'#a78bfa', overig:'#3b4a63', belasting:'#fb7185', reiskosten:'#2dd4bf', track:'rgba(255,255,255,0.08)', text:'#e8f1ff', muted:'#8ea3c4', axis:'rgba(110,190,255,0.22)', barA:'rgba(142,163,196,0.45)', barB:'#2fe0a2' },
+};
+
+const fmt4 = n => (isFinite(n) ? n : 0).toLocaleString('nl-NL', { style: 'currency', currency: 'EUR', minimumFractionDigits: 4, maximumFractionDigits: 4 });
+
+function applyTheme(name, rerender) {
+  THEME = name === 'classic' ? 'classic' : '2050';
+  document.documentElement.setAttribute('data-theme', THEME);
+  Object.assign(COLORS, THEME === '2050' ? PALETTES.dark : PALETTES.light);
+  byId('themeLabel').textContent = THEME === '2050' ? '2050' : 'Klassiek';
+  try { localStorage.setItem('mlc-theme', THEME); } catch (e) {}
+  fxBgSync();
+  if (rerender) { FX_ANIM = true; recalc(); fxEnter(); }
+}
+
+// ---- tellers (count-up) ----
+const KPI_MAP = [['dash-ea-bruto', 'eindafrekening'], ['dash-ea-netto', 'eindafrekeningNetto'], ['dash-netto-maand', 'nettoMaandTotaal'], ['dash-totaal-netto', 'totaalNettoJaar']];
+function fxAnimateKpis(v) {
+  KPI_MAP.forEach(([id, key]) => {
+    const el = byId(id), to = v[key];
+    const fresh = FX_ANIM || el._fxv == null;
+    const from = fresh ? 0 : el._fxv;
+    if (el._raf) cancelAnimationFrame(el._raf);
+    if (REDUCED || Math.abs(from - to) < 0.005) { el._fxv = to; el.textContent = fmt(to); return; }
+    if (!fresh) {
+      const tile = el.closest('.kpi-tile');
+      tile.classList.remove('flash-up', 'flash-down'); void tile.offsetWidth;
+      tile.classList.add(to > from ? 'flash-up' : 'flash-down');
+      setTimeout(() => tile.classList.remove('flash-up', 'flash-down'), 950);
+    }
+    const t0 = performance.now(), dur = fresh ? 1400 : 650;
+    const step = now => {
+      const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 4);
+      el._fxv = from + (to - from) * e;
+      el.textContent = fmt(el._fxv);
+      if (k < 1) el._raf = requestAnimationFrame(step); else { el._fxv = to; el.textContent = fmt(to); }
+    };
+    el._fxv = from; el.textContent = fmt(from);
+    el._raf = requestAnimationFrame(step);
+  });
+}
+
+// ---- lopende band (ticker) ----
+function fxTicker(v, base) {
+  const isScen = base && v !== base;
+  const items = [
+    ['Eindafrekening bruto', fmt(v.eindafrekening), isScen ? v.eindafrekening - base.eindafrekening : null],
+    ['Eindafrekening netto', fmt(v.eindafrekeningNetto), isScen ? v.eindafrekeningNetto - base.eindafrekeningNetto : null],
+    ['Netto per maand', fmt(v.nettoMaandTotaal), isScen ? v.nettoMaandTotaal - base.nettoMaandTotaal : null],
+    ['Totaal netto per jaar', fmt(v.totaalNettoJaar), isScen ? v.totaalNettoJaar - base.totaalNettoJaar : null],
+    ['Belastingdruk', fmtPct(v.effectieveBelastingdruk * 100), null],
+    ['Jaaromzet', fmt(v.jaaromzet), null],
+    ['Pensioenreservering', fmt(v.premieJaar), null],
+    ['Declarabele uren', Math.round(v.uren).toLocaleString('nl-NL'), null],
+    ['Netto per declarabel uur', fmt(v.uren > 0 ? v.totaalNettoJaar / v.uren : 0), null],
+  ];
+  const itemHTML = (it, i) => {
+    const d = it[2];
+    const delta = d == null ? '' : (Math.abs(d) < 0.5 ? '' : `<i class="${d > 0 ? 'up' : 'down'}">${d > 0 ? '▲' : '▼'} ${fmt(Math.abs(d))}</i>`);
+    return `<span class="tk" data-k="${i}"><span class="tk-l">${it[0]}</span><b>${it[1]}</b>${delta}</span><span class="tk-sep">◆</span>`;
+  };
+  const track = byId('fx-ticker-track');
+  const half = items.map(itemHTML).join('');
+  if (track._n !== items.length || isScen !== track._scen) {
+    track._n = items.length; track._scen = isScen;
+    track.innerHTML = `<span class="tk-half">${half}</span><span class="tk-half">${half}</span>`;
+  } else {
+    track.querySelectorAll('.tk').forEach(el => {
+      const it = items[+el.dataset.k]; el.querySelector('b').textContent = it[1];
+      const old = el.querySelector('i'); if (old) old.remove();
+      const d = it[2];
+      if (d != null && Math.abs(d) >= 0.5) el.insertAdjacentHTML('beforeend', `<i class="${d > 0 ? 'up' : 'down'}">${d > 0 ? '▲' : '▼'} ${fmt(Math.abs(d))}</i>`);
+    });
+  }
+}
+
+// ---- live teller ----
+const FX_LIVE = { rate: 0, acc: 0, last: performance.now() };
+setInterval(() => {
+  const now = performance.now(), dt = (now - FX_LIVE.last) / 1000; FX_LIVE.last = now;
+  if (document.hidden) return;
+  FX_LIVE.acc += FX_LIVE.rate * Math.min(dt, 1);
+  const c = byId('fx-live-count'); if (c) c.textContent = fmt4(FX_LIVE.acc);
+}, 70);
+
+function fxAfterDashboard(v, base) {
+  fxAnimateKpis(v);
+  fxTicker(v, base);
+  FX_LIVE.rate = v.uren > 0 ? v.totaalNettoJaar / (v.uren * 3600) : 0;
+  byId('fx-live-rate').textContent = fmt4(FX_LIVE.rate);
+}
+
+// ---- entree-animatie ----
+function fxEnter() {
+  if (REDUCED) return;
+  const els = document.querySelectorAll('#tab-dashboard .dash-intro, #tab-dashboard .fx-ticker, #tab-dashboard .fx-live, #tab-dashboard .kpi-tile, #tab-dashboard .card');
+  els.forEach((el, i) => {
+    el.classList.remove('fx-in'); void el.offsetWidth;
+    el.style.setProperty('--d', Math.min(i, 14) * 70 + 'ms');
+    el.classList.add('fx-in');
+    const done = e => { if (e.target !== el) return; el.classList.remove('fx-in'); el.style.removeProperty('--d'); el.removeEventListener('animationend', done); };
+    el.addEventListener('animationend', done);
+  });
+}
+
+// ---- 3D-tilt + glare ----
+function fxInitTilt() {
+  document.querySelectorAll('#tab-dashboard .kpi-tile, #tab-dashboard .card').forEach(el => {
+    if (!el.querySelector(':scope > .fx-glare')) { const g = document.createElement('span'); g.className = 'fx-glare'; el.appendChild(g); }
+  });
+  if (REDUCED || !FINE_POINTER) return;
+  const root = byId('tab-dashboard');
+  let cur = null, raf = 0;
+  const reset = el => { if (!el) return; el.style.transform = ''; el.classList.remove('fx-tilt'); };
+  root.addEventListener('pointermove', e => {
+    if (THEME !== '2050') return;
+    const t = e.target.closest('.kpi-tile, .card');
+    if (!t || t.classList.contains('whatif')) { reset(cur); cur = null; return; }
+    if (t !== cur) { reset(cur); cur = t; }
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      const r = t.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+      const max = t.classList.contains('kpi-tile') ? 7 : 2.2;
+      t.classList.add('fx-tilt');
+      t.style.setProperty('--mx', (px * 100).toFixed(1) + '%'); t.style.setProperty('--my', (py * 100).toFixed(1) + '%');
+      t.style.transform = `perspective(1000px) rotateX(${((0.5 - py) * max * 2).toFixed(2)}deg) rotateY(${((px - 0.5) * max * 2).toFixed(2)}deg) translateY(-3px)`;
+    });
+  });
+  root.addEventListener('pointerleave', () => { cancelAnimationFrame(raf); reset(cur); cur = null; });
+}
+
+// ---- achtergrond: deeltjes, netwerk en zwevende euro's ----
+const BG = { cv: null, ctx: null, w: 0, h: 0, dpr: 1, parts: [], coins: [], raf: 0, mx: -999, my: -999, running: false, sprites: [] };
+const BG_COLORS = ['47,224,162', '56,189,248', '167,139,250'];
+function bgSprite(rgb) {
+  const c = document.createElement('canvas'); c.width = c.height = 48;
+  const g = c.getContext('2d'), gr = g.createRadialGradient(24, 24, 0, 24, 24, 24);
+  gr.addColorStop(0, `rgba(${rgb},0.95)`); gr.addColorStop(0.28, `rgba(${rgb},0.32)`); gr.addColorStop(1, `rgba(${rgb},0)`);
+  g.fillStyle = gr; g.fillRect(0, 0, 48, 48); return c;
+}
+function fxBgResize() {
+  if (!BG.cv) return;
+  BG.dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  BG.w = window.innerWidth; BG.h = window.innerHeight;
+  BG.cv.width = BG.w * BG.dpr; BG.cv.height = BG.h * BG.dpr;
+  BG.ctx.setTransform(BG.dpr, 0, 0, BG.dpr, 0, 0);
+  const n = Math.max(22, Math.min(64, Math.round(BG.w * BG.h / 24000)));
+  BG.parts = Array.from({ length: n }, () => ({ x: Math.random() * BG.w, y: Math.random() * BG.h, vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35, s: 10 + Math.random() * 26, c: Math.floor(Math.random() * 3), a: .35 + Math.random() * .5 }));
+  BG.coins = Array.from({ length: BG.w < 700 ? 5 : 9 }, () => ({ x: Math.random() * BG.w, y: Math.random() * BG.h, vy: -(0.15 + Math.random() * 0.35), sz: 13 + Math.random() * 14, a: .06 + Math.random() * .12, ph: Math.random() * 6.28, dx: (Math.random() - .5) * .15 }));
+}
+function fxBgFrame(t) {
+  if (!BG.running) return;
+  const { ctx, w, h, parts, coins } = BG;
+  ctx.clearRect(0, 0, w, h);
+  for (const p of parts) {
+    const dx = p.x - BG.mx, dy = p.y - BG.my, d2 = dx * dx + dy * dy;
+    if (d2 < 16900) { const d = Math.sqrt(d2) || 1, f = (130 - d) / 130 * .9; p.vx += dx / d * f * .06; p.vy += dy / d * f * .06; }
+    p.vx *= .995; p.vy *= .995;
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < -30) p.x = w + 30; else if (p.x > w + 30) p.x = -30;
+    if (p.y < -30) p.y = h + 30; else if (p.y > h + 30) p.y = -30;
+  }
+  ctx.lineWidth = 1;
+  for (let i = 0; i < parts.length; i++) for (let j = i + 1; j < parts.length; j++) {
+    const a = parts[i], b = parts[j], dx = a.x - b.x, dy = a.y - b.y, d2 = dx * dx + dy * dy;
+    if (d2 < 12100) { ctx.strokeStyle = `rgba(${BG_COLORS[a.c]},${((1 - Math.sqrt(d2) / 110) * .22).toFixed(3)})`; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+  }
+  for (const p of parts) { ctx.globalAlpha = p.a; ctx.drawImage(BG.sprites[p.c], p.x - p.s, p.y - p.s, p.s * 2, p.s * 2); }
+  ctx.globalAlpha = 1;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  for (const c of coins) {
+    c.y += c.vy; c.x += c.dx + Math.sin(t / 1800 + c.ph) * .25;
+    if (c.y < -30) { c.y = h + 30; c.x = Math.random() * w; }
+    ctx.font = `700 ${c.sz}px -apple-system, Segoe UI, sans-serif`;
+    ctx.fillStyle = `rgba(47,224,162,${(c.a * (0.7 + 0.3 * Math.sin(t / 900 + c.ph))).toFixed(3)})`;
+    ctx.fillText('€', c.x, c.y);
+  }
+  BG.raf = requestAnimationFrame(fxBgFrame);
+}
+function fxBgSync() {
+  const on = THEME === '2050' && !REDUCED && !document.hidden && BG.ctx;
+  if (on && !BG.running) { BG.running = true; fxBgResize(); BG.raf = requestAnimationFrame(fxBgFrame); }
+  else if (!on) { BG.running = false; cancelAnimationFrame(BG.raf); if (BG.ctx) BG.ctx.clearRect(0, 0, BG.w, BG.h); }
+}
+function fxBgInit() {
+  BG.cv = byId('fx-canvas'); if (!BG.cv || !BG.cv.getContext) return;
+  BG.ctx = BG.cv.getContext('2d');
+  BG.sprites = BG_COLORS.map(bgSprite);
+  window.addEventListener('resize', () => { if (BG.running) fxBgResize(); });
+  window.addEventListener('pointermove', e => { BG.mx = e.clientX; BG.my = e.clientY; }, { passive: true });
+  window.addEventListener('pointerleave', () => { BG.mx = BG.my = -999; });
+  document.addEventListener('visibilitychange', fxBgSync);
+}
+
+byId('themeToggle').addEventListener('click', () => applyTheme(THEME === '2050' ? 'classic' : '2050', true));
 
 function recalc() {
   updateWerkUren();
@@ -1657,12 +2057,14 @@ function recalc() {
   }
 
   if (SCEN) renderWhatif();
+  FX_ANIM = false;
   equalizeTileHeights('.kpi-tile');
 }
 
 function switchTab(name) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
+  if (name === 'dashboard') { FX_ANIM = true; recalc(); fxEnter(); }
   equalizeTileHeights('.kpi-tile');
 }
 document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
@@ -1705,10 +2107,17 @@ function loadInputs() {
   });
 }
 
+let savedTheme = null;
+try { savedTheme = localStorage.getItem('mlc-theme'); } catch (e) {}
+applyTheme(savedTheme === 'classic' ? 'classic' : '2050', false);
+fxBgInit();
+fxBgSync();
+fxInitTilt();
 loadInputs();
 document.querySelectorAll('input').forEach(inp => { if (inp.id !== 'whatifInput') inp.addEventListener('input', () => { saveInputs(); recalc(); }); });
 document.getElementById('pensionToggle').addEventListener('change', () => { saveInputs(); recalc(); });
 recalc();
+fxEnter();
 </script>
 </body>
 </html>
