@@ -657,6 +657,7 @@
     </div>
     <div class="header-right">
       <div class="legend"><span class="swatch"></span> = zelf in te vullen</div>
+      <button type="button" class="theme-toggle" id="soundToggle" title="Geluid bij het tellen en bij scenario's aan of uit"><span id="soundLabel">♪ Geluid uit</span></button>
       <button type="button" class="theme-toggle" id="themeToggle" title="Wissel tussen het 2050-thema en het klassieke thema"><span class="tt-dot"></span><span id="themeLabel">2050</span></button>
     </div>
   </header>
@@ -1811,6 +1812,7 @@ function runWhatif() {
   FX_ANIM = true;
   recalc();
   renderWhatif(msg);
+  fxCelebrate();
 }
 
 function resetWhatif() {
@@ -1864,6 +1866,7 @@ function fxAnimateKpis(v) {
       const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 4);
       el._fxv = from + (to - from) * e;
       el.textContent = fmt(el._fxv);
+      if (fresh && id === 'dash-totaal-netto') fxTick(k);
       if (k < 1) el._raf = requestAnimationFrame(step); else { el._fxv = to; el.textContent = fmt(to); }
     };
     el._fxv = from; el.textContent = fmt(from);
@@ -2025,6 +2028,82 @@ function fxBgInit() {
 }
 
 byId('themeToggle').addEventListener('click', () => applyTheme(THEME === '2050' ? 'classic' : '2050', true));
+let FX_LAST = null;
+
+// ---- geluid (WebAudio, standaard uit) ----
+let SOUND = false, AC = null, GESTURE = false, LAST_TICK = 0;
+window.addEventListener('pointerdown', () => { GESTURE = true; }, { once: true, capture: true });
+window.addEventListener('keydown', () => { GESTURE = true; }, { once: true, capture: true });
+function fxAudio() {
+  if (!AC) {
+    const C = window.AudioContext || window.webkitAudioContext;
+    if (!C || !GESTURE) return null;
+    try { AC = new C(); } catch (e) { return null; }
+  }
+  if (AC.state === 'suspended') AC.resume();
+  return AC.state === 'running' ? AC : null;
+}
+function fxBeep(freq, dur, type, vol, when) {
+  if (!SOUND || REDUCED) return;
+  const ac = fxAudio(); if (!ac) return;
+  const t = ac.currentTime + (when || 0), o = ac.createOscillator(), g = ac.createGain();
+  o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t);
+  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.05, t + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t + (dur || 0.08));
+  o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + (dur || 0.08) + 0.03);
+}
+function fxTick(progress) {
+  const now = performance.now(); if (now - LAST_TICK < 55) return; LAST_TICK = now;
+  fxBeep(360 + progress * 900, 0.05, 'triangle', 0.03);
+}
+function fxCash() { [1568, 2093, 2637, 3136].forEach((f, i) => fxBeep(f, 0.2, 'triangle', 0.05, i * 0.07)); }
+function fxDown() { fxBeep(247, 0.3, 'sine', 0.06); fxBeep(185, 0.45, 'sine', 0.05, 0.13); }
+function setSound(on) {
+  SOUND = !!on;
+  byId('soundLabel').textContent = SOUND ? '♪ Geluid aan' : '♪ Geluid uit';
+  try { localStorage.setItem('mlc-sound', SOUND ? '1' : '0'); } catch (e) {}
+  if (SOUND) { GESTURE = true; fxBeep(880, 0.12, 'sine', 0.05); fxBeep(1320, 0.16, 'sine', 0.05, 0.08); }
+}
+byId('soundToggle').addEventListener('click', () => setSound(!SOUND));
+
+// ---- confetti (euro's en lint) ----
+function fxConfetti(tile) {
+  if (REDUCED) return;
+  const cv = document.createElement('canvas');
+  cv.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60';
+  document.body.appendChild(cv);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2), W = window.innerWidth, H = window.innerHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const ctx = cv.getContext('2d'); ctx.scale(dpr, dpr);
+  let ox = W / 2, oy = H * 0.3;
+  if (tile) { const r = tile.getBoundingClientRect(); if (r.bottom > 0 && r.top < H) { ox = r.left + r.width / 2; oy = r.top + r.height / 2; } }
+  const cols = ['#2fe0a2', '#38bdf8', '#a78bfa', '#fbbf24', '#fb7185', '#ffffff'];
+  const ps = Array.from({ length: 120 }, (_, i) => {
+    const a = -Math.PI / 2 + (Math.random() - .5) * Math.PI * 1.3, sp = 6 + Math.random() * 10;
+    return { x: ox, y: oy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, rot: Math.random() * 6.28, vr: (Math.random() - .5) * .4, w: 5 + Math.random() * 7, h: 3 + Math.random() * 5, c: cols[i % cols.length], coin: i % 6 === 0 };
+  });
+  const t0 = performance.now();
+  (function frame(now) {
+    const age = now - t0;
+    ctx.clearRect(0, 0, W, H);
+    const alpha = Math.max(0, Math.min(1, 1 - (age - 1800) / 1500));
+    ctx.globalAlpha = alpha; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    for (const p of ps) {
+      p.vy += 0.28; p.vx *= 0.992; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      if (p.coin) { ctx.font = '800 18px -apple-system, Segoe UI, sans-serif'; ctx.fillStyle = '#fbbf24'; ctx.shadowColor = '#fbbf24'; ctx.shadowBlur = 8; ctx.fillText('€', 0, 0); }
+      else { ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); }
+      ctx.restore();
+    }
+    if (age < 3400) requestAnimationFrame(frame); else cv.remove();
+  })(t0);
+}
+
+function fxCelebrate() {
+  const L = FX_LAST; if (!L || L.v === L.base) return;
+  const d = L.v.totaalNettoJaar - L.base.totaalNettoJaar;
+  if (d > 0.5) { fxConfetti(byId('dash-totaal-netto').closest('.kpi-tile')); fxCash(); }
+  else if (d < -0.5) fxDown();
+}
 
 function recalc() {
   updateWerkUren();
@@ -2056,6 +2135,7 @@ function recalc() {
     renderPensionCompare(dZonder, dMet);
   }
 
+  FX_LAST = { v: dash, base: main };
   if (SCEN) renderWhatif();
   FX_ANIM = false;
   equalizeTileHeights('.kpi-tile');
@@ -2112,6 +2192,7 @@ try { savedTheme = localStorage.getItem('mlc-theme'); } catch (e) {}
 applyTheme(savedTheme === 'classic' ? 'classic' : '2050', false);
 fxBgInit();
 fxBgSync();
+try { if (localStorage.getItem('mlc-sound') === '1') { SOUND = true; byId('soundLabel').textContent = '♪ Geluid aan'; } } catch (e) {}
 fxInitTilt();
 loadInputs();
 document.querySelectorAll('input').forEach(inp => { if (inp.id !== 'whatifInput') inp.addEventListener('input', () => { saveInputs(); recalc(); }); });
