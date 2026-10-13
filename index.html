@@ -1106,6 +1106,32 @@
     background-image: linear-gradient(rgba(110,80,50,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(110,80,50,.1) 1px, transparent 1px); }
   html.grid-on[data-theme="2050"] #fx-grid { background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px); }
 
+
+  /* ================= LIQUID GLASS v5 — glas voor navigatie, rustige kaarten (Apple-richtlijn) ================= */
+  html.cards-matte .card, html.cards-matte .kpi-tile:not(.hero) {
+    background: var(--matte-bg); border: 1px solid var(--matte-border);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 1px 2px rgba(120,84,48,.08), 0 18px 40px -16px rgba(120,84,48,.22);
+    -webkit-backdrop-filter: blur(26px) saturate(150%); backdrop-filter: blur(26px) saturate(150%);
+  }
+  html.cards-matte { --matte-bg: rgba(255,255,255,.66); --matte-border: rgba(255,255,255,.6); }
+  html.cards-matte[data-theme="2050"] { --matte-bg: rgba(30,40,62,.56); --matte-border: rgba(255,255,255,.1); }
+  html.cards-matte[data-theme="2050"] .card, html.cards-matte[data-theme="2050"] .kpi-tile:not(.hero) { box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 1px 2px rgba(0,0,0,.25), 0 22px 48px -18px rgba(0,0,0,.55); }
+  html.cards-matte .dblock > .card::before, html.cards-matte .dblock > .kpi-tile:not(.hero)::before { display: none; }
+  html.cards-matte .dblock > .card::after, html.cards-matte .dblock > .kpi-tile:not(.hero)::after { opacity: .35; }
+  html.cards-matte .kpi-tile.hero { box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 18px 44px -14px rgba(var(--acc-rgb), .45); }
+  /* alles wat boven de inhoud zweeft is glas */
+  .scen-banner, .fx-toast, .tc-panel, .fx-tip {
+    background: linear-gradient(135deg, rgba(255,255,255,.34), rgba(255,255,255,.05) 48%, rgba(255,255,255,.16)), rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.6);
+    box-shadow: inset 0 2px 1px -1px #fff, inset 0 -3px 3px -2px rgba(120,84,48,.22), 0 22px 50px -12px rgba(120,84,48,.32);
+    -webkit-backdrop-filter: blur(var(--gblur)) saturate(var(--gsat)) brightness(1.06); backdrop-filter: blur(var(--gblur)) saturate(var(--gsat)) brightness(1.06);
+  }
+  html[data-theme="2050"] .scen-banner, html[data-theme="2050"] .fx-toast, html[data-theme="2050"] .tc-panel { background: linear-gradient(135deg, rgba(255,255,255,.16), rgba(255,255,255,.02) 48%, rgba(255,255,255,.07)), rgba(20,28,48,.28); border-color: rgba(255,255,255,.18); box-shadow: inset 0 2px 1px -1px rgba(255,255,255,.55), inset 0 -3px 3px -2px rgba(0,0,0,.4), 0 22px 50px -12px rgba(0,0,0,.6); }
+  .fx-tip { background: rgba(28,32,46,.78); border-color: rgba(255,255,255,.16); color: #fff; }
+  .tc-panel { background: linear-gradient(135deg, rgba(255,255,255,.42), rgba(255,255,255,.1)), var(--panel-bg); }
+  .tc-sw small { display: block; color: var(--text-muted); font-size: 11px; margin-top: 2px; line-height: 1.35; }
+  html.grid-on #fx-grid { opacity: .55; }
+
   /* lichtrand van de hoofdtegel: volle tegelgrootte (de oude decoratiecirkel had een vaste breedte) */
   .dblock > .kpi-tile.hero::after { width: auto; height: auto; inset: 0; }
   @media (max-width: 760px) {
@@ -1860,7 +1886,7 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b8</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b9</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
   <div class="tc-head"><b>🎨 Thema-studio</b><button type="button" class="btn-ghost" id="tc-close">✕</button></div>
@@ -1878,6 +1904,7 @@
       <div class="tc-seg" id="tc-glasslvl"><button type="button" data-v="subtiel">Mat</button><button type="button" data-v="normaal">Normaal</button><button type="button" data-v="kristal">Helder</button></div>
       <label class="tc-line">Dichtheid <input type="range" id="tc-glass" min="2" max="100" value="7"></label>
       <label class="tc-sw"><input type="checkbox" id="tc-orbs"><span>Gekleurd licht achter het glas</span></label>
+      <label class="tc-sw"><input type="checkbox" id="tc-cardglass"><span>Ook de kaarten van helder glas <small>(Apple gebruikt glas vooral voor navigatie en knoppen; op inhoud is het minder leesbaar)</small></span></label>
       <label class="tc-sw"><input type="checkbox" id="tc-grid"><span>Fijn raster achter het glas (maakt de breking zichtbaar)</span></label>
       <label class="tc-sw" id="tc-refract-row"><input type="checkbox" id="tc-refract"><span>Lichtbreking en glans aan de randen (Chrome/Edge)</span></label>
     </section>
@@ -3369,6 +3396,8 @@ function moveNavInd() {
   const btn = pill.querySelector('.nav-btn.active'); if (!btn) { ind.style.opacity = 0; return; }
   const horiz = getComputedStyle(pill).flexDirection === 'row';
   ind.style.opacity = 1;
+  const prevT = ind.style.transform, nextT = horiz ? `translate(${btn.offsetLeft}px, ${btn.offsetTop}px)` : `translate(${btn.offsetLeft}px, ${btn.offsetTop}px)`;
+  if (!REDUCED && prevT && prevT !== nextT && ind.animate) ind.animate(horiz ? [{ scale: '1 1' }, { scale: '1.32 .84', offset: .38 }, { scale: '.96 1.06', offset: .72 }, { scale: '1 1' }] : [{ scale: '1 1' }, { scale: '.84 1.32', offset: .38 }, { scale: '1.06 .96', offset: .72 }, { scale: '1 1' }], { duration: 640, easing: 'cubic-bezier(.3,1.2,.5,1)' });
   ind.style.transform = horiz ? `translate(${btn.offsetLeft}px, ${btn.offsetTop}px)` : `translate(${btn.offsetLeft}px, ${btn.offsetTop}px)`;
 }
 function goPage(id, opts) {
@@ -3589,7 +3618,7 @@ function peilInit() {
 }
 
 // ================= THEMA-STUDIO (kleuren, achtergrond, animaties) =================
-const DEF_TP = { accent: null, bg: null, grad: 0, dim2: null, blur: 0, glass: null, anim: true, parts: false, tilt: true, gl: 'kristal', orbs: true, refract: true, grid: true };
+const DEF_TP = { accent: null, bg: null, grad: 0, dim2: null, blur: 0, glass: null, anim: true, parts: false, tilt: true, gl: 'kristal', orbs: true, refract: true, grid: true, cardGlass: false };
 let TP = { ...DEF_TP }, TC_IMG = null;
 const GRADS = [
   { n: 'Zonsondergang', css: 'linear-gradient(135deg,#ff7e5f,#feb47b 38%,#6a3093 100%)' },
@@ -3660,6 +3689,7 @@ function applyGlass() {
   document.documentElement.dataset.glass = TP.gl || 'kristal';
   document.documentElement.classList.toggle('orbs-off', TP.orbs === false);
   document.documentElement.classList.toggle('grid-on', TP.grid !== false);
+  document.documentElement.classList.toggle('cards-matte', !TP.cardGlass);
   lgSync();
 }
 function applyAnim() {
@@ -3700,7 +3730,7 @@ function tcRenderPanel() {
   byId('tc-dim').value = Math.round(effDim(effBg()) * 100); byId('tc-blur').value = TP.blur;
   byId('tc-glass').value = Math.round(glassAlpha() * 100);
   P.querySelectorAll('#tc-glasslvl button').forEach(b => b.classList.toggle('on', b.dataset.v === (TP.gl || 'kristal')));
-  byId('tc-orbs').checked = TP.orbs !== false; byId('tc-grid').checked = TP.grid !== false; byId('tc-refract').checked = TP.refract !== false; byId('tc-refract-row').hidden = !CAN_REFRACT;
+  byId('tc-orbs').checked = TP.orbs !== false; byId('tc-grid').checked = TP.grid !== false; byId('tc-cardglass').checked = !!TP.cardGlass; byId('tc-refract').checked = TP.refract !== false; byId('tc-refract-row').hidden = !CAN_REFRACT;
   byId('tc-refract').disabled = (TP.gl || 'kristal') !== 'kristal';
   byId('tc-anim').checked = !!TP.anim; byId('tc-parts').checked = TP.parts !== false; byId('tc-tilt').checked = TP.tilt !== false;
   byId('tc-parts').disabled = byId('tc-tilt').disabled = !TP.anim;
@@ -3708,7 +3738,7 @@ function tcRenderPanel() {
 }
 function tcOpen(on) {
   const P = byId('tc-panel'), B = byId('tc-backdrop');
-  if (on) { tcRenderPanel(); P.hidden = false; B.hidden = false; void P.offsetWidth; P.classList.add('open'); }
+  if (on) { tcRenderPanel(); P.hidden = false; B.hidden = false; void P.offsetWidth; P.classList.add('open'); setTimeout(lgSync, 60); }
   else { P.classList.remove('open'); B.hidden = true; setTimeout(() => { if (!P.classList.contains('open')) P.hidden = true; }, REDUCED ? 0 : 400); }
 }
 function tcLoadImage(file) {
@@ -3753,6 +3783,7 @@ function tcInit() {
   byId('tc-glasslvl').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; TP.gl = b.dataset.v; TP.glass = null; tcChanged(false); });
   byId('tc-orbs').addEventListener('change', e => { TP.orbs = e.target.checked; tcChanged(false); });
   byId('tc-grid').addEventListener('change', e => { TP.grid = e.target.checked; tcChanged(false); });
+  byId('tc-cardglass').addEventListener('change', e => { TP.cardGlass = e.target.checked; tcChanged(false); });
   byId('tc-refract').addEventListener('change', e => { TP.refract = e.target.checked; tcChanged(false); });
   byId('tc-anim').addEventListener('change', e => { TP.anim = e.target.checked; tcChanged(false); });
   byId('tc-parts').addEventListener('change', e => { TP.parts = e.target.checked; tcChanged(false); });
@@ -3764,10 +3795,13 @@ function tcInit() {
 const GLASS_LEVELS = { subtiel: { blur: 26, sat: 170, aL: 0.3, aD: 0.4 }, normaal: { blur: 12, sat: 190, aL: 0.14, aD: 0.26 }, kristal: { blur: 3, sat: 170, aL: 0.045, aD: 0.14 } };
 const glassLevel = () => GLASS_LEVELS[TP.gl] || GLASS_LEVELS.kristal;
 const glassAlpha = () => TP.glass != null ? TP.glass : (THEME === '2050' ? glassLevel().aD : glassLevel().aL);
-const CAN_REFRACT = FINE_POINTER && /Chrome\//.test(navigator.userAgent) && !/Firefox\//.test(navigator.userAgent);
+const CAN_REFRACT = /Chrome\//.test(navigator.userAgent) && !/Firefox\//.test(navigator.userAgent);   // Chrome/Edge (ook Android)
+const CARD_REFRACT = CAN_REFRACT && FINE_POINTER;
 const LG = { cache: new Map(), n: 0, ro: null, t: 0 };
 const SVGNS = 'http://www.w3.org/2000/svg';
-const LG_SEL = '.card, .kpi-tile, .nav-glass, .nav-ind';
+const LG_NAV = '.nav-glass, .nav-ind, .scen-banner, .fx-toast, .tc-panel';
+const LG_ALL = '.card, .kpi-tile, ' + LG_NAV;
+const lgSel = () => (TP.cardGlass && CARD_REFRACT) ? LG_ALL : LG_NAV;
 
 // Twee kaarten per formaat: verplaatsing (R/G = richting + sterkte) en hoogte (alpha) voor het glanslicht.
 function lgMaps(w, h, r, bezel) {
@@ -3803,9 +3837,9 @@ function lgApply(el) {
   const r = el.getBoundingClientRect(); if (r.width < 30 || r.height < 30) return;
   const w = Math.round(r.width / 4) * 4, h = Math.round(r.height / 4) * 4;
   if (el._lgW === w && el._lgH === h && el.style.backdropFilter.indexOf('url(') === 0) return;
-  const kind = el.classList.contains('nav-ind') ? 'ind' : el.classList.contains('nav-glass') ? 'nav' : 'card';
+  const kind = el.classList.contains('nav-ind') ? 'ind' : el.classList.contains('nav-glass') ? 'nav' : el.matches('.scen-banner, .fx-toast') ? 'float' : el.classList.contains('tc-panel') ? 'nav' : 'card';
   const rad = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 24;
-  const bezel = Math.min(kind === 'ind' ? 15 : kind === 'nav' ? 22 : 30, Math.min(w, h) / 2.4), S = Math.round(bezel * 2.6);
+  const bezel = Math.min(kind === 'ind' ? 15 : kind === 'float' ? 13 : kind === 'nav' ? 22 : 30, Math.min(w, h) / 2.4), S = Math.round(bezel * 2.6);
   const id = el._lgId || (el._lgId = 'lg' + (++LG.n)), m = lgMaps(w, h, rad, bezel);
   let f = document.getElementById(id);
   if (!f) { f = document.createElementNS(SVGNS, 'filter'); f.id = id; byId('lg-defs').appendChild(f); }
@@ -3826,16 +3860,17 @@ function lgApply(el) {
   el.style.setProperty('backdrop-filter', val); el.style.setProperty('-webkit-backdrop-filter', val);
   el._lgW = w; el._lgH = h;
 }
-function lgClear() {
-  document.querySelectorAll(LG_SEL).forEach(el => { el.style.removeProperty('backdrop-filter'); el.style.removeProperty('-webkit-backdrop-filter'); el._lgW = el._lgH = null; });
-  document.documentElement.classList.remove('refract');
+function lgClear(all) {
+  document.querySelectorAll(all ? LG_ALL : '.card, .kpi-tile').forEach(el => { el.style.removeProperty('backdrop-filter'); el.style.removeProperty('-webkit-backdrop-filter'); el._lgW = el._lgH = null; });
+  if (all) document.documentElement.classList.remove('refract');
 }
 function lgSync() {
   if (!byId('lg-defs')) return;
   const on = CAN_REFRACT && !REDUCED && TP.refract !== false && (TP.gl || 'kristal') !== 'subtiel';
-  if (!on) { lgClear(); return; }
+  if (!on) { lgClear(true); return; }
   document.documentElement.classList.add('refract');
-  document.querySelectorAll(LG_SEL).forEach(el => { lgApply(el); if (LG.ro) LG.ro.observe(el); });
+  if (!(TP.cardGlass && CARD_REFRACT)) lgClear(false);
+  document.querySelectorAll(lgSel()).forEach(el => { lgApply(el); if (LG.ro) LG.ro.observe(el); });
 }
 function lgInit() {
   if (!CAN_REFRACT || typeof ResizeObserver === 'undefined') return;
