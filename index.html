@@ -2102,7 +2102,7 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b27</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b28</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
   <div class="tc-head"><b>🎨 Thema-studio</b><button type="button" class="btn-ghost" id="tc-close">✕</button></div>
@@ -3462,13 +3462,13 @@ function fxGoal(v) {
   let msg;
   if (goal <= 0) msg = '<div class="gs-cap">Vul een bedrag in om je spaardoel te berekenen.</div>';
   else if (have >= goal) msg = `<div class="gs-big">🎉</div><div class="gs-cap"><b>${esc(name)}</b> is al gehaald!</div>`;
-  else if (perMonth <= 0) msg = '<div class="gs-cap">Stel een spaarpercentage in om de landing te berekenen.</div>';
+  else if (perMonth <= 0) msg = '<div class="gs-cap">Stel een spaarpercentage in om te zien wanneer je je doel bereikt.</div>';
   else {
     const months = Math.ceil((goal - have) / perMonth), d = new Date(); d.setMonth(d.getMonth() + months);
     const eta = d.toLocaleDateString('nl-NL', { month: 'long', year: 'numeric' });
     const yrs = months >= 24 ? ` · ±${(months / 12).toFixed(1).replace('.', ',')} jaar` : '';
     msg = `<div class="gs-lbl">Je spaart</div><div class="gs-big">${fmt(perMonth)}<small> / maand</small></div><div class="gs-cap">${pct}% van je netto voor <b>${esc(name)}</b> (${fmt(goal)})</div>` +
-      `<div class="gs-eta"><span class="gs-ev">${months} maanden</span><span class="gs-es">landing rond ${eta}${yrs}</span></div>`;
+      `<div class="gs-eta"><span class="gs-ev">${months} maanden</span><span class="gs-es">doel bereikt rond ${eta}${yrs}</span></div>`;
   }
   byId('goal-out').innerHTML = msg;
 }
