@@ -1341,6 +1341,16 @@
   html[data-theme="2050"] .peil-quick { background: rgba(255,255,255,.07); }
   html[data-theme="2050"] .peil-quick .btn-ghost:hover { background: rgba(255,255,255,.14); }
   @media (max-width: 600px) { .whatif-row { display: flex; } .wi-field { flex-basis: 100%; } }
+  .whatif-msg:empty { display: none; }
+  .wi-mid { position: relative; flex: 1; min-width: 0; display: flex; align-items: center; }
+  .wi-mid input { width: 100%; position: relative; z-index: 1; }
+  .wi-ph { position: absolute; inset: 0; display: flex; align-items: center; pointer-events: none; overflow: hidden; font-size: 15.5px; font-weight: 500; letter-spacing: -.01em; color: var(--text-muted); z-index: 0; transition: opacity .25s ease; }
+  .wi-ph span { position: absolute; left: 0; white-space: nowrap; opacity: 0; animation: wiIn .8s var(--spring) forwards; }
+  .wi-ph span.out { animation: wiOut .5s cubic-bezier(.4,0,.8,.6) forwards; }
+  .wi-ph b { font-weight: 650; color: var(--text); opacity: .72; }
+  @keyframes wiIn { from { opacity: 0; transform: translateY(14px); filter: blur(7px); } to { opacity: 1; transform: none; filter: blur(0); } }
+  @keyframes wiOut { from { opacity: 1; transform: none; filter: blur(0); } to { opacity: 0; transform: translateY(-14px); filter: blur(7px); } }
+  .wi-field:has(input:not(:placeholder-shown)) .wi-ph { opacity: 0; }
 </style>
 </head>
 <body>
@@ -1406,7 +1416,7 @@
       <h2>Wat als…? <span class="badge">tijdelijk scenario</span></h2>
       <div class="whatif-row">
         <div class="wi-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
-        <input type="text" id="whatifInput" placeholder="Wat als je 30 vakantiedagen opneemt?" autocomplete="off" enterkeyhint="go">
+        <div class="wi-mid"><div class="wi-ph" id="wi-ph" aria-hidden="true"></div><input type="text" id="whatifInput" placeholder=" " autocomplete="off" enterkeyhint="go" aria-label="Wat als…? Typ een scenario"></div>
         <button type="button" class="btn-inline" id="whatifGo">Toon</button></div>
         <button type="button" class="btn-ghost" id="whatifShare" hidden>🔗 Deel scenario</button>
         <button type="button" class="btn-ghost" id="whatifReset" hidden>Terug naar mijn cijfers</button>
@@ -1416,7 +1426,7 @@
         <span class="peil-quick"><button type="button" class="btn-ghost" id="peilToday">Vandaag</button><button type="button" class="btn-ghost" id="peilEom">Einde maand</button><button type="button" class="btn-ghost" id="peilEoq">Einde kwartaal</button></span>
       </div>
       <div class="whatif-chips" id="whatifChips"></div>
-      <div class="whatif-msg" id="whatifMsg"><span class="wi-try">Probeer</span><button type="button" class="sug" data-s="30 vakantiedagen">30 vakantiedagen</button><button type="button" class="sug" data-s="uurtarief 105">uurtarief 105</button><button type="button" class="sug" data-s="bonus 5000">bonus 5000</button><button type="button" class="sug" data-s="zonder pensioen">zonder pensioen</button><button type="button" class="sug" data-s="stand per 30 juni">stand per 30 juni</button><span class="wi-note">Combineren mag met een komma. Je eigen cijfers blijven ongewijzigd.</span></div>
+      <div class="whatif-msg" id="whatifMsg"></div>
     </div>
 
     <div class="kpi-grid">
@@ -2026,7 +2036,7 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b23</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b24</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
   <div class="tc-head"><b>🎨 Thema-studio</b><button type="button" class="btn-ghost" id="tc-close">✕</button></div>
@@ -2658,10 +2668,10 @@ function renderWhatif(msg) {
     if (SCEN || PEIL) { const parts = [...chips.children].map(c => c.textContent); bn.innerHTML = `<span class="sb-dot"></span><span class="sb-text"><b>Scenario actief</b> — ${parts.map(esc).join(' · ')}</span><button type="button" id="sb-reset">Terug naar mijn cijfers</button>`; bn.hidden = false; }
     else bn.hidden = true;
   }
-  if (msg) document.getElementById('whatifMsg').innerHTML = msg;
+  if (msg != null) document.getElementById('whatifMsg').innerHTML = msg;
 }
 
-const WHATIF_HINT = '<span class="wi-try">Probeer</span><button type="button" class="sug" data-s="30 vakantiedagen">30 vakantiedagen</button><button type="button" class="sug" data-s="uurtarief 105">uurtarief 105</button><button type="button" class="sug" data-s="bonus 5000">bonus 5000</button><button type="button" class="sug" data-s="zonder pensioen">zonder pensioen</button><button type="button" class="sug" data-s="stand per 30 juni">stand per 30 juni</button><span class="wi-note">Combineren mag met een komma. Je eigen cijfers blijven ongewijzigd.</span>';
+const WHATIF_HINT = '';
 function runWhatif() {
   const text = document.getElementById('whatifInput').value.trim();
   if (!text) { resetWhatif(); return; }
@@ -4211,6 +4221,20 @@ function recalc() {
 }
 
 function switchTab(name) { goPage(name === 'dashboard' ? (CUR_PAGE === 'invoer' ? 'home' : CUR_PAGE) : name); }
+
+// roterende voorbeelden in het Wat-als-veld
+(function () {
+  const ph = byId('wi-ph'); if (!ph) return;
+  const EX = ['30 vakantiedagen', 'uurtarief 105', 'bonus 5000', 'zonder pensioen', 'stand per 30 juni', '1500 km', '30 vakantiedagen, bonus 5000'];
+  let i = 0, cur = null;
+  const show = () => {
+    const sp = document.createElement('span'); sp.innerHTML = 'Wat als… <b>' + EX[i % EX.length] + '</b>'; ph.appendChild(sp);
+    if (cur) { const o = cur; o.classList.add('out'); setTimeout(() => o.remove(), 600); }
+    cur = sp; i++;
+  };
+  show();
+  setInterval(() => { if (document.hidden || REDUCED && cur) return; if (byId('whatifInput').value) return; show(); }, 3200);
+})();
 document.getElementById('whatifGo').addEventListener('click', runWhatif);
 byId('whatifMsg').addEventListener('click', e => { const b = e.target.closest('.sug'); if (!b) return; const i = byId('whatifInput'); i.value = i.value.trim() ? i.value.trim().replace(/,$/, '') + ', ' + b.dataset.s : b.dataset.s; i.focus(); });
 document.getElementById('whatifReset').addEventListener('click', resetWhatif);
