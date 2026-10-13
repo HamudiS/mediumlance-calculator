@@ -1965,7 +1965,7 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b18</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b19</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
   <div class="tc-head"><b>🎨 Thema-studio</b><button type="button" class="btn-ghost" id="tc-close">✕</button></div>
@@ -1989,7 +1989,7 @@
     </section>
     <section><h4>Animaties</h4>
       <label class="tc-sw"><input type="checkbox" id="tc-anim"><span>Animaties aan</span></label>
-      <label class="tc-sw"><input type="checkbox" id="tc-parts"><span>Zwevende deeltjes · dauwdruppels (licht)</span></label>
+      <label class="tc-sw"><input type="checkbox" id="tc-parts"><span>Zwevende deeltjes · regendruppels (licht)</span></label>
       <label class="tc-sw"><input type="checkbox" id="tc-tilt"><span>3D-kantelen van blokken</span></label>
     </section>
     <section><button type="button" class="btn-ghost" id="tc-reset">↺ Standaard thema</button><p class="tc-note">Je thema en foto blijven op dit apparaat — er wordt niets online opgeslagen.</p></section>
@@ -2820,27 +2820,23 @@ function fxBgResize() {
   BG.cv.width = BG.w * BG.dpr; BG.cv.height = BG.h * BG.dpr;
   BG.ctx.setTransform(BG.dpr, 0, 0, BG.dpr, 0, 0);
   BG.mode = THEME; DEW.last = 0; if (THEME !== '2050') { dewReset(); return; }
-  if (DEW.cv) DEW.cv.style.display = 'none';
   const n = Math.max(22, Math.min(64, Math.round(BG.w * BG.h / 24000)));
   BG.parts = Array.from({ length: n }, () => ({ x: Math.random() * BG.w, y: Math.random() * BG.h, vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35, s: 10 + Math.random() * 26, c: Math.floor(Math.random() * 3), a: .35 + Math.random() * .5 }));
   BG.coins = Array.from({ length: BG.w < 700 ? 5 : 9 }, () => ({ x: Math.random() * BG.w, y: Math.random() * BG.h, vy: -(0.15 + Math.random() * 0.35), sz: 13 + Math.random() * 14, a: .06 + Math.random() * .12, ph: Math.random() * 6.28, dx: (Math.random() - .5) * .15 }));
 }
 
 // ---- lichte thema: dauwdruppels die je weg kunt blazen ----
-const DEW = { drops: [], rip: [], spd: 0, last: 0, pmx: null, pmy: null };
+const DEW = { drops: [], rip: [], rain: [], rt: 0, spd: 0, last: 0, pmx: null, pmy: null };
 function dewMake(w, h, fresh) {
   const r = 4 + Math.pow(Math.random(), 2.2) * 9;
-  return { x: 40 + Math.random() * (w - 80), y: 40 + Math.random() * (h - 80), r, vx: 0, vy: 0, g: fresh ? 0 : 1, born: fresh ? 1 : 0, ph: Math.random() * 6.28 };
+  return { x: 40 + Math.random() * (w - 80), y: 40 + Math.random() * (h - 80), r, vx: 0, vy: 0, g: fresh ? 0 : 1, born: fresh ? 1 : 0, ph: Math.random() * 6.28, tr: [], sl: null, next: 0 };
 }
-function dewCanvas() {
-  if (!DEW.cv) { const c = document.createElement('canvas'); c.id = 'fx-dew'; c.setAttribute('aria-hidden', 'true'); c.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:4'; document.body.appendChild(c); DEW.cv = c; DEW.ctx = c.getContext('2d'); }
-  DEW.cv.width = BG.w * BG.dpr; DEW.cv.height = BG.h * BG.dpr; DEW.ctx.setTransform(BG.dpr, 0, 0, BG.dpr, 0, 0); DEW.cv.style.display = '';
-}
+function dewCanvas() { DEW.cv = BG.cv; DEW.ctx = BG.ctx; }
 function dewReset() {
   dewCanvas();
-  const n = Math.max(9, Math.min(22, Math.round(BG.w * BG.h / 70000)));
+  const n = Math.max(12, Math.min(30, Math.round(BG.w * BG.h / 46000)));
   DEW.drops = Array.from({ length: n }, () => dewMake(BG.w, BG.h, false));
-  DEW.rip = [];
+  DEW.rip = []; DEW.rain = [];
 }
 function dewDraw(ctx, d) {
   const r = d.r * (0.35 + 0.65 * d.g), x = d.x, y = d.y, a = Math.min(1, d.g * 1.4);
@@ -2880,8 +2876,40 @@ function dewFrame(t) {
     }
     ctx.shadowColor = 'transparent';
   }
+  // regen: af en toe valt een kleine druppel in één streep over het scherm
+  if (DEW.rain.length < 3 && t > DEW.rt) { DEW.rt = t + 1800 + Math.random() * 3800; DEW.rain.push({ x: 60 + Math.random() * (w - 120), y: -20, vy: 7 + Math.random() * 5, vx: 0, r: 1.6 + Math.random() * 1.6, len: 60 + Math.random() * 70 }); }
+  for (let i = DEW.rain.length - 1; i >= 0; i--) {
+    const q = DEW.rain[i], dx = q.x - BG.mx, dy = q.y - BG.my, d2 = dx * dx + dy * dy;
+    if (d2 < 14400) { const dist = Math.sqrt(d2) || 1; q.vx += dx / dist * (1 - dist / 120) * .5 * dtf; }
+    q.vx *= Math.pow(.96, dtf); q.x += q.vx * dtf; q.y += q.vy * dtf;
+    if (q.y - q.len > h) { DEW.rain.splice(i, 1); continue; }
+    const gr = ctx.createLinearGradient(q.x - q.vx * 6, q.y - q.len, q.x, q.y);
+    gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(1, 'rgba(255,255,255,.65)');
+    ctx.save(); ctx.lineCap = 'round'; ctx.lineWidth = q.r * .8; ctx.strokeStyle = gr; ctx.shadowColor = 'rgba(70,58,46,.18)'; ctx.shadowBlur = 3; ctx.shadowOffsetY = 1;
+    ctx.beginPath(); ctx.moveTo(q.x - q.vx * 6, q.y - q.len); ctx.lineTo(q.x, q.y); ctx.stroke(); ctx.restore();
+    dewDraw(ctx, { x: q.x, y: q.y, r: q.r + 1, g: 1 });
+  }
+  // sporen van druppels die naar beneden glijden
+  for (const d of ds) {
+    if (!d.tr.length) continue;
+    ctx.save(); ctx.lineCap = 'round';
+    for (let k = d.tr.length - 1; k > 0; k--) {
+      const p0 = d.tr[k - 1], p1 = d.tr[k]; p1.a -= .0035 * dtf; if (p1.a <= 0) { d.tr.splice(0, k); break; }
+      ctx.strokeStyle = `rgba(255,255,255,${(p1.a * .55).toFixed(3)})`; ctx.lineWidth = Math.max(.8, d.r * .5 * p1.a + .6);
+      ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
+    }
+    ctx.restore();
+  }
   for (let i = ds.length - 1; i >= 0; i--) {
     const d = ds[i];
+    if (!d.next) d.next = t + 2500 + Math.random() * 14000;
+    if (!d.sl && !d.born && d.r > 5.2 && t > d.next) d.sl = { dist: 70 + Math.random() * 200, trav: 0 };
+    if (d.sl) {
+      const vmax = 1.1 + d.r * .13; d.vy = Math.min(vmax, d.vy + .05 * dtf); d.vx += Math.sin(t / 260 + d.ph) * .006;
+      d.sl.trav += d.vy * dtf; d.r = Math.max(4.4, d.r - .0012 * dtf);
+      d.tr.push({ x: d.x, y: d.y, a: 1 }); if (d.tr.length > 140) d.tr.shift();
+      if (d.sl.trav > d.sl.dist) { d.sl = null; d.next = t + 8000 + Math.random() * 16000; }
+    }
     if (d.born) { d.g += .012 * dtf; if (d.g >= 1) { d.g = 1; d.born = 0; } }
     // wind van de muis
     const dx = d.x - BG.mx, dy = d.y - BG.my, d2 = dx * dx + dy * dy, R = 120 + d.r * 3;
@@ -2945,7 +2973,7 @@ function fxBgFrame(t) {
 function fxBgSync() {
   const on = !REDUCED && TP.parts !== false && !document.hidden && BG.ctx;
   if (on && !BG.running) { BG.running = true; fxBgResize(); BG.raf = requestAnimationFrame(fxBgFrame); }
-  else if (!on) { BG.running = false; cancelAnimationFrame(BG.raf); if (BG.ctx) BG.ctx.clearRect(0, 0, BG.w, BG.h); if (DEW.cv) DEW.cv.style.display = 'none'; }
+  else if (!on) { BG.running = false; cancelAnimationFrame(BG.raf); if (BG.ctx) BG.ctx.clearRect(0, 0, BG.w, BG.h); }
 }
 function fxBgInit() {
   BG.cv = byId('fx-canvas'); if (!BG.cv || !BG.cv.getContext) return;
