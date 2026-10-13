@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mediumlance Calculator</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="preload" as="image" href="bg-sand.jpg">
+<link rel="preload" as="image" href="bg-wave.jpg">
 <meta name="theme-color" content="#050914">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -663,10 +663,13 @@
   .ribbon { opacity: .5; transition: opacity .2s ease; cursor: pointer; }
   .ribbon:hover { opacity: .88; }
   .fnode { cursor: pointer; }
-  .flow-lbl { font-size: 11.5px; fill: var(--text); paint-order: stroke; stroke: var(--halo); stroke-width: 3.5px; stroke-linejoin: round; font-weight: 600; pointer-events: none; }
+  .flow-lbl { font-size: 11.5px; fill: var(--text); font-weight: 600; pointer-events: none; letter-spacing: -.005em; }
+  .flow-pill { fill: rgba(255,255,255,.82); stroke: rgba(255,255,255,.9); stroke-width: .8; pointer-events: none; filter: drop-shadow(0 1px 3px rgba(40,30,20,.12)); }
+  html[data-theme="2050"] .flow-pill { fill: rgba(14,22,40,.78); stroke: rgba(255,255,255,.14); }
   .flow-lbl .fv { font-weight: 800; }
   .flow-dots { fill: none; stroke: rgba(255,255,255,.9); stroke-linecap: round; stroke-dasharray: 0.1 18; pointer-events: none; animation: fxDots 2.6s linear infinite; }
-  html:not([data-theme="2050"]) .flow-dots { stroke: rgba(30,60,45,.55); }
+  html:not([data-theme="2050"]) .flow-dots { stroke: rgba(255,255,255,.8); }
+  .flow-dots { opacity: .7; }
   @keyframes fxDots { to { stroke-dashoffset: -72; } }
   .fx-anim .ribbon { transform-box: fill-box; transform-origin: left center; animation: fxFlowIn 1.2s cubic-bezier(.2,.9,.3,1) both; animation-delay: calc(var(--i) * 70ms); }
   @keyframes fxFlowIn { from { transform: scaleX(0); opacity: 0; } }
@@ -1204,6 +1207,62 @@
   html[data-theme="2050"] .btn-ghost { background: rgba(255,255,255,.1); box-shadow: inset 0 1px 1px rgba(255,255,255,.25); }
   .whatif-row input[type=text], .row input[type=number], .row input[type=text], .goal-form input, .tm-rend input, .whatif-peil input[type=date] { box-shadow: inset 0 1px 2px rgba(90,66,44,.08); }
   #fx-bg-img { background-size: cover; background-position: center; }
+
+  /* ================= WOW v6 ================= */
+  /* hover-lens: vloeibare glasbel die het menu volgt */
+  .nav-hov { position: absolute; left: 0; top: 0; width: 44px; height: 44px; border-radius: 50%; z-index: 0; pointer-events: none; opacity: 0; will-change: transform;
+    background: linear-gradient(160deg, rgba(255,255,255,.55), rgba(255,255,255,.1)); border: 1px solid rgba(255,255,255,.55);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.95), inset 0 -3px 5px -2px rgba(255,255,255,.35), 0 8px 20px rgba(70,56,40,.14);
+    -webkit-backdrop-filter: blur(1px) saturate(190%) brightness(1.1); backdrop-filter: blur(1px) saturate(190%) brightness(1.1); transition: opacity .28s ease; }
+  .nav-pill.hov .nav-hov { opacity: 1; }
+  html[data-theme="2050"] .nav-hov { background: linear-gradient(160deg, rgba(255,255,255,.26), rgba(255,255,255,.04)); border-color: rgba(255,255,255,.28); box-shadow: inset 0 1px 1px rgba(255,255,255,.5), 0 8px 20px rgba(0,0,0,.35); }
+  /* labels: matglas dat uit de lens "groeit" */
+  .nav-btn::after { color: var(--text); background: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.85);
+    box-shadow: inset 0 1px 0 #fff, 0 10px 30px rgba(70,56,40,.2); -webkit-backdrop-filter: blur(22px) saturate(190%); backdrop-filter: blur(22px) saturate(190%);
+    transform: translate(-16px, -50%) scale(.4, .8); transform-origin: left center; transition: opacity .18s ease, transform .5s var(--spring); }
+  .nav-btn:hover::after { transform: translate(0, -50%) scale(1); transition-delay: .06s; }
+  html[data-theme="2050"] .nav-btn::after { color: #fff; background: rgba(28,32,46,.72); border-color: rgba(255,255,255,.16); box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+
+  /* zwevende titelpil (verschijnt bij scrollen) */
+  .top-pill { position: fixed; top: 14px; left: 50%; z-index: 55; display: flex; align-items: center; gap: 10px; padding: 9px 18px 9px 16px; border-radius: 999px; font-size: 13px; font-weight: 650; color: var(--text);
+    background: linear-gradient(160deg, rgba(255,255,255,.55), rgba(255,255,255,.2)); border: 1px solid rgba(255,255,255,.7);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 10px 34px rgba(70,56,40,.16); -webkit-backdrop-filter: blur(16px) saturate(190%); backdrop-filter: blur(16px) saturate(190%);
+    transform: translate(-50%, -90px) scale(.8); opacity: 0; visibility: hidden; transition: transform .6s var(--spring), opacity .3s ease, visibility .6s; pointer-events: none; }
+  .top-pill.show { transform: translate(-50%, 0) scale(1); opacity: 1; visibility: visible; }
+  .top-pill .tp-v { color: var(--accent); font-variant-numeric: tabular-nums; font-weight: 800; }
+  .top-pill .tp-d { width: 4px; height: 4px; border-radius: 50%; background: var(--text-muted); opacity: .5; }
+  html[data-theme="2050"] .top-pill { background: linear-gradient(160deg, rgba(255,255,255,.2), rgba(255,255,255,.05)); border-color: rgba(255,255,255,.22); box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 10px 34px rgba(0,0,0,.4); }
+  @media (max-width: 700px) { .top-pill { top: calc(10px + env(safe-area-inset-top)); } }
+
+  /* zoeker (⌘K) */
+  .cmdk { position: fixed; inset: 0; z-index: 120; display: grid; justify-items: center; align-content: start; padding-top: 14vh; background: rgba(30,34,46,0); -webkit-backdrop-filter: blur(0px); backdrop-filter: blur(0px);
+    visibility: hidden; transition: background .4s ease, backdrop-filter .5s ease, -webkit-backdrop-filter .5s ease, visibility .5s; }
+  .cmdk.open { visibility: visible; background: rgba(30,34,46,.22); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  .cmdk-box { width: min(560px, calc(100vw - 28px)); border-radius: 26px; padding: 8px; overflow: hidden;
+    background: linear-gradient(160deg, rgba(255,255,255,.86), rgba(255,255,255,.62)); border: 1px solid rgba(255,255,255,.9);
+    box-shadow: inset 0 1px 0 #fff, 0 30px 80px rgba(30,24,16,.35); -webkit-backdrop-filter: blur(30px) saturate(190%); backdrop-filter: blur(30px) saturate(190%);
+    transform: translateY(-24px) scale(.94); opacity: 0; transition: transform .6s var(--spring), opacity .25s ease; }
+  .cmdk.open .cmdk-box { transform: none; opacity: 1; }
+  html[data-theme="2050"] .cmdk-box { background: linear-gradient(160deg, rgba(255,255,255,.16), rgba(255,255,255,.04)), rgba(20,26,44,.7); border-color: rgba(255,255,255,.2); }
+  .cmdk-in { width: 100%; box-sizing: border-box; border: none; outline: none; background: transparent; font: inherit; font-size: 17px; font-weight: 500; padding: 14px 16px; color: var(--text); letter-spacing: -.01em; }
+  .cmdk-in::placeholder { color: var(--text-muted); }
+  .cmdk-list { max-height: min(46vh, 380px); overflow: auto; padding: 4px 4px 6px; border-top: 1px solid var(--row-border); margin-top: 2px; }
+  .cmdk-item { display: flex; align-items: center; gap: 12px; width: 100%; border: none; background: transparent; font: inherit; font-size: 14.5px; font-weight: 550; color: var(--text); padding: 10px 12px; border-radius: 16px; cursor: pointer; text-align: left; position: relative; }
+  .cmdk-item .ci { width: 30px; height: 30px; border-radius: 10px; display: grid; place-items: center; font-size: 15px; background: rgba(var(--acc-rgb), .12); flex: none; }
+  .cmdk-item small { margin-left: auto; color: var(--text-muted); font-weight: 500; font-size: 12px; }
+  .cmdk-item.sel { background: rgba(var(--acc-rgb), .14); box-shadow: inset 0 0 0 1px rgba(var(--acc-rgb), .22); }
+  .cmdk-empty { padding: 18px 14px; color: var(--text-muted); font-size: 14px; }
+  .cmdk-foot { display: flex; gap: 14px; padding: 8px 14px 6px; font-size: 11.5px; color: var(--text-muted); }
+  .cmdk-foot kbd { font: inherit; font-weight: 700; padding: 1px 6px; border-radius: 6px; background: rgba(120,120,130,.15); }
+
+  /* thema-wissel: cirkel-onthulling vanaf de knop */
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+  ::view-transition-new(root) { z-index: 2; }
+  ::view-transition-old(root) { z-index: 1; }
+
+  /* pagina-inhoud: zachte "ademhaling" van het licht op kaarten onder de muis */
+  html.cards-matte .card, html.cards-matte .kpi-tile:not(.hero) { background-image: radial-gradient(420px circle at var(--lx, 50%) var(--ly, -20%), rgba(255,255,255,.55), rgba(255,255,255,0) 60%); background-repeat: no-repeat; }
+  html[data-theme="2050"].cards-matte .card, html[data-theme="2050"].cards-matte .kpi-tile:not(.hero) { background-image: radial-gradient(420px circle at var(--lx, 50%) var(--ly, -20%), rgba(255,255,255,.1), rgba(255,255,255,0) 60%); }
 </style>
 </head>
 <body>
@@ -1225,6 +1284,7 @@
     </div>
     <div class="nav-pill nav-tools">
       <span class="nav-glass"></span>
+      <button type="button" class="nav-btn" id="cmdkBtn" data-label="Zoeken  ⌘K" aria-label="Zoeken"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg></button>
       <button type="button" class="nav-btn" id="themePanelBtn" data-label="Thema &amp; achtergrond" aria-label="Thema"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.5 0 2.1-1.1 1.6-2.2-.6-1.3.2-2.4 1.6-2.4H17a3.5 3.5 0 0 0 3.5-3.5C20.5 7 16.8 3.5 12 3.5z"/><circle cx="7.8" cy="11" r="1" fill="currentColor"/><circle cx="10.6" cy="7.6" r="1" fill="currentColor"/><circle cx="15" cy="7.9" r="1" fill="currentColor"/></svg></button>
       <button type="button" class="nav-btn" id="editToggle" data-label="Dashboard aanpassen" aria-label="Dashboard aanpassen"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><path d="M16.5 13.5v7M13 17h7"/></svg></button>
       <button type="button" class="nav-btn" id="themeToggle" data-label="Donker / licht" aria-label="Donker of licht"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.4A8 8 0 0 1 9.6 4 8 8 0 1 0 20 14.4z"/></svg><span class="sr-only" id="themeLabel">2050</span></button>
@@ -1242,6 +1302,7 @@
     </div>
     <div class="page-head-right"><span class="dash-period" id="period-pill">Jaarbasis</span><span class="legend" id="legend-note" hidden><span class="swatch"></span> = zelf in te vullen</span></div>
   </header>
+  <div class="top-pill" id="top-pill" aria-hidden="true"><span class="tp-t"></span><span class="tp-d"></span><span class="tp-v"></span></div>
   <div class="scen-banner" id="scen-banner" hidden></div>
 
   <!-- Dashboard tab -->
@@ -1886,7 +1947,7 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b9</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b11</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
   <div class="tc-head"><b>🎨 Thema-studio</b><button type="button" class="btn-ghost" id="tc-close">✕</button></div>
@@ -1894,7 +1955,7 @@
     <section><h4>Weergave</h4><div class="tc-seg" id="tc-mode"><button type="button" data-v="2050">🌙 Donker · 2050</button><button type="button" data-v="classic">☀️ Licht · klassiek</button></div></section>
     <section><h4>Accentkleur</h4><div class="tc-swatches" id="tc-swatches"></div><label class="tc-line">Eigen kleur <input type="color" id="tc-color" value="#2fe0a2"></label></section>
     <section><h4>Achtergrond</h4>
-      <div class="tc-seg" id="tc-bgmode"><button type="button" data-v="sand">🏜 Zand</button><button type="button" data-v="aurora">✨ Aurora</button><button type="button" data-v="plain">▫️ Effen</button><button type="button" data-v="gradient">🌅 Verloop</button><button type="button" data-v="photo">🖼 Foto</button></div>
+      <div class="tc-seg" id="tc-bgmode"><button type="button" data-v="wave">🤍 Golf</button><button type="button" data-v="sand">🏜 Zand</button><button type="button" data-v="aurora">✨ Aurora</button><button type="button" data-v="plain">▫️ Effen</button><button type="button" data-v="gradient">🌅 Verloop</button><button type="button" data-v="photo">🖼 Foto</button></div>
       <div class="tc-note" id="tc-aurora-hint" hidden>De aurora-gloed werkt in het donkere thema.</div>
       <div class="tc-sub" id="tc-grads" hidden></div>
       <div class="tc-sub" id="tc-photo" hidden><label class="btn-ghost tc-upload">📤 Foto kiezen…<input type="file" id="tc-file" accept="image/*" hidden></label><button type="button" class="btn-ghost" id="tc-photo-rm">🗑 Verwijderen</button></div>
@@ -1916,7 +1977,8 @@
     <section><button type="button" class="btn-ghost" id="tc-reset">↺ Standaard thema</button><p class="tc-note">Je thema en foto blijven op dit apparaat — er wordt niets online opgeslagen.</p></section>
   </div>
 </aside>
-<div class="fx-toast" id="fx-toast" role="status" aria-live="polite"></div>
+<div class="cmdk" id="cmdk" aria-hidden="true"><div class="cmdk-box" role="dialog" aria-label="Zoeken"><input class="cmdk-in" id="cmdk-in" type="text" placeholder="Ga naar… of zoek een actie" autocomplete="off" spellcheck="false"><div class="cmdk-list" id="cmdk-list"></div><div class="cmdk-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> kiezen</span><span><kbd>↵</kbd> openen</span><span><kbd>esc</kbd> sluiten</span></div></div></div>
+  <div class="fx-toast" id="fx-toast" role="status" aria-live="polite"></div>
 <div class="fx-tip" id="fx-tip"></div>
 
 </div>
@@ -2765,7 +2827,7 @@ function fxBgInit() {
   document.addEventListener('visibilitychange', fxBgSync);
 }
 
-byId('themeToggle').addEventListener('click', () => applyTheme(THEME === '2050' ? 'classic' : '2050', true));
+byId('themeToggle').addEventListener('click', () => fxThemeReveal(THEME === '2050' ? 'classic' : '2050'));
 let FX_LAST = null;
 
 // ---- geluid (WebAudio, standaard uit) ----
@@ -2954,7 +3016,13 @@ function fxFlow(v) {
   const N1 = place(first), N2 = wide ? place(sinks) : null;
   const x0 = 0, x1 = wide ? Math.round(W * 0.38) : W - nw, x2 = W - nw;
   const totH0 = sumFirst * k, y0 = top + (H - totH0) / 2;
-  let rib = '', dots = '', nodesS = '', lbl = '', idx = 0;
+  let rib = '', dots = '', nodesS = '', lbl = '', pills = '', idx = 0;
+  const mctx = document.createElement('canvas').getContext('2d');
+  const pillFor = (txt, val, x, base, endAnchor) => {
+    mctx.font = '600 11.5px -apple-system, system-ui, "SF Pro Text", Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+    const w = mctx.measureText(txt + ' ' + val).width + 14, px = endAnchor ? x - w + 7 : x - 7;
+    pills += `<rect class="flow-pill" x="${px.toFixed(1)}" y="${(base - 14).toFixed(1)}" width="${w.toFixed(1)}" height="20" rx="10"/>`;
+  };
   const ribbon = (xa, ya, xb, yb, t, color, tp) => {
     t = Math.max(1.6, t); const xm = (xa + xb) / 2;
     const d = `M${xa},${ya} C${xm},${ya} ${xm},${yb} ${xb},${yb} L${xb},${yb + t} C${xm},${yb + t} ${xm},${ya + t} ${xa},${ya + t} Z`;
@@ -2966,13 +3034,15 @@ function fxFlow(v) {
   const nodeRect = (n, x, anchorLeft) => {
     nodesS += `<rect class="fnode" x="${x}" y="${n.y.toFixed(1)}" width="${nw}" height="${n.h.toFixed(1)}" rx="4" fill="${n.color}" data-tip="${esc(tip(n.name, n.value))}"/>`;
     const cy = n.y + n.h / 2 + 4;
+    pillFor(n.name, fmtShort(n.value), anchorLeft ? x + nw + 7 : x - 7, cy, !anchorLeft);
     lbl += anchorLeft
       ? `<text class="flow-lbl" x="${x + nw + 7}" y="${cy.toFixed(1)}">${esc(n.name)} <tspan class="fv">${fmtShort(n.value)}</tspan></text>`
       : `<text class="flow-lbl" x="${x - 7}" y="${cy.toFixed(1)}" text-anchor="end">${esc(n.name)} <tspan class="fv">${fmtShort(n.value)}</tspan></text>`;
   };
   // node 0
   nodesS += `<rect class="fnode" x="${x0}" y="${y0.toFixed(1)}" width="${nw}" height="${totH0.toFixed(1)}" rx="4" fill="${COLORS.barB}" data-tip="${esc(tip('Jaaromzet', J))}"/>`;
-  lbl += `<text class="flow-lbl" x="0" y="16">Jaaromzet <tspan class="fv">${fmtShort(J)}</tspan></text>`;
+  pillFor('Jaaromzet', fmtShort(J), 7, 16, false);
+  lbl += `<text class="flow-lbl" x="7" y="16">Jaaromzet <tspan class="fv">${fmtShort(J)}</tspan></text>`;
   let off0 = 0;
   N1.forEach(n => { const t = n.value * k; ribbon(x0 + nw, y0 + off0, x1, n.y, t, n.color, tip(n.name, n.value)); off0 += t; });
   if (wide) {
@@ -2988,7 +3058,7 @@ function fxFlow(v) {
     N1.forEach(n => nodeRect(n, x2, false));
   }
   const hTot = top + H + 10;
-  el.innerHTML = `<svg class="${FX_ANIM ? 'fx-anim' : ''}" viewBox="0 0 ${W} ${hTot}" width="${W}" height="${hTot}" role="img" aria-label="Geldstroom van omzet naar netto">${rib}${dots}${nodesS}${lbl}</svg>`;
+  el.innerHTML = `<svg class="${FX_ANIM ? 'fx-anim' : ''}" viewBox="0 0 ${W} ${hTot}" width="${W}" height="${hTot}" role="img" aria-label="Geldstroom van omzet naar netto">${rib}${dots}${nodesS}${pills}${lbl}</svg>`;
   byId('dash-flow-note').textContent = v.eindafrekening < 0
     ? 'Let op: je kosten zijn hoger dan je 70%-deel; de eindafrekening is daarom €0 en de stromen tellen niet precies op tot je omzet.'
     : `Van elke €100 omzet houd jij ${(netto / J * 100).toFixed(0)} netto over. Beweeg over een stroom voor details.`;
@@ -3251,7 +3321,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigat
 
 // ---- alles tekenen ----
 function fxExtras(v) {
-  fxGreeting(); fxPeil(v); fxFlow(v); fxYear(v); fxMeter(v); fxTime(); fxGoal(v); fxShop(v); fxBadgeCheck(v);
+  fxGreeting(); fxPeil(v); fxTopPillText(); fxFlow(v); fxYear(v); fxMeter(v); fxTime(); fxGoal(v); fxShop(v); fxBadgeCheck(v);
 }
 (function () {
   let rt = 0;
@@ -3697,8 +3767,8 @@ function applyAnim() {
   document.documentElement.classList.toggle('no-anim', REDUCED);
   fxBgSync();
 }
-const effBg = () => TP.bg || (THEME === '2050' ? 'aurora' : 'sand');
-const effDim = bg => TP.dim2 != null ? TP.dim2 : (bg === 'sand' ? (THEME === '2050' ? 0.55 : 0) : 0.45);
+const effBg = () => TP.bg || (THEME === '2050' ? 'aurora' : 'wave');
+const effDim = bg => TP.dim2 != null ? TP.dim2 : (bg === 'sand' || bg === 'wave' ? (THEME === '2050' ? 0.55 : 0) : 0.45);
 function applyBackground() {
   const h = document.documentElement, el = byId('fx-bg-img');
   h.classList.remove('bg-aurora', 'bg-plain', 'bg-image');
@@ -3708,6 +3778,7 @@ function applyBackground() {
   if (bg === 'photo') css = `url(${TC_IMG})`;
   else if (bg === 'gradient') css = GRADS[TP.grad % GRADS.length].css;
   else if (bg === 'sand') css = 'url(bg-sand.jpg)';
+  else if (bg === 'wave') css = 'url(bg-wave.jpg)';
   h.classList.add(bg === 'aurora' ? 'bg-aurora' : css ? 'bg-image' : 'bg-plain');
   if (css) { el.style.backgroundImage = css; el.style.setProperty('--bg-blur', TP.blur + 'px'); el.style.setProperty('--bg-dim', effDim(bg)); el.hidden = false; }
   else { el.hidden = true; el.style.backgroundImage = ''; }
@@ -3725,7 +3796,7 @@ function tcRenderPanel() {
   byId('tc-color').value = TP.accent || '#2fe0a2';
   byId('tc-grads').hidden = effBg() !== 'gradient';
   byId('tc-photo').hidden = effBg() !== 'photo';
-  byId('tc-imgopts').hidden = !['gradient', 'photo', 'sand'].includes(effBg());
+  byId('tc-imgopts').hidden = !['gradient', 'photo', 'sand', 'wave'].includes(effBg());
   byId('tc-photo-rm').hidden = !TC_IMG;
   byId('tc-dim').value = Math.round(effDim(effBg()) * 100); byId('tc-blur').value = TP.blur;
   byId('tc-glass').value = Math.round(glassAlpha() * 100);
@@ -3799,7 +3870,7 @@ const CAN_REFRACT = /Chrome\//.test(navigator.userAgent) && !/Firefox\//.test(na
 const CARD_REFRACT = CAN_REFRACT && FINE_POINTER;
 const LG = { cache: new Map(), n: 0, ro: null, t: 0 };
 const SVGNS = 'http://www.w3.org/2000/svg';
-const LG_NAV = '.nav-glass, .nav-ind, .scen-banner, .fx-toast, .tc-panel';
+const LG_NAV = '.nav-glass, .nav-ind, .scen-banner, .fx-toast, .tc-panel, .top-pill, .cmdk-box';
 const LG_ALL = '.card, .kpi-tile, ' + LG_NAV;
 const lgSel = () => (TP.cardGlass && CARD_REFRACT) ? LG_ALL : LG_NAV;
 
@@ -3837,7 +3908,7 @@ function lgApply(el) {
   const r = el.getBoundingClientRect(); if (r.width < 30 || r.height < 30) return;
   const w = Math.round(r.width / 4) * 4, h = Math.round(r.height / 4) * 4;
   if (el._lgW === w && el._lgH === h && el.style.backdropFilter.indexOf('url(') === 0) return;
-  const kind = el.classList.contains('nav-ind') ? 'ind' : el.classList.contains('nav-glass') ? 'nav' : el.matches('.scen-banner, .fx-toast') ? 'float' : el.classList.contains('tc-panel') ? 'nav' : 'card';
+  const kind = el.classList.contains('nav-ind') ? 'ind' : el.classList.contains('nav-glass') ? 'nav' : el.matches('.scen-banner, .fx-toast, .top-pill') ? 'float' : el.matches('.tc-panel, .cmdk-box') ? 'nav' : 'card';
   const rad = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 24;
   const bezel = Math.min(kind === 'ind' ? 15 : kind === 'float' ? 13 : kind === 'nav' ? 22 : 30, Math.min(w, h) / 2.4), S = Math.round(bezel * 2.6);
   const id = el._lgId || (el._lgId = 'lg' + (++LG.n)), m = lgMaps(w, h, rad, bezel);
@@ -3955,6 +4026,118 @@ function loadInputs() {
   });
 }
 
+
+// ================= WOW v6 =================
+// vloeibare hover-lens in het menu
+function fxHoverLens() {
+  if (!FINE_POINTER) return;
+  document.querySelectorAll('.nav-pill').forEach(pill => {
+    const glass = pill.querySelector('.nav-glass'); if (!glass) return;
+    const hov = document.createElement('span'); hov.className = 'nav-hov'; glass.after(hov);
+    let x = 0, y = 0, vy = 0, ty = 0, tx = 0, raf = 0, last = 0, inside = false;
+    const draw = () => { const s = Math.min(.5, Math.abs(vy) / 1500); hov.style.transform = `translate(${x}px, ${y}px) scale(${(1 - s * .5).toFixed(3)}, ${(1 + s).toFixed(3)})`; };
+    const tick = t => {
+      const dt = Math.min(.034, (t - last) / 1000 || .016); last = t;
+      const a = (ty - y) * 230 - vy * 21; vy += a * dt; y += vy * dt; x += (tx - x) * Math.min(1, dt * 18);
+      draw();
+      if (inside || Math.abs(ty - y) > .15 || Math.abs(vy) > .5) raf = requestAnimationFrame(tick); else raf = 0;
+    };
+    pill.addEventListener('pointermove', e => {
+      if (REDUCED || window.innerWidth < 700) return;
+      const pr = pill.getBoundingClientRect(); let best = null, bd = 1e9;
+      pill.querySelectorAll('.nav-btn').forEach(b => { if (!b.offsetParent) return; const r = b.getBoundingClientRect(), d = Math.abs(e.clientY - (r.top + r.height / 2)); if (d < bd) { bd = d; best = b; } });
+      if (!best) return;
+      const c = best.offsetTop + best.offsetHeight / 2, off = Math.max(-6, Math.min(6, (e.clientY - pr.top - c) * .22));
+      ty = best.offsetTop + off; tx = best.offsetLeft;
+      if (!inside) { inside = true; x = tx; y = ty; vy = 0; draw(); pill.classList.add('hov'); }
+      if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); }
+    });
+    pill.addEventListener('pointerleave', () => { inside = false; pill.classList.remove('hov'); });
+  });
+}
+
+// zwevende titelpil
+function fxTopPill() {
+  const pill = byId('top-pill'); if (!pill) return;
+  let on = false;
+  const upd = () => {
+    const want = window.scrollY > 150 && CUR_PAGE !== 'invoer';
+    if (CUR_PAGE === 'invoer') { pill.classList.remove('show'); on = false; return; }
+    if (want !== on) { on = want; pill.classList.toggle('show', on); if (on) { fxTopPillText(); setTimeout(lgSync, 50); } }
+  };
+  window.addEventListener('scroll', upd, { passive: true });
+  upd();
+}
+function fxTopPillText() {
+  const pill = byId('top-pill'); if (!pill) return;
+  const v = FX_LAST && FX_LAST.v;
+  pill.querySelector('.tp-t').textContent = byId('page-title').textContent;
+  pill.querySelector('.tp-v').textContent = v ? fmt(v.nettoMaandTotaal) + ' / mnd' : '';
+}
+
+// zoeker ⌘K
+const CMDK = { sel: 0, items: [] };
+function cmdkItems() {
+  const a = [];
+  PAGES.forEach(p => a.push({ i: { home: '🏠', inkomen: '💶', pensioen: '☂️', belasting: '％', doelen: '🎯' }[p.id] || '•', t: p.t, s: 'Pagina', k: 'pagina ' + p.d, run: () => goPage(p.id) }));
+  a.push({ i: '⚙️', t: 'Invoer', s: 'Pagina', k: 'invoer cijfers uurtarief uren kosten', run: () => goPage('invoer') });
+  a.push({ i: '🔮', t: 'Wat-als scenario', s: 'Actie', k: 'wat als scenario vakantiedagen peildatum', run: () => { goPage('home'); setTimeout(() => { const i = byId('whatifInput'); i.scrollIntoView({ block: 'center' }); i.focus(); }, 300); } });
+  a.push({ i: '🎨', t: 'Thema & achtergrond', s: 'Actie', k: 'thema kleur achtergrond glas animaties studio', run: () => tcOpen(true) });
+  a.push({ i: '🌓', t: 'Donker / licht thema', s: 'Actie', k: 'donker licht dark mode thema', run: () => byId('themeToggle').click() });
+  a.push({ i: '🧩', t: 'Dashboard aanpassen', s: 'Actie', k: 'bewerken layout blokken verplaatsen', run: () => byId('editToggle').click() });
+  a.push({ i: '🖨️', t: 'Loonstrook printen', s: 'Actie', k: 'print loonstrook printer', run: () => { goPage('inkomen'); setTimeout(() => byId('printPayslip').click(), 400); } });
+  return a;
+}
+function cmdkRender() {
+  const q = byId('cmdk-in').value.trim().toLowerCase();
+  CMDK.items = cmdkItems().filter(it => !q || (it.t + ' ' + it.k).toLowerCase().includes(q));
+  CMDK.sel = Math.min(CMDK.sel, Math.max(0, CMDK.items.length - 1));
+  byId('cmdk-list').innerHTML = CMDK.items.length ? CMDK.items.map((it, n) => `<button type="button" class="cmdk-item${n === CMDK.sel ? ' sel' : ''}" data-n="${n}"><span class="ci">${it.i}</span>${esc(it.t)}<small>${it.s}</small></button>`).join('') : '<div class="cmdk-empty">Niets gevonden — probeer “pensioen” of “thema”.</div>';
+}
+function cmdkOpen(on) {
+  const el = byId('cmdk'); if (!el) return;
+  if (on) { el.setAttribute('aria-hidden', 'false'); byId('cmdk-in').value = ''; CMDK.sel = 0; cmdkRender(); void el.offsetWidth; el.classList.add('open'); setTimeout(() => { byId('cmdk-in').focus(); lgSync(); }, 40); }
+  else { el.classList.remove('open'); el.setAttribute('aria-hidden', 'true'); byId('cmdk-in').blur(); }
+}
+function cmdkRun(n) { const it = CMDK.items[n]; if (!it) return; cmdkOpen(false); setTimeout(it.run, 120); }
+function cmdkInit() {
+  byId('cmdkBtn').addEventListener('click', () => cmdkOpen(true));
+  byId('cmdk').addEventListener('pointerdown', e => { if (e.target === byId('cmdk')) cmdkOpen(false); });
+  byId('cmdk-in').addEventListener('input', () => { CMDK.sel = 0; cmdkRender(); });
+  byId('cmdk-list').addEventListener('click', e => { const b = e.target.closest('.cmdk-item'); if (b) cmdkRun(+b.dataset.n); });
+  byId('cmdk-list').addEventListener('pointermove', e => { const b = e.target.closest('.cmdk-item'); if (b && +b.dataset.n !== CMDK.sel) { CMDK.sel = +b.dataset.n; byId('cmdk-list').querySelectorAll('.cmdk-item').forEach((x, i) => x.classList.toggle('sel', i === CMDK.sel)); } });
+  window.addEventListener('keydown', e => {
+    const open = byId('cmdk').classList.contains('open');
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); cmdkOpen(!open); return; }
+    if (!open) return;
+    if (e.key === 'Escape') { cmdkOpen(false); e.stopPropagation(); }
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); const n = CMDK.items.length; if (!n) return; CMDK.sel = (CMDK.sel + (e.key === 'ArrowDown' ? 1 : n - 1)) % n; cmdkRender(); const s = byId('cmdk-list').querySelector('.sel'); if (s) s.scrollIntoView({ block: 'nearest' }); }
+    else if (e.key === 'Enter') { e.preventDefault(); cmdkRun(CMDK.sel); }
+  }, true);
+}
+
+// licht dat de muis volgt op kaarten
+function fxCardLight() {
+  if (!FINE_POINTER) return;
+  const root = byId('tab-dashboard'); let raf = 0, ev = null;
+  root.addEventListener('pointermove', e => {
+    ev = e; if (raf) return;
+    raf = requestAnimationFrame(() => { raf = 0; const c = ev.target.closest && ev.target.closest('.card, .kpi-tile'); if (!c) return; const r = c.getBoundingClientRect(); c.style.setProperty('--lx', (ev.clientX - r.left) + 'px'); c.style.setProperty('--ly', (ev.clientY - r.top) + 'px'); });
+  });
+  root.addEventListener('pointerout', e => { const c = e.target.closest && e.target.closest('.card, .kpi-tile'); if (c && !c.contains(e.relatedTarget)) { c.style.removeProperty('--lx'); c.style.removeProperty('--ly'); } });
+}
+
+// thema-wissel met cirkel-onthulling
+function fxThemeReveal(next) {
+  const b = byId('themeToggle').getBoundingClientRect(), x = b.left + b.width / 2, y = b.top + b.height / 2;
+  if (REDUCED || !document.startViewTransition) { applyTheme(next, true); return; }
+  const t = document.startViewTransition(() => applyTheme(next, true));
+  t.ready.then(() => {
+    const r = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    document.documentElement.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] }, { duration: 900, easing: 'cubic-bezier(.5,0,.15,1)', pseudoElement: '::view-transition-new(root)' });
+  }).catch(() => {});
+}
+
 tcLoad();
 let savedTheme = null;
 try { savedTheme = localStorage.getItem('mlc-theme2'); } catch (e) {}
@@ -3966,6 +4149,10 @@ peilInit();
 fxTipInit();
 fxMeterInit();
 fxShopInit();
+fxHoverLens();
+cmdkInit();
+fxTopPill();
+fxCardLight();
 fxBgInit();
 fxBgSync();
 try { if (localStorage.getItem('mlc-sound') === '1') { SOUND = true; byId('soundLabel').textContent = 'Geluid aan'; byId('soundToggle').classList.add('on'); byId('soundToggle').dataset.label = 'Geluid aan'; } } catch (e) {}
