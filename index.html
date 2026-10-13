@@ -319,6 +319,22 @@
     border-radius: 20px;
   }
 
+  .whatif { margin-bottom: 18px; }
+  .whatif h2 { margin-bottom: 12px; }
+  .whatif-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center; }
+  .whatif-row input[type=text] { width: 100%; text-align: left; }
+  .btn-ghost { font: inherit; font-weight: 600; font-size: 13px; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer; }
+  .btn-ghost:hover { background: var(--bg); }
+  .whatif-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .whatif-chip { font-size: 12.5px; background: #e8f1ec; color: var(--accent); border-radius: 20px; padding: 4px 11px; font-weight: 600; }
+  .whatif-msg { font-size: 12.5px; color: var(--text-muted); margin-top: 10px; line-height: 1.5; }
+  .whatif.active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(47,111,79,0.15); }
+  .kpi-delta { font-size: 12px; font-weight: 700; margin-top: 6px; }
+  .kpi-delta.up { color: #2f6f4f; }
+  .kpi-delta.down { color: #c0524a; }
+  .kpi-tile.hero .kpi-delta { color: #fff; }
+  @media (max-width: 600px) { .whatif-row { grid-template-columns: 1fr 1fr; } .whatif-row input[type=text] { grid-column: 1 / -1; } }
+
   .kpi-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -476,30 +492,45 @@
       <div class="dash-period">Jaarbasis</div>
     </div>
 
+    <div class="card whatif" id="whatif">
+      <h2>Wat als…? <span class="badge">tijdelijk scenario</span></h2>
+      <div class="whatif-row">
+        <input type="text" id="whatifInput" placeholder="Bijv. 30 vakantiedagen, uurtarief 105, bonus 5000" autocomplete="off" enterkeyhint="go">
+        <button type="button" class="btn-inline" id="whatifGo">Toon</button>
+        <button type="button" class="btn-ghost" id="whatifReset" hidden>Terug naar mijn cijfers</button>
+      </div>
+      <div class="whatif-chips" id="whatifChips"></div>
+      <div class="whatif-msg" id="whatifMsg">Typ wat je wilt weten; het dashboard laat dan tijdelijk dat scenario zien. Je invoer en opgeslagen cijfers veranderen niet. Voorbeelden: <i>30 vakantiedagen</i> · <i>uurtarief 105</i> · <i>bonus 5000</i> · <i>basissalaris 2800</i> · <i>uren 1900</i> · <i>1500 km</i> · <i>brandstof 800</i> · <i>zonder pensioen</i> — je kunt ze combineren met een komma.</div>
+    </div>
+
     <div class="kpi-grid">
       <div class="kpi-tile hero">
         <div class="kpi-icon">€</div>
         <div class="kpi-label">Eindafrekening — bruto</div>
         <div class="kpi-value" id="dash-ea-bruto">—</div>
         <div class="kpi-sub" id="dash-ea-bruto-sub">—</div>
+        <div class="kpi-delta" id="dash-ea-bruto-delta"></div>
       </div>
       <div class="kpi-tile">
         <div class="kpi-icon">€</div>
         <div class="kpi-label">Eindafrekening — netto</div>
         <div class="kpi-value" id="dash-ea-netto">—</div>
         <div class="kpi-sub" id="dash-ea-netto-sub">—</div>
+        <div class="kpi-delta" id="dash-ea-netto-delta"></div>
       </div>
       <div class="kpi-tile">
         <div class="kpi-icon">Σ</div>
         <div class="kpi-label">Netto per maand</div>
         <div class="kpi-value" id="dash-netto-maand">—</div>
         <div class="kpi-sub">basissalaris + omzetbonus + reiskosten</div>
+        <div class="kpi-delta" id="dash-netto-maand-delta"></div>
       </div>
       <div class="kpi-tile">
         <div class="kpi-icon">↗</div>
         <div class="kpi-label">Totaal netto per jaar</div>
         <div class="kpi-value" id="dash-totaal-netto">—</div>
         <div class="kpi-sub" id="dash-totaal-netto-sub">—</div>
+        <div class="kpi-delta" id="dash-totaal-netto-delta"></div>
       </div>
     </div>
 
@@ -1115,7 +1146,16 @@ kostenRowsEl.innerHTML = `
   </div>
 `).join('');
 
-function val(id) { return parseFloat(document.getElementById(id).value) || 0; }
+// Tijdelijke "wat als"-waarden: alleen gezet terwijl het scenario wordt doorgerekend en getoond.
+let OVERRIDES = null;
+function val(id) {
+  if (OVERRIDES && id in OVERRIDES) return OVERRIDES[id];
+  return parseFloat(document.getElementById(id).value) || 0;
+}
+function kostenVal(inp) {
+  const o = OVERRIDES && OVERRIDES['kosten:' + inp.dataset.key];
+  return o != null ? o : (parseFloat(inp.value) || 0);
+}
 
 // Pure calculation — no DOM writes. pensionOn toggles whether StiPP premie/bijdrage/inhouding apply.
 function computeScenario(pensionOn) {
@@ -1146,7 +1186,7 @@ function computeScenario(pensionOn) {
 
   let kostenTotaalJaar = 0;
   document.querySelectorAll('.kosten-input').forEach(inp => {
-    kostenTotaalJaar += (parseFloat(inp.value) || 0) * 12;
+    kostenTotaalJaar += kostenVal(inp) * 12;
   });
 
   // Reiskostenvergoeding is onbelast en telt daarom niet mee in brutoJaar/werkgeverslasten,
@@ -1332,9 +1372,24 @@ function renderAll(v) {
   document.getElementById('s-totNetto').textContent = fmt(v.totaalNettoJaar);
   document.getElementById('s-effTarief').textContent = fmtPct(v.effectieveBelastingdruk * 100);
 
-  // --- Dashboard ---
+}
+
+function deltaText(el, nu, basis) {
+  const d = nu - basis;
+  if (Math.abs(d) < 0.5) { el.textContent = '= gelijk aan nu'; el.className = 'kpi-delta'; return; }
+  el.textContent = (d > 0 ? '▲ +' : '▼ −') + fmt(Math.abs(d)) + ' t.o.v. nu';
+  el.className = 'kpi-delta ' + (d > 0 ? 'up' : 'down');
+}
+
+function renderDashboard(v, base) {
+  const isScenario = base && v !== base;
   const naam = document.getElementById('naam').value || 'Naam';
-  document.getElementById('dash-name').textContent = naam + ' — jaaroverzicht';
+  document.getElementById('dash-name').textContent = naam + (isScenario ? ' — scenario' : ' — jaaroverzicht');
+  [['dash-ea-bruto-delta', 'eindafrekening'], ['dash-ea-netto-delta', 'eindafrekeningNetto'],
+   ['dash-netto-maand-delta', 'nettoMaandTotaal'], ['dash-totaal-netto-delta', 'totaalNettoJaar']].forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (isScenario) deltaText(el, v[key], base[key]); else { el.textContent = ''; el.className = 'kpi-delta'; }
+  });
   document.getElementById('dash-ea-bruto').textContent = fmt(v.eindafrekening);
   document.getElementById('dash-ea-bruto-sub').textContent = `${fmtPct(v.mediumlancePct * 100)} van omzet na pensioen, na kosten`;
   document.getElementById('dash-ea-netto').textContent = fmt(v.eindafrekeningNetto);
@@ -1390,7 +1445,7 @@ function renderAll(v) {
   const nettoPctOmzet = v.jaaromzet > 0 ? v.totaalNettoJaar / v.jaaromzet : 0;
   let topKostenLabel = null, topKostenVal = 0;
   document.querySelectorAll('.kosten-input').forEach(inp => {
-    const jaarBedrag = (parseFloat(inp.value) || 0) * 12;
+    const jaarBedrag = kostenVal(inp) * 12;
     if (jaarBedrag > topKostenVal) {
       topKostenVal = jaarBedrag;
       const item = KOSTEN_ITEMS.find(k => k.key === inp.dataset.key);
@@ -1476,6 +1531,101 @@ function updateWerkUren() {
   return uren;
 }
 
+// ---------- "Wat als…?"-scenario (tijdelijk, wordt nergens opgeslagen) ----------
+let SCEN = null;
+
+function parseNum(str) { return parseFloat(str.replace(/\.(?=\d{3}(?:\D|$))/g, '').replace(',', '.')); }
+
+function parseScenarioText(text) {
+  let t = ' ' + text.toLowerCase().replace(/€|euro/g, ' ') + ' ';
+  const sc = { fields: {}, kosten: {}, vakantie: null, pension: null };
+  const N = '(\\d+(?:[.,]\\d+)*)';
+  const take = (res, fn) => {
+    for (const re of res) {
+      const m = t.match(re);
+      if (m) { fn(parseNum(m[1] || '')); t = t.replace(re, ' '); return true; }
+    }
+    return false;
+  };
+  take([new RegExp(N + '\\s*(?:vakantie\\s*dagen|vakantiedagen|dagen\\s+vakantie|vrije\\s+dagen|dagen\\s+vrij)'), new RegExp('vakantie\\s*(?:dagen)?\\D{0,10}' + N)], x => sc.vakantie = x);
+  if (/(zonder|geen)\s+pensioen|pensioen\s+(uit|af)/.test(t)) { sc.pension = false; t = t.replace(/(zonder|geen)\s+pensioen|pensioen\s+(uit|af)/, ' '); }
+  else if (/(met|inclusief)\s+pensioen|pensioen\s+aan/.test(t)) { sc.pension = true; t = t.replace(/(met|inclusief)\s+pensioen|pensioen\s+aan/, ' '); }
+  take([new RegExp('uurtarief\\D{0,12}' + N), new RegExp(N + '\\s*(?:per\\s*uur|p\\/u|\\/uur|\\/u)\\b')], x => sc.fields.uurtarief = x);
+  take([new RegExp(N + '\\s*(?:km|kilometers?)\\b'), new RegExp('(?:km|kilometers?)\\D{0,8}' + N)], x => sc.fields.reiskostenKm = x);
+  take([new RegExp('(?:omzet\\s*)?bonus\\D{0,12}' + N), new RegExp('voorschot\\D{0,12}' + N), new RegExp(N + '\\s*(?:omzet\\s*)?bonus')], x => sc.fields.omzetbonus = x);
+  take([new RegExp('(?:basis\\s*)?salaris\\D{0,12}' + N)], x => sc.fields.basissalaris = x);
+  take([new RegExp('mobiliteit\\w*\\D{0,12}' + N)], x => sc.fields.mobiliteitsbijdrage = x);
+  take([new RegExp('brandstof\\D{0,12}' + N)], x => sc.kosten.brandstof = x);
+  take([new RegExp('parkeer\\w*\\D{0,12}' + N)], x => sc.kosten.parkeerkosten = x);
+  take([new RegExp('(?:declarabele\\s+)?uren\\D{0,12}' + N), new RegExp(N + '\\s*(?:declarabele\\s+)?uren')], x => sc.fields.uren = x);
+  return sc;
+}
+
+function buildOverrides() {
+  const o = {};
+  Object.entries(SCEN.fields).forEach(([id, v]) => { o[id] = v; });
+  Object.entries(SCEN.kosten).forEach(([k, v]) => { o['kosten:' + k] = v; });
+  if (SCEN.vakantie != null) {
+    const basisUren = ('uren' in o) ? o.uren : (parseFloat(document.getElementById('uren').value) || 0);
+    const baseVak = parseFloat(document.getElementById('werkVakantie').value) || 0;
+    const fte = (parseFloat(document.getElementById('werkFte').value) || 0) / 100;
+    o.uren = Math.max(0, basisUren - (SCEN.vakantie - baseVak) * fte * 8);
+  }
+  return o;
+}
+
+const SCEN_LABELS = {
+  uurtarief: ['Uurtarief', v => fmt(v)], uren: ['Declarabele uren', v => Math.round(v).toLocaleString('nl-NL')],
+  omzetbonus: ['Voorschot omzetbonus', v => fmt(v)], basissalaris: ['Basissalaris', v => fmt(v)],
+  mobiliteitsbijdrage: ['Mobiliteitsbudget', v => fmt(v)], reiskostenKm: ['Km per maand', v => Math.round(v).toLocaleString('nl-NL')],
+};
+
+function renderWhatif(msg) {
+  const box = document.getElementById('whatif');
+  const chips = document.getElementById('whatifChips');
+  box.classList.toggle('active', !!SCEN);
+  document.getElementById('whatifReset').hidden = !SCEN;
+  chips.innerHTML = '';
+  if (SCEN) {
+    const o = buildOverrides();
+    const add = t => { const c = document.createElement('span'); c.className = 'whatif-chip'; c.textContent = t; chips.appendChild(c); };
+    if (SCEN.vakantie != null) add(`Vakantiedagen ${val('werkVakantie')} → ${SCEN.vakantie}`);
+    Object.entries(SCEN.fields).forEach(([id, v]) => { if (id !== 'uren' || SCEN.vakantie == null) add(`${SCEN_LABELS[id][0]}: ${SCEN_LABELS[id][1](val(id))} → ${SCEN_LABELS[id][1](v)}`); });
+    if (SCEN.vakantie != null || 'uren' in SCEN.fields) add(`Declarabele uren: ${Math.round(val('uren')).toLocaleString('nl-NL')} → ${Math.round(o.uren).toLocaleString('nl-NL')}`);
+    Object.entries(SCEN.kosten).forEach(([k, v]) => {
+      const item = KOSTEN_ITEMS.find(x => x.key === k); const inp = document.querySelector(`.kosten-input[data-key="${k}"]`);
+      add(`${item.label}/mnd: ${fmt(parseFloat(inp.value) || 0)} → ${fmt(v)}`);
+    });
+    if (SCEN.pension != null) add(SCEN.pension ? 'Met pensioen' : 'Zonder pensioen');
+  }
+  if (msg) document.getElementById('whatifMsg').innerHTML = msg;
+}
+
+function runWhatif() {
+  const text = document.getElementById('whatifInput').value.trim();
+  if (!text) { resetWhatif(); return; }
+  const sc = parseScenarioText(text);
+  const herkend = sc.vakantie != null || sc.pension != null || Object.keys(sc.fields).length || Object.keys(sc.kosten).length;
+  if (!herkend) {
+    renderWhatif('Dat begrijp ik nog niet. Probeer bijvoorbeeld: <i>30 vakantiedagen</i>, <i>uurtarief 105</i>, <i>bonus 5000</i>, <i>1500 km</i>, <i>brandstof 800</i> of <i>zonder pensioen</i>.');
+    return;
+  }
+  SCEN = sc;
+  let msg = 'Dit is een tijdelijk scenario: het dashboard laat nu zien wat er verandert (▲▼ t.o.v. je eigen cijfers). Je Invoer-tab en opgeslagen cijfers blijven ongewijzigd.';
+  if ('reiskostenKm' in sc.fields && val('mobiliteitsbijdrage') === 0 && !('mobiliteitsbijdrage' in sc.fields)) {
+    msg += ' <b>Let op:</b> je mobiliteitsbudget staat op €0, dus deze kilometers tellen als extra kosten.';
+  }
+  recalc();
+  renderWhatif(msg);
+}
+
+function resetWhatif() {
+  SCEN = null;
+  document.getElementById('whatifInput').value = '';
+  recalc();
+  renderWhatif('Typ wat je wilt weten; het dashboard laat dan tijdelijk dat scenario zien. Je invoer en opgeslagen cijfers veranderen niet. Voorbeelden: <i>30 vakantiedagen</i> · <i>uurtarief 105</i> · <i>bonus 5000</i> · <i>basissalaris 2800</i> · <i>uren 1900</i> · <i>1500 km</i> · <i>brandstof 800</i> · <i>zonder pensioen</i> — je kunt ze combineren met een komma.');
+}
+
 function recalc() {
   updateWerkUren();
   const pensionOn = document.getElementById('pensionToggle').checked;
@@ -1488,10 +1638,25 @@ function recalc() {
   const main = computeScenario(pensionOn);
   renderAll(main);
 
-  const zonder = pensionOn ? computeScenario(false) : main;
-  const met = pensionOn ? main : computeScenario(true);
-  renderPensionCompare(zonder, met);
+  // Dashboard: standaard je eigen cijfers, of tijdelijk het "wat als"-scenario.
+  let dash = main, dZonder, dMet;
+  if (SCEN) {
+    OVERRIDES = buildOverrides();
+    const sp = SCEN.pension != null ? SCEN.pension : pensionOn;
+    dash = computeScenario(sp);
+    dZonder = sp ? computeScenario(false) : dash;
+    dMet = sp ? dash : computeScenario(true);
+    renderDashboard(dash, main);
+    renderPensionCompare(dZonder, dMet);
+    OVERRIDES = null;
+  } else {
+    dZonder = pensionOn ? computeScenario(false) : main;
+    dMet = pensionOn ? main : computeScenario(true);
+    renderDashboard(main, null);
+    renderPensionCompare(dZonder, dMet);
+  }
 
+  if (SCEN) renderWhatif();
   equalizeTileHeights('.kpi-tile');
 }
 
@@ -1501,6 +1666,9 @@ function switchTab(name) {
   equalizeTileHeights('.kpi-tile');
 }
 document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+document.getElementById('whatifGo').addEventListener('click', runWhatif);
+document.getElementById('whatifReset').addEventListener('click', resetWhatif);
+document.getElementById('whatifInput').addEventListener('keydown', e => { if (e.key === 'Enter') runWhatif(); });
 document.getElementById('useWerkUren').addEventListener('click', () => {
   const el = document.getElementById('uren');
   el.value = Math.round(updateWerkUren());
@@ -1511,6 +1679,7 @@ window.addEventListener('resize', () => equalizeTileHeights('.kpi-tile'));
 const STORAGE_KEY = 'mediumlance-calculator-v2';
 
 function inputStorageKey(inp) {
+  if (inp.id === 'whatifInput') return null;
   return inp.id ? 'id:' + inp.id : (inp.dataset.key ? 'kosten:' + inp.dataset.key : null);
 }
 
@@ -1537,7 +1706,7 @@ function loadInputs() {
 }
 
 loadInputs();
-document.querySelectorAll('input').forEach(inp => inp.addEventListener('input', () => { saveInputs(); recalc(); }));
+document.querySelectorAll('input').forEach(inp => { if (inp.id !== 'whatifInput') inp.addEventListener('input', () => { saveInputs(); recalc(); }); });
 document.getElementById('pensionToggle').addEventListener('change', () => { saveInputs(); recalc(); });
 recalc();
 </script>
