@@ -705,8 +705,8 @@
   .fx-anim .tm-line { stroke-dasharray: 1; stroke-dashoffset: 1; animation: fxDraw 1.6s .2s cubic-bezier(.3,.8,.3,1) forwards; }
 
   /* spaardoel */
-  .goal-grid { display: grid; grid-template-columns: 150px 1fr; gap: 16px; align-items: center; }
-  .goal-ring { position: relative; width: 150px; height: 150px; }
+  .goal-grid { display: grid; grid-template-columns: 190px 1fr; gap: 20px; align-items: center; }
+  .goal-ring { position: relative; width: 190px; height: 190px; }
   .goal-ring svg { width: 100%; height: 100%; display: block; }
   #goal-arc { transition: stroke-dasharray 1.4s cubic-bezier(.3,.9,.3,1); }
   .goal-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 30px; }
@@ -1270,6 +1270,14 @@
     box-shadow: inset 0 1px 0 #fff, 0 24px 60px rgba(60,50,40,.2); }
   html:not([data-theme="2050"]) .fx-glare { mix-blend-mode: normal; background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.85), rgba(255,255,255,.25) 40%, rgba(255,255,255,0) 68%); z-index: -1; }
   html:not([data-theme="2050"]).cards-matte .card, html:not([data-theme="2050"]).cards-matte .kpi-tile:not(.hero) { transition: box-shadow .35s ease, border-color .3s ease, transform .5s var(--spring); }
+  /* kaarten: inhoud verticaal gecentreerd i.p.v. lege ruimte onderaan */
+  .dblock[data-block="donut"] > .card, .dblock[data-block="bars"] > .card, .dblock[data-block="pens"] > .card,
+  .dblock[data-block="gauge"] > .card, .dblock[data-block="goal"] > .card, .dblock[data-block="impact"] > .card { display: flex; flex-direction: column; }
+  .dblock[data-block="donut"] .donut-row, .dblock[data-block="pens"] .mini-donut-row, .dblock[data-block="gauge"] .gauge2-row { margin-block: auto; }
+  .dblock[data-block="bars"] .bar-chart-wrap, .dblock[data-block="impact"] .bar-chart-wrap, .dblock[data-block="goal"] .goal-grid { margin-top: auto; }
+  .dblock[data-block="bars"] .bar-legend, .dblock[data-block="goal"] #goal-launch { margin-bottom: auto; }
+  .dblock[data-block="goal"] #goal-launch { align-self: flex-start; }
+  .dblock[data-block="bars"] .bar-legend, .dblock[data-block="impact"] .bar-legend { margin-top: 10px; }
 </style>
 </head>
 <body>
@@ -1954,7 +1962,7 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b15</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b16</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
   <div class="tc-head"><b>🎨 Thema-studio</b><button type="button" class="btn-ghost" id="tc-close">✕</button></div>
