@@ -2178,7 +2178,7 @@
   </div>
   </div>
 
-  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b30</span></div>
+  <div class="app-footer" id="app-footer">© 2026 Hamudi Salh — Conspect <span class="build-tag">· versie 14-10-2026 · b31</span></div>
 <div class="tc-backdrop" id="tc-backdrop" hidden></div>
 <aside class="tc-panel" id="tc-panel" hidden role="dialog" aria-label="Thema aanpassen">
   <div class="tc-head"><b>Thema-studio</b><button type="button" class="btn-ghost" id="tc-close"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
@@ -4498,6 +4498,7 @@ function cmdkOpen(on) {
 }
 function cmdkRun(n) { const it = CMDK.items[n]; if (!it) return; cmdkOpen(false); setTimeout(it.run, 120); }
 function cmdkInit() {
+  { const mac = /Mac|iPhone|iPad/i.test(navigator.platform || '') || /Mac OS X|iPhone|iPad/.test(navigator.userAgent); byId('cmdkBtn').dataset.label = FINE_POINTER ? 'Zoeken  ' + (mac ? '⌘K' : 'Ctrl K') : 'Zoeken'; }
   byId('cmdkBtn').addEventListener('click', () => cmdkOpen(true));
   byId('cmdk').addEventListener('pointerdown', e => { if (e.target === byId('cmdk')) cmdkOpen(false); });
   byId('cmdk-in').addEventListener('input', () => { CMDK.sel = 0; cmdkRender(); });
